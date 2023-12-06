@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text-updater-node label {
+  display: block;
+  color: #777;
+  font-size: 12px;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
