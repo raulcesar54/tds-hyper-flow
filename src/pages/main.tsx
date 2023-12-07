@@ -1,6 +1,5 @@
 import { Header } from "../component/template/header";
 import { Action } from "../component/template/action";
-import { BackMenu } from "../component/template/backMenu";
 import { Document } from "../component/template/document";
 import { MainMenu } from "../component/template/mainMenu";
 import { Text } from "../component/template/text";
@@ -8,16 +7,29 @@ import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
 import { useBoard } from "../hooks/useBoard";
 import { useCallback, useRef, useState } from "react";
-import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
+import ReactFlow, {
+  Background,
+  ReactFlowProvider,
+  EdgeTypes,
+  Controls,
+  NodeResizer,
+  NodeResizeControl,
+  NodeToolbar,
+} from "reactflow";
 import "reactflow/dist/style.css";
 import { v4 as uuid } from "uuid";
+import { ZoomControl } from "./style";
 
 const nodeTypes = {
   Welcome,
+  Action,
+
   StartMenu: MainMenu,
-  Action: BackMenu,
+
+  MenuItem: MainMenu,
+  ActionMenu: MainMenu,
+
   KPIDoc: Document,
-  ActionMenu: Action,
   KPIText: Text,
 };
 
@@ -82,7 +94,11 @@ export default function Main() {
           onDragOver={onDragOver}
           onDrop={onDrop}
         >
-          <Background color="#f2f2f2" style={{ backgroundColor: "#f2f2f2" }} />
+          <ZoomControl
+            position="bottom-right"
+            className="flex flex-row px-3  !shadow-md bg-white rounded-md"
+          />
+          <Background style={{ backgroundColor: "#f2f2f2" }} />
         </ReactFlow>
       </ReactFlowProvider>
     </div>

@@ -6,20 +6,21 @@ export const Toolbox = () => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
+
   return (
     <div className="absolute z-50 bg-white left-4 top-[35%] overflow-hidden flex flex-col items-center shadow-md rounded-md py-2">
       <HoverCard title="Documento">
         <button
-          onDragStart={(event) => onDragStart(event, "Documento")}
+          onDragStart={(event) => onDragStart(event, "KPIDoc")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
           <FiFileText />
         </button>
       </HoverCard>
-      <HoverCard title="Texto">
+      <HoverCard title="Mensagem">
         <button
-          onDragStart={(event) => onDragStart(event, "Texto")}
+          onDragStart={(event) => onDragStart(event, "KPIText")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
@@ -28,7 +29,7 @@ export const Toolbox = () => {
       </HoverCard>
       <HoverCard title="Ações">
         <button
-          onDragStart={(event) => onDragStart(event, "Acao")}
+          onDragStart={(event) => onDragStart(event, "Action")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
@@ -37,7 +38,7 @@ export const Toolbox = () => {
       </HoverCard>
       <HoverCard title="Menu">
         <button
-          onDragStart={(event) => onDragStart(event, "MenuPrincipal")}
+          onDragStart={(event) => onDragStart(event, "MenuItem")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >

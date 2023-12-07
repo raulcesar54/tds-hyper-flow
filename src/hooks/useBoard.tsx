@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect } from "react";
 import {
   Connection,
   Edge,
+  MarkerType,
   addEdge,
   useEdgesState,
   useNodesState,
@@ -99,7 +100,15 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   );
   const connectNode = useCallback(
     (params: Edge | Connection) => {
-      return setEdges((actualNode) => addEdge(params, actualNode));
+      return setEdges((actualNode) =>
+        addEdge(
+          {
+            ...params,
+            // animated: true,
+          },
+          actualNode
+        )
+      );
     },
     [setEdges]
   );

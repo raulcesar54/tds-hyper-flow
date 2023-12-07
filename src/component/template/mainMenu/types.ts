@@ -12,9 +12,9 @@ interface RootObject {
   selected: boolean;
 }
 export interface TargetNode {
-  NodeId: string | null;
-  Sequence: string;
-  Name: string;
+  nodeId: string | null;
+  sequence: string;
+  name: string;
 }
 export interface MainMenuProps {
   data: RootObject;

@@ -1,7 +1,6 @@
-import { Position, addEdge, useReactFlow } from "reactflow";
+import { Position, useReactFlow } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { WelcomeProps } from "./types";
-import { useFlow } from "@/hooks/useFlow";
 
 export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
   const reactflow = useReactFlow();
@@ -15,14 +14,22 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
       <label htmlFor="text" className="text-lg font-bold max-w-[150px]  ">
         {data.name}
       </label>
+      {data.image && (
+        <img
+          src={data.image}
+          width={250}
+          className="rounded-lg mt-1"
+          alt="image_step"
+        />
+      )}
       <h1
         dangerouslySetInnerHTML={{
           __html: `${data.statusMessage.replace(
             "{{username}}",
-            "<strong>{{ Nome do usúario }}</strong>"
+            "<strong class='text-blue-400'>Nome do usúario</strong>"
           )}`,
         }}
-        className="max-w-[200px] text-sm mt-2"
+        className="max-w-[250px] mt-4 text-sm "
       />
       <HandleStyled
         id={`source_${id}`}

@@ -20,13 +20,15 @@ export const Text = ({ data, id, ...props }: any) => {
           <FiType size={16} />
         </div>
         <div className="flex flex-col ">
-          {data.title || "Texto"}
-          <small className="mt-[-4px] text-sm font-light">vincular texto</small>
+          {data.title || "Mensagem"}
+          <small className="mt-[-4px] text-sm font-light">
+            vincular mensagem
+          </small>
         </div>
       </label>
       <div className="mt-4 flex flex-col">
         <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
-          Documento vinculados
+          Mensagem vinculados
         </label>
         <div className="flex flex-row gap-3">
           <input
