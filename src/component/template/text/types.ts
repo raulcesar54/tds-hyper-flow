@@ -2,8 +2,7 @@ interface RootObject {
   sequence: string;
   name: string;
   statusMessage: string;
-  document: string;
-  documentOutput?: any;
+  title: string;
   message: string;
   image: string;
   targetNode: TargetNode[];
@@ -13,7 +12,6 @@ interface RootObject {
 }
 export interface TargetNode {
   nodeId: string | null;
-  handleId: string | null;
   sequence: string;
   name: string;
 }

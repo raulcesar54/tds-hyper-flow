@@ -18,7 +18,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
   useEffect(() => {
     connectNode({
       source: sourceId,
-      sourceHandle: `source_${index}`,
+      sourceHandle: `source_${targetNode.handleId}`,
       target: targetNode.nodeId,
       targetHandle: "target",
     });
@@ -27,14 +27,13 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
       value: { title: value, index } as any,
     });
   }, []);
-
   return (
     <>
       <label className="mt-3 font-bold text-sm mb-1" htmlFor={`input_${index}`}>
         Opção {index + 1}
       </label>
       <input
-        id={`input_${targetNode.nodeId}`}
+        id={`input_${index}`}
         className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
         placeholder="opção do menu principal..."
         name="text"
@@ -52,11 +51,15 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           isVectorItems
           type="source"
           position={Position.Right}
-          id={`source_${index}`}
+          id={`source_${targetNode.handleId}`}
           onConnect={(params) => {
             if (params.target === null) return;
-            removeEdge(`source_${index}`);
+            removeEdge(`source_${targetNode.handleId}`);
             connectNode(params);
+            updateNodeData<{ title: string | null; index: number }>({
+              targetId: String(targetNode.nodeId),
+              value: { title: value, index } as any,
+            });
           }}
         />
       </div>

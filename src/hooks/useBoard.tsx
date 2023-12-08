@@ -33,56 +33,8 @@ interface contextBoardProps {
 const ContextBoard = createContext({ data: [] } as contextBoardProps);
 export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   const { data, loading } = useFlow();
-  const [edges, setEdges, onEdgesChange] = useEdgesState([
-    // {
-    //   id: "e646957b-8b37-495b-b9d5-38363d603d3c",
-    //   target: "e646957b-8b37-495b-b9d5-38363d603d3c",
-    //   sourceHandle: "source_e646957b-8b37-495b-b9d5-38363d603d3c",
-    //   targetHandle: "target_e646957b-8b37-495b-b9d5-38363d603d3c",
-    //   source: "cf7c682f-8c16-4f89-ba2f-95ff758cd453",
-    // },
-    // {
-    //   id: "fab11397-a396-405e-a385-a5ee96fcd3e3",
-    //   target: "fab11397-a396-405e-a385-a5ee96fcd3e3",
-    //   sourceHandle: "source_fab11397-a396-405e-a385-a5ee96fcd3e3",
-    //   targetHandle: "target_fab11397-a396-405e-a385-a5ee96fcd3e3",
-    //   source: "e646957b-8b37-495b-b9d5-38363d603d3c",
-    // },
-  ]);
-  const [nodes, setNodes, onNodesChange] = useNodesState([
-    // {
-    //   id: "cf7c682f-8c16-4f89-ba2f-95ff758cd453",
-    //   type: "BoasVindas",
-    //   position: {
-    //     x: -86,
-    //     y: 60,
-    //   },
-    //   data: {
-    //     description: "Olá {{username}} seja bem vindo ao chatbot da HLABS",
-    //     published: false,
-    //     selected: false,
-    //     values: [],
-    //   },
-    //   width: 236,
-    //   height: 160,
-    // },
-    // {
-    //   id: "e646957b-8b37-495b-b9d5-38363d603d3c",
-    //   type: "MenuPrincipal",
-    //   position: {
-    //     x: 240.8928195193322,
-    //     y: 20.291951638725408,
-    //   },
-    //   data: {
-    //     description: "Selecione uma das opções para analisar.",
-    //     published: false,
-    //     selected: false,
-    //     values: [],
-    //   },
-    //   width: 215,
-    //   height: 152,
-    // },
-  ]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   useEffect(() => {
     if (!data?.nodes) return;
     if (!data?.edges) return;

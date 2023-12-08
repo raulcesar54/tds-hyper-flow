@@ -19,6 +19,8 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { v4 as uuid } from "uuid";
 import { ZoomControl } from "./style";
+import { PropertyContainer } from "../component/template/propertyContainer";
+import { useFlow } from "../hooks/useFlow";
 
 const nodeTypes = {
   Welcome,
@@ -35,8 +37,9 @@ const nodeTypes = {
 
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
+  const chatBotId = window.location.search;
 
+  const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const { data, onNodesChange, removeEdges, onEdgesChange, setNodes, edges } =
     useBoard();
   const panOnDrag = [1, 2];
@@ -62,8 +65,26 @@ export default function Main() {
       const newNode = {
         id: uuid(),
         type,
+        chatbot: chatBotId.replace("?id=", ""),
+        parent: "",
+        data: {
+          sequence: "",
+          name: "",
+          title: "",
+          statusMessage: "",
+          document: "",
+          documentOutput: null,
+          message: "",
+          image: "",
+          targetNode: [],
+          filterNode: null,
+          enabled: true,
+        },
+        width: 286,
+        height: 279,
+        selected: false,
+        dragging: false,
         position,
-        data: { label: `${type} node` },
       };
 
       setNodes((nds: any) => nds.concat(newNode));
@@ -79,6 +100,7 @@ export default function Main() {
     <div style={{ width: "100vw", height: "100vh" }}>
       <Header />
       <Toolbox />
+      <PropertyContainer />
       <ReactFlowProvider>
         <ReactFlow
           nodes={data}

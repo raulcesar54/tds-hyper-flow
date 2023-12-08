@@ -13,7 +13,7 @@ export const CardHeader = (props: CardHeaderProps) => {
   return (
     <label
       htmlFor="text"
-      className="flex items-center flex-row text-lg font-bold gap-2 "
+      className="flex items-center flex-row text-lg font-bold gap-3 w-full "
     >
       <div className="p-3 ring-1 ring-slate-100 bg-slate-50 rounded-lg">
         <Icons size={16} />
