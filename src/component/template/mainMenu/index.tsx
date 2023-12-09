@@ -33,6 +33,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                 name={item.name || ""}
                 index={index}
                 id={id}
+                data={data}
                 key={item.nodeId}
                 handleUpdateNodeData={(target, value) => {
                   targetNodes[index].nodeId = target;

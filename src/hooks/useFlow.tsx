@@ -25,6 +25,8 @@ interface Node {
   position: Position;
   data: Data;
   width: number;
+  parent: string;
+  chatbot: string;
   height: number;
   selected: boolean;
   positionAbsolute: Position;

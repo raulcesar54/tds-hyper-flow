@@ -5,10 +5,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Props } from "./types";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { useProperty } from "../../../hooks/useProperty";
+import { useBoard } from "../../../hooks/useBoard";
 
 export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
   const { documents } = useFlow();
+  const { connectNode, removeEdge } = useBoard();
   const [value, setValue] = useState(data.message);
 
   const handleClick = useCallback(() => {
@@ -74,6 +76,10 @@ export const Document = ({ data, id, ...props }: Props) => {
         type="source"
         position={Position.Right}
         id={`source_${id}`}
+        onConnect={(params) => {
+          removeEdge(`source_${id}`);
+          connectNode(params);
+        }}
       />
     </div>
   );

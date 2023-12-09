@@ -8,10 +8,10 @@ import { useProperty } from "../../../hooks/useProperty";
 import { useCallback, useEffect, useState } from "react";
 
 export const Text = ({ data, id, ...props }: MainMenuProps) => {
-  const { connectNode } = useBoard();
   const { handleSelectInfo } = useProperty();
   const { messages } = useFlow();
   const [value, setValue] = useState(data.message);
+  const { connectNode, removeEdge } = useBoard();
 
   useEffect(() => {
     if (!data.targetNode) return;
@@ -83,7 +83,14 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         position={Position.Left}
         id={`target_${id}`}
       />
-      <HandleStyled type="source" position={Position.Right} />
+      <HandleStyled
+        type="source"
+        position={Position.Right}
+        onConnect={(params) => {
+          removeEdge(`source_${id}`);
+          connectNode(params);
+        }}
+      />
     </div>
   );
 };

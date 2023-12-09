@@ -49,7 +49,10 @@ export const Action = ({ data, id, ...props }: Props) => {
       <div className="flex flex-row gap-3 mt-6">
         <select
           value={value}
-          onChange={(event) => setValue(event.target.value)}
+          onChange={(event) => {
+            event.stopPropagation();
+            setValue(event.target.value);
+          }}
           className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
         >
           {flowData?.chatBot.Actions.map((item) => {
