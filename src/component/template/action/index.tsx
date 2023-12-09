@@ -19,7 +19,7 @@ export const Action = ({ data, id, ...props }: Props) => {
       icon: "FiShuffle",
       nodeId: id,
       type: "Action",
-      customInfo: data,
+      customInfo: { ...data },
     });
   }, [props.selected, data]);
 

@@ -8,13 +8,26 @@ export const PropertyContainer = () => {
   const { cardInfo } = useProperty();
   const { outputDocs } = useFlow();
   const [imageValue, setImageValue] = useState("");
-  const [statusMessae, setStatusMessage] = useState("");
+  const [statusMessae, setStatusMessage] = useState(() => {
+    return cardInfo?.customInfo?.statusMessage;
+  });
   const [selectedFormat, setSelectedFormat] = useState<string>("");
   const { updateNodeData } = useBoard();
+
+  useEffect(() => {
+    setStatusMessage(cardInfo?.customInfo?.statusMessage);
+  }, [cardInfo?.customInfo?.statusMessage]);
+  useEffect(() => {
+    setSelectedFormat(cardInfo?.customInfo?.outputDocument);
+  }, [cardInfo?.customInfo?.outputDocument]);
+  useEffect(() => {
+    setImageValue(cardInfo?.customInfo?.image);
+  }, [cardInfo?.customInfo?.image]);
 
   if (!cardInfo) {
     return <></>;
   }
+
   return (
     <div className="absolute flex flex-col z-50 bg-white right-4 top-4 gap-4 items-center shadow-md rounded-md max-w-[320px] min-w-[320px] p-4 ring-2 ring-blue-400">
       <CardHeader
@@ -88,7 +101,7 @@ export const PropertyContainer = () => {
                       updateNodeData({
                         targetId: cardInfo.nodeId,
                         value: {
-                          title: item.Name,
+                          outputDocument: item.Name,
                         },
                       });
                       setSelectedFormat(item.Name);
