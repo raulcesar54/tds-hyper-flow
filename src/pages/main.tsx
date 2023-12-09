@@ -7,20 +7,10 @@ import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
 import { useBoard } from "../hooks/useBoard";
 import { useCallback, useRef, useState } from "react";
-import ReactFlow, {
-  Background,
-  ReactFlowProvider,
-  EdgeTypes,
-  Controls,
-  NodeResizer,
-  NodeResizeControl,
-  NodeToolbar,
-} from "reactflow";
-import "reactflow/dist/style.css";
-import { v4 as uuid } from "uuid";
+import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
 import { ZoomControl } from "./style";
 import { PropertyContainer } from "../component/template/propertyContainer";
-import { useFlow } from "../hooks/useFlow";
+import "reactflow/dist/style.css";
 
 const nodeTypes = {
   Welcome,
@@ -37,10 +27,8 @@ const nodeTypes = {
 
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
-  const chatBotId = window.location.search;
-
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-  const { data, onNodesChange, removeEdges, onEdgesChange, setNodes, edges } =
+  const { data, onNodesChange, removeEdges, onEdgesChange, edges, addNode } =
     useBoard();
   const panOnDrag = [1, 2];
 
@@ -54,6 +42,7 @@ export default function Main() {
       event.preventDefault();
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData("application/reactflow");
+
       if (typeof type === "undefined" || !type) {
         return;
       }
@@ -62,32 +51,8 @@ export default function Main() {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      const newNode = {
-        id: uuid(),
-        type,
-        chatbot: chatBotId.replace("?id=", ""),
-        parent: "",
-        data: {
-          sequence: "",
-          name: "",
-          title: "",
-          statusMessage: "",
-          document: "",
-          documentOutput: null,
-          message: "",
-          image: "",
-          targetNode: [],
-          filterNode: null,
-          enabled: true,
-        },
-        width: 286,
-        height: 279,
-        selected: false,
-        dragging: false,
-        position,
-      };
 
-      setNodes((nds: any) => nds.concat(newNode));
+      addNode({ position, type });
     },
     [reactFlowInstance]
   );
@@ -96,6 +61,9 @@ export default function Main() {
       removeEdges(item.source, item.target);
     });
   }
+  const onConnect = useCallback((connection: any) => {
+    // setEdges((eds) => addEdge(connection, eds))
+  }, []);
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Header />
@@ -115,6 +83,8 @@ export default function Main() {
           nodeTypes={nodeTypes}
           onDragOver={onDragOver}
           onDrop={onDrop}
+          onConnect={onConnect}
+          fitView
         >
           <ZoomControl
             position="bottom-right"

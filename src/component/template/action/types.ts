@@ -2,22 +2,22 @@ interface RootObject {
   sequence: string;
   name: string;
   statusMessage: string;
-  document: string;
-  documentOutput?: any;
+  title: string;
   message: string;
   image: string;
+  documentOutput: string;
   targetNode: TargetNode[];
   filterNode: any[];
   enabled: boolean;
   selected: boolean;
 }
-interface TargetNode {
-  nodeId: string;
+export interface TargetNode {
+  nodeId: string | null;
   sequence: string;
   name: string;
 }
-export interface WelcomeProps {
-  selected: boolean;
+export interface Props {
   data: RootObject;
+  selected: boolean;
   id: string;
 }

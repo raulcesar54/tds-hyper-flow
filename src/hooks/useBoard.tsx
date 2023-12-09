@@ -2,7 +2,6 @@ import { createContext, useCallback, useContext, useEffect } from "react";
 import {
   Connection,
   Edge,
-  MarkerType,
   addEdge,
   useEdgesState,
   useNodesState,
@@ -10,8 +9,11 @@ import {
 import { v4 } from "uuid";
 import { useFlow } from "./useFlow";
 interface nodeType {
-  nodeType: string;
-  label: string;
+  position: {
+    x: number;
+    y: number;
+  };
+  type: string;
 }
 interface updateNodeData<T> {
   targetId: string;
@@ -21,7 +23,6 @@ interface contextBoardProps {
   data: any;
   addNode: (nodeProps: nodeType) => void;
   removeEdges: (nodeProps: any, teest: any) => void;
-  updateNode: (nodeProps: any, teest: any, value: any) => void;
   connectNode: (data: Edge | Connection) => void;
   removeEdge: (sourceHandle: string) => void;
   setNodes: (data: any) => void;
@@ -31,15 +32,19 @@ interface contextBoardProps {
   onNodesChange: any;
 }
 const ContextBoard = createContext({ data: [] } as contextBoardProps);
+
 export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
+  const chatBotId = window.location.search;
   const { data, loading } = useFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
+
   useEffect(() => {
     if (!data?.nodes) return;
     if (!data?.edges) return;
     setNodes(data?.nodes);
-    setEdges(data?.edges);
+
+    // setEdges(data?.edges);
   }, [loading]);
 
   const removeEdge = useCallback(
@@ -81,30 +86,32 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       })
     );
   }
-  function updateNode(targetId: string, id: string, value: string) {
-    // setNodes((nodes) =>
-    //   nodes.map((item) => {
-    //     if (item.id === targetId) {
-    //       item.data = {
-    //         ...item.data,
-    //         selected: true,
-    //         values: { ...item.data.values, [id]: value },
-    //       };
-    //     }
-    //     return item;
-    //   })
-    // );
-  }
-  function addNode({ nodeType, label }: nodeType) {
-    setNodes((e: any) => [
-      ...e,
-      {
-        id: v4(),
-        type: nodeType,
-        position: { x: 140, y: 100 },
-        data: { label, selected: false, values: [] },
+  function addNode({ position, type }: nodeType) {
+    const newNode = {
+      id: v4(),
+      type,
+      chatbot: chatBotId.replace("?id=", ""),
+      parent: "",
+      data: {
+        sequence: "",
+        name: "",
+        title: "",
+        statusMessage: "",
+        document: "",
+        documentOutput: "",
+        message: "",
+        image: "",
+        targetNode: [],
+        filterNode: [],
+        enabled: true,
       },
-    ]);
+      width: 286,
+      height: 279,
+      selected: false,
+      dragging: false,
+      position,
+    };
+    setNodes((lastValue: any) => [...lastValue, newNode]);
   }
   function removeEdges(sourceId: string, targetId: string) {
     setNodes((nodes) =>
@@ -131,7 +138,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         onNodesChange,
         removeEdge,
         connectNode,
-        updateNode,
         removeEdges,
         setNodes,
         edges,

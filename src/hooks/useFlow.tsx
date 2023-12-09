@@ -62,18 +62,33 @@ interface ChatBot {
   enabled: boolean;
   type: string;
   description: string;
+  Actions: ActionsType[];
+}
+
+interface ActionsType {
+  Id: string;
+  Type: number;
+  Key: string;
+  Value: string;
 }
 interface BoardType {
   loading: boolean;
   data: FlowResponse | null;
-  messages: MessageResponse[] | null;
+  messages: MessageOrDocResponse[] | null;
+  documents: MessageOrDocResponse[] | null;
+  outputDocs: OutputDocResponse[] | null;
 }
 
-interface MessageResponse {
+interface MessageOrDocResponse {
   Id: string;
   Name: string;
   Type: string;
   Description: string;
+}
+interface OutputDocResponse {
+  Type: string;
+  Name: string;
+  Image: string;
 }
 const FlowContext = createContext({} as BoardType);
 
@@ -83,27 +98,47 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<FlowResponse | null>(null);
-  const [messages, setMessages] = useState<MessageResponse[] | null>(null);
+  const [messages, setMessages] = useState<MessageOrDocResponse[] | null>(null);
+  const [outputDocs, setOutputDocs] = useState<OutputDocResponse[] | null>(
+    null
+  );
+  const [documents, setDocuments] = useState<MessageOrDocResponse[] | null>(
+    null
+  );
 
   //Destacar se é pdf imagem doc ou xls
   const handleGetInformation = useCallback(async () => {
+    const idTreated = id.replace("?id=", "");
     try {
       setLoading(true);
-      const [data, messagesReport] = await Promise.all([
-        await api.get<FlowResponse>("ChatbotFlow/flow", {
-          params: {
-            id: id.replace("?id=", ""),
-          },
-        }),
-        await api.get<MessageResponse[]>("ChatbotFlow/message", {
-          params: {
-            id: id.replace("?id=", ""),
-          },
-        }),
-      ]);
+      const [data, messagesReport, documentReport, outputDocs] =
+        await Promise.all([
+          await api.get<FlowResponse>("ChatbotFlow/flow", {
+            params: {
+              id: idTreated,
+            },
+          }),
+          await api.get<MessageOrDocResponse[]>("ChatbotFlow/message", {
+            params: {
+              id: idTreated,
+            },
+          }),
+          await api.get<MessageOrDocResponse[]>("ChatbotFlow/docs", {
+            params: {
+              id: idTreated,
+            },
+          }),
+          await api.get<OutputDocResponse[]>("ChatbotFlow/OutputDoc", {
+            params: {
+              id: idTreated,
+            },
+          }),
+        ]);
 
       setData(data.data);
       setMessages(messagesReport.data);
+      setDocuments(documentReport.data);
+      setOutputDocs(outputDocs.data);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -115,7 +150,9 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
   }, []);
 
   return (
-    <FlowContext.Provider value={{ loading, data, messages }}>
+    <FlowContext.Provider
+      value={{ loading, data, messages, documents, outputDocs }}
+    >
       {children}
     </FlowContext.Provider>
   );

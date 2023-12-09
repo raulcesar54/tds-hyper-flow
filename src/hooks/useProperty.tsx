@@ -10,7 +10,7 @@ interface CardInfo {
   description: string;
   nodeId: string;
   customInfo: any;
-  type: "Message";
+  type: "Message" | "Document" | "Action";
 }
 
 const UsePropertyContext = createContext({} as PropertyProps);

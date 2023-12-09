@@ -1,9 +1,22 @@
 import { Position, useReactFlow } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { WelcomeProps } from "./types";
+import { useBoard } from "../../../hooks/useBoard";
+import { useEffect } from "react";
 
 export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
   const reactflow = useReactFlow();
+  const { connectNode } = useBoard();
+
+  useEffect(() => {
+    if (!data?.targetNode?.[0].nodeId) return;
+    connectNode({
+      source: String(id),
+      sourceHandle: `source_${data?.targetNode?.[0].nodeId}`,
+      target: String(data?.targetNode?.[0].nodeId),
+      targetHandle: `target_${data?.targetNode?.[0].nodeId}`,
+    });
+  }, [data]);
 
   return (
     <div
@@ -32,9 +45,9 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
         className="max-w-[250px] mt-4 text-sm "
       />
       <HandleStyled
-        id={`source_${id}`}
         type="source"
         position={Position.Right}
+        id={`source_${id}`}
         onConnect={(params) => {
           if (params.target === null) return;
           if (reactflow !== null) {

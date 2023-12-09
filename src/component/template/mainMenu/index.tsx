@@ -1,4 +1,3 @@
-import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
@@ -7,19 +6,15 @@ import { MainMenuProps, TargetNode } from "./types";
 import { TargetNodeItem } from "../../../component/uiKit/targetNodeItem";
 import { CardHeader } from "../../../component/uiKit/cardHeader";
 import { v4 } from "uuid";
+import { useBoard } from "../../../hooks/useBoard";
+
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
-  const { updateNode } = useBoard();
+  const { updateNodeData } = useBoard();
   const [targetNodes, setTargetNode] = useState<TargetNode[]>([]);
 
   useEffect(() => {
     if (!data.targetNode) return;
-    const prepareData = data.targetNode.map((item) => {
-      return {
-        ...item,
-        handleId: v4(),
-      };
-    });
-    setTargetNode(prepareData);
+    setTargetNode(data.targetNode);
   }, [data]);
 
   return (
@@ -32,12 +27,20 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       <div className="mt-4 flex flex-col">
         {targetNodes.map((item, index) => {
           return (
-            <TargetNodeItem
-              sourceId={id}
-              targetNode={item}
-              index={index}
-              key={item.handleId}
-            />
+            item.nodeId && (
+              <TargetNodeItem
+                sourceNodeId={item.nodeId}
+                name={item.name || ""}
+                index={index}
+                id={id}
+                key={item.nodeId}
+                handleUpdateNodeData={(target, value) => {
+                  targetNodes[index].nodeId = target;
+                  targetNodes[index].name = value;
+                  updateNodeData({ targetId: id, value: targetNodes });
+                }}
+              />
+            )
           );
         })}
       </div>
@@ -45,28 +48,27 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         <Button
           label="adicionar"
           onClick={() =>
-            setTargetNode((preventName) => {
-              return [
-                ...preventName,
-                {
-                  nodeId: null,
-                  handleId: v4(),
-                  sequence: "",
-                  name: "",
-                },
-              ];
+            updateNodeData({
+              targetId: id,
+              value: {
+                ...data,
+                targetNode: [
+                  ...(data.targetNode || []),
+                  {
+                    nodeId: v4(),
+                    name: "",
+                    sequence: String(data?.targetNode?.length + 1 || 0),
+                  },
+                ],
+              },
             })
           }
         />
       </div>
-
       <HandleStyled
         type="target"
         position={Position.Left}
         id={`target_${id}`}
-        onConnect={(event) => {
-          updateNode(event.target, id, "");
-        }}
       />
     </div>
   );

@@ -1,32 +1,38 @@
 import { Position } from "reactflow";
-import { TargetNode } from "../../../component/template/mainMenu/types";
 import { HandleStyled } from "../handleStyle";
 import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 
 interface TargetNodeItemProps {
-  targetNode: TargetNode;
+  sourceNodeId?: string;
+  id?: string;
   index: number;
-  sourceId: string;
+  name: string;
+  handleUpdateNodeData: (targetId: string, value: string) => void;
 }
 
 export const TargetNodeItem = (props: TargetNodeItemProps) => {
-  const { index, sourceId, targetNode } = props;
+  const { index, sourceNodeId, id, name, handleUpdateNodeData } = props;
+  const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData } = useBoard();
-  const [value, setValue] = useState(targetNode.name || "");
 
   useEffect(() => {
     connectNode({
-      source: sourceId,
-      sourceHandle: `source_${targetNode.handleId}`,
-      target: targetNode.nodeId,
-      targetHandle: "target",
+      source: String(id),
+      sourceHandle: `source_${sourceNodeId}`,
+      target: String(sourceNodeId),
+      targetHandle: `target_${sourceNodeId}`,
     });
     updateNodeData<{ title: string | null; index: number }>({
-      targetId: String(targetNode.nodeId),
-      value: { title: value, index } as any,
+      targetId: String(sourceNodeId),
+      value: {
+        title: name,
+        name,
+        index,
+      } as any,
     });
   }, []);
+
   return (
     <>
       <label className="mt-3 font-bold text-sm mb-1" htmlFor={`input_${index}`}>
@@ -41,8 +47,12 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
         onChange={(event) => {
           setValue(event.target.value);
           updateNodeData<{ title: string | null; index: number }>({
-            targetId: String(targetNode.nodeId),
-            value: { title: event.target.value, index } as any,
+            targetId: String(sourceNodeId),
+            value: {
+              title: event.target.value,
+              name: event.target.value,
+              index,
+            } as any,
           });
         }}
       />
@@ -51,15 +61,11 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           isVectorItems
           type="source"
           position={Position.Right}
-          id={`source_${targetNode.handleId}`}
+          id={`source_${sourceNodeId}`}
           onConnect={(params) => {
-            if (params.target === null) return;
-            removeEdge(`source_${targetNode.handleId}`);
+            removeEdge(`source_${sourceNodeId}`);
+            handleUpdateNodeData(String(params.target), value);
             connectNode(params);
-            updateNodeData<{ title: string | null; index: number }>({
-              targetId: String(targetNode.nodeId),
-              value: { title: value, index } as any,
-            });
           }}
         />
       </div>

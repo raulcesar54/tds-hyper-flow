@@ -1,18 +1,32 @@
-import { Position, useReactFlow } from "reactflow";
+import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { useBoard } from "../../../hooks/useBoard";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { useFlow } from "../../../hooks/useFlow";
 import { MainMenuProps } from "./types";
 import { useProperty } from "../../../hooks/useProperty";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const Text = ({ data, id, ...props }: MainMenuProps) => {
-  const { connectNode, removeEdge } = useBoard();
+  const { connectNode } = useBoard();
   const { handleSelectInfo } = useProperty();
-  const reactflow = useReactFlow();
-  const { loading, messages } = useFlow();
+  const { messages } = useFlow();
   const [value, setValue] = useState(data.message);
+
+  useEffect(() => {
+    if (!data.targetNode) return;
+    data.targetNode.map((item) => {
+      connectNode({
+        source: String(id),
+        sourceHandle: `source_${item.nodeId}`,
+        target: String(item.nodeId),
+        targetHandle: `target_${item.nodeId}`,
+      });
+    });
+  }, []);
+  useEffect(() => {
+    if (!props.selected) handleSelectInfo(null);
+  }, [props.selected]);
 
   const handleClick = useCallback(() => {
     handleSelectInfo({
@@ -23,9 +37,6 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       type: "Message",
       customInfo: data,
     });
-  }, [props.selected]);
-  useEffect(() => {
-    if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   return (
@@ -67,28 +78,12 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
           </select>
         </div>
       </div>
-      <HandleStyled type="target" position={Position.Left} id="target" />
       <HandleStyled
-        type="source"
-        position={Position.Right}
-        id="source"
-        onConnect={(params) => {
-          if (params.target === null) return;
-          if (reactflow !== null) {
-            const instanceReactFlow = reactflow;
-            const isValidTarget = instanceReactFlow
-              .getNode(params.target)
-              ?.type?.includes("MenuPrincipal");
-            if (!isValidTarget) {
-              alert("Atenção, o documento pode ligar apenas ao Menu");
-              return;
-            }
-          }
-
-          removeEdge(`source_${id}`);
-          return connectNode(params);
-        }}
+        type="target"
+        position={Position.Left}
+        id={`target_${id}`}
       />
+      <HandleStyled type="source" position={Position.Right} />
     </div>
   );
 };

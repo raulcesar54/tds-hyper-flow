@@ -5,11 +5,7 @@ import { FiChevronLeft } from "react-icons/fi";
 import { HandleStyled } from "../../uiKit/handleStyle";
 
 export const BackMenu = ({ data, id }: any) => {
-  const [inputValue, setInputValue] = useState("");
-  const { updateNode } = useBoard();
-  const onChange = (evt: any) => {
-    updateNode(data.targetId, id, String(evt?.target.value));
-  };
+  const onChange = (evt: any) => {};
   return (
     <div
       className={`p-4 border-2 ${
@@ -24,19 +20,12 @@ export const BackMenu = ({ data, id }: any) => {
           <FiChevronLeft size={16} />
         </div>
         <div className="flex flex-col ">
-          Menu Anterior
+          Ações
           <small className="mt-[-4px] text-sm font-light">menu de ação</small>
         </div>
       </label>
       <h1 className="max-w-[100px] text-sm mt-2">Voltar para menu anterior</h1>
-      <HandleStyled
-        type="target"
-        position={Position.Left}
-        id="targetBackPreviousMenu"
-        onConnect={(event) => {
-          updateNode(event.target, id, inputValue);
-        }}
-      />
+      <HandleStyled type="target" position={Position.Left} id="target" />
     </div>
   );
 };
