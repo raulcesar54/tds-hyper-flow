@@ -65,6 +65,9 @@ interface ChatBot {
   type: string;
   description: string;
   Actions: ActionsType[];
+  position: Position;
+  positionAbsolute: Position;
+  zoom: number;
 }
 
 interface ActionsType {
@@ -79,12 +82,14 @@ interface BoardType {
   messages: MessageOrDocResponse[] | null;
   documents: MessageOrDocResponse[] | null;
   outputDocs: OutputDocResponse[] | null;
+  handleGetInformation: () => void;
 }
 
 interface MessageOrDocResponse {
   Id: string;
   Name: string;
   Type: string;
+  Group: string;
   Description: string;
 }
 interface OutputDocResponse {
@@ -147,13 +152,16 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
     }
   }, []);
 
-  useEffect(() => {
-    handleGetInformation();
-  }, []);
-
   return (
     <FlowContext.Provider
-      value={{ loading, data, messages, documents, outputDocs }}
+      value={{
+        loading,
+        data,
+        messages,
+        documents,
+        outputDocs,
+        handleGetInformation,
+      }}
     >
       {children}
     </FlowContext.Provider>

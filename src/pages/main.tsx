@@ -7,11 +7,12 @@ import { Text } from "../component/template/text";
 import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
 import { useBoard } from "../hooks/useBoard";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
 import { ZoomControl } from "./style";
 import { PropertyContainer } from "../component/template/propertyContainer";
 import "reactflow/dist/style.css";
+import { useFlow } from "../hooks/useFlow";
 
 const nodeTypes = {
   Welcome,
@@ -28,6 +29,7 @@ const nodeTypes = {
 
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
+  const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const { data, onNodesChange, removeEdges, onEdgesChange, edges, addNode } =
     useBoard();
@@ -62,20 +64,33 @@ export default function Main() {
       removeEdges(item.source, item.target);
     });
   }
-  const onConnect = useCallback((connection: any) => {
-    // setEdges((eds) => addEdge(connection, eds))
+  const onConnect = useCallback((connection: any) => {}, []);
+  useEffect(() => {
+    if (!flowData) handleGetInformation();
   }, []);
+  useEffect(() => {
+    if (flowData && reactFlowInstance) {
+      reactFlowInstance.setViewport({
+        zoom: flowData?.chatBot.zoom || 0,
+        x: flowData?.chatBot.position.x || 0,
+        y: flowData?.chatBot.position.y || 0,
+      });
+    }
+  }, [flowData]);
+
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <Header />
-      <Toolbox />
-      <PropertyContainer />
       <ReactFlowProvider>
+        <Header />
+        <Toolbox />
+        <PropertyContainer />
         <ReactFlow
           nodes={data}
           edges={edges}
           preventScrolling
-          onInit={setReactFlowInstance}
+          onInit={(instance) => {
+            setReactFlowInstance(instance);
+          }}
           ref={reactFlowWrapper}
           panOnDrag={panOnDrag}
           onEdgesDelete={onRemoveEdge}
@@ -85,7 +100,6 @@ export default function Main() {
           onDragOver={onDragOver}
           onDrop={onDrop}
           onConnect={onConnect}
-          fitView
         >
           <ZoomControl
             position="bottom-right"

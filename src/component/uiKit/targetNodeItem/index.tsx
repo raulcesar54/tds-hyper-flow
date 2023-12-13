@@ -19,20 +19,20 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
   const { connectNode, removeEdge, updateNodeData } = useBoard();
 
   useEffect(() => {
-    // connectNode({
-    //   source: String(id),
-    //   sourceHandle: `source_${sourceNodeId}`,
-    //   target: String(sourceNodeId),
-    //   targetHandle: `target_${sourceNodeId}`,
-    // });
-    // updateNodeData<{ title: string | null; index: number }>({
-    //   targetId: String(sourceNodeId),
-    //   value: {
-    //     title: name,
-    //     name,
-    //     index,
-    //   } as any,
-    // });
+    connectNode({
+      source: String(id),
+      sourceHandle: `source_${sourceNodeId}`,
+      target: String(sourceNodeId),
+      targetHandle: `target_${sourceNodeId}`,
+    });
+    updateNodeData<{ title: string | null; index: number }>({
+      targetId: String(sourceNodeId),
+      value: {
+        title: name,
+        name,
+        index,
+      } as any,
+    });
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -68,6 +68,11 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               value={value}
               onChange={(event) => {
                 setValue(event.target.value);
+                data.targetNode[index] = {
+                  ...data.targetNode[index],
+                  name: event.target.value,
+                };
+
                 updateNodeData<{ title: string | null; index: number }>({
                   targetId: String(sourceNodeId),
                   value: {
@@ -75,6 +80,10 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                     name: event.target.value,
                     index,
                   } as any,
+                });
+                updateNodeData<{ title: string | null; index: number }>({
+                  targetId: String(id),
+                  value: data as any,
                 });
               }}
             />

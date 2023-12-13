@@ -12,6 +12,7 @@ export const PropertyContainer = () => {
     return cardInfo?.customInfo?.statusMessage;
   });
   const [selectedFormat, setSelectedFormat] = useState<string>("");
+  const [enabledValue, setEnabledValue] = useState<boolean>(false);
   const { updateNodeData } = useBoard();
 
   useEffect(() => {
@@ -23,6 +24,9 @@ export const PropertyContainer = () => {
   useEffect(() => {
     setImageValue(cardInfo?.customInfo?.image);
   }, [cardInfo?.customInfo?.image]);
+  useEffect(() => {
+    setEnabledValue(cardInfo?.customInfo?.enabled);
+  }, [cardInfo?.customInfo?.enabled]);
 
   if (!cardInfo) {
     return <></>;
@@ -114,27 +118,33 @@ export const PropertyContainer = () => {
             </div>
           </div>
         )}
-        {(cardInfo.type === "Message" || cardInfo.type === "Document") && (
-          <label className="relative inline-flex items-center cursor-pointer mt-4">
-            <input
-              type="checkbox"
-              value={cardInfo?.customInfo.enabled}
-              onChange={(event) => {
-                updateNodeData({
-                  targetId: cardInfo.nodeId,
-                  value: {
-                    enabled: event.target.checked,
-                  },
-                });
-              }}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 rounded-full peer bg-blue-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-200"></div>
-            <span className="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">
-              Publicar
-            </span>
-          </label>
-        )}
+        <h1 className="text-black">{cardInfo.customInfo.enabled}</h1>
+        <label className="relative inline-flex items-center cursor-pointer mt-4">
+          <input
+            type="checkbox"
+            value={String(enabledValue)}
+            onChange={(event) => {
+              updateNodeData({
+                targetId: cardInfo.nodeId,
+                value: {
+                  enabled: event.target.checked,
+                },
+              });
+              setEnabledValue(event.target.checked);
+            }}
+            className="sr-only peer"
+          />
+          <div
+            className="w-11 h-6 rounded-full peer bg-blue-400 peer-checked:after:translate-x-full
+           rtl:peer-checked:after:-translate-x-full 
+           peer-checked:after:border-white after:content-[''] 
+           after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all 
+            peer-checked:bg-slate-200"
+          ></div>
+          <span className="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">
+            Publicar
+          </span>
+        </label>
       </div>
     </div>
   );

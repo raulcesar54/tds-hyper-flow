@@ -5,14 +5,20 @@ import { FaWhatsapp } from "react-icons/fa";
 import { LiaTelegramPlane } from "react-icons/lia";
 import { api } from "../../../services";
 import { useState } from "react";
+import { useBoard } from "../../../hooks/useBoard";
+import { useViewport } from "reactflow";
 
 export const Header = () => {
   const [saving, setSaving] = useState(false);
   const { data, loading } = useFlow();
+  const { data: info } = useBoard();
+  const { zoom, x, y } = useViewport();
+
   const handleSaveData = async () => {
     setSaving(true);
     if (!data?.nodes) return;
-    const preparation = data.nodes.map((data) => ({
+
+    const prepareNodes = info.map((data: any) => ({
       id: data.id,
       type: data.type,
       chatbot: data.chatbot,
@@ -40,8 +46,32 @@ export const Header = () => {
       },
       dragging: true,
     }));
+    const prepareData = {
+      chatBot: {
+        ...data.chatBot,
+        actions: [
+          {
+            id: "string",
+            type: 0,
+            key: "string",
+            value: "string",
+          },
+        ],
+        zoom,
+        position: {
+          x,
+          y,
+        },
+        positionAbsolute: {
+          x: 0,
+          y: 0,
+        },
+      },
+      nodes: prepareNodes,
+      edges: [],
+    };
 
-    const save = await api.put("ChatbotFlow/Save", preparation);
+    const save = await api.put("ChatbotFlow/Save", prepareData);
     setSaving(false);
   };
   return (

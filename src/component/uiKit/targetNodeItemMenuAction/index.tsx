@@ -37,6 +37,8 @@ export const TargetNodeItemMenuAction = (
         index,
       } as any,
     });
+    const data = flowData?.chatBot.Actions.find((item) => item.Value === name);
+    setValue(String(data?.Id));
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -69,12 +71,20 @@ export const TargetNodeItemMenuAction = (
               onChange={(event) => {
                 event.stopPropagation();
                 setValue(event.target.value);
+                updateNodeData<{ title: string | null; index: number }>({
+                  targetId: String(sourceNodeId),
+                  value: {
+                    title: event.target.value,
+                    name: event.target.value,
+                    index,
+                  } as any,
+                });
               }}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
             >
               {flowData?.chatBot.Actions.map((item) => {
                 return (
-                  <option value={item.Id} key={item.Id}>
+                  <option value={String(item?.Value)} key={item.Id}>
                     {item.Value}
                   </option>
                 );
@@ -100,10 +110,7 @@ export const TargetNodeItemMenuAction = (
             const findItem = flowData?.chatBot.Actions.find(
               (item) => item.Id === value
             );
-            handleUpdateNodeData(
-              String(params.target),
-              String(findItem?.Value)
-            );
+            handleUpdateNodeData(String(params.target), findItem?.Value || "");
             connectNode(params);
           }}
         />

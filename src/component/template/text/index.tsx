@@ -5,7 +5,8 @@ import { CardHeader } from "../../uiKit/cardHeader";
 import { useFlow } from "../../../hooks/useFlow";
 import { MainMenuProps } from "./types";
 import { useProperty } from "../../../hooks/useProperty";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { groupBy } from "lodash";
 
 export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const { handleSelectInfo } = useProperty();
@@ -39,6 +40,16 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
     });
   }, [props.selected]);
 
+  const prepareDocuments = useMemo(() => {
+    const doc = groupBy(messages, "Group");
+    const info = Object.values(doc);
+    const data = info.map((item) => ({
+      label: item[0].Group,
+      options: item,
+    }));
+    return data;
+  }, [messages]);
+
   return (
     <div
       onClick={handleClick}
@@ -68,11 +79,17 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
             onChange={(event) => setValue(event.target.value)}
             className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
           >
-            {messages?.map((item) => {
+            {prepareDocuments.map((item) => {
               return (
-                <option value={item.Id} key={item.Id}>
-                  {item.Name}
-                </option>
+                <optgroup key={item.label} label={item.label}>
+                  {item.options.map((item) => {
+                    return (
+                      <option value={item.Id} key={item.Id}>
+                        {item.Name}
+                      </option>
+                    );
+                  })}
+                </optgroup>
               );
             })}
           </select>

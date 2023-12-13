@@ -5,6 +5,7 @@ import {
   addEdge,
   useEdgesState,
   useNodesState,
+  useViewport,
 } from "reactflow";
 import { v4 } from "uuid";
 import { useFlow } from "./useFlow";
@@ -74,6 +75,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === targetId) {
+          console.log(node.data, value);
           return {
             ...node,
             data: {

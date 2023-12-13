@@ -1,11 +1,12 @@
 import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { useFlow } from "../../../hooks/useFlow";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Props } from "./types";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { useProperty } from "../../../hooks/useProperty";
 import { useBoard } from "../../../hooks/useBoard";
+import { groupBy } from "lodash";
 
 export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
@@ -24,22 +25,45 @@ export const Document = ({ data, id, ...props }: Props) => {
     });
   }, [props.selected]);
 
+  const prepareDocuments = useMemo(() => {
+    const doc = groupBy(documents, "Group");
+    const info = Object.values(doc);
+    const data = info.map((item) => ({
+      label: item[0].Group,
+      options: item,
+    }));
+    return data;
+  }, [documents]);
+
   useEffect(() => {
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
+
   return (
     <div
       onClick={handleClick}
-      className={`p-4 border-2 ${
+      className={`p-4 pt-2 border-2 ${
         props.selected ? "border-blue-400" : "border-[#eee] "
-      }  w-[320px] flex flex-col rounded-lg bg-white`}
+      }  w-[320px] flex flex-col rounded-lg bg-white
+      
+     
+      `}
     >
-      <CardHeader
-        iconName="FiFileText"
-        subtitle="Vincular Documento"
-        title={data.title || "Documento"}
-      />
-      <div className="mt-4 flex flex-col">
+      {!data.enabled && (
+        <h1 className="w-full text-center font-bold py-2 px-4 bg-slate-50 rounded-sm">
+          Nó Desabilitado
+        </h1>
+      )}
+      <div
+        className={`mt-4 flex flex-col
+        ${!data.enabled && "opacity-30"}
+        `}
+      >
+        <CardHeader
+          iconName="FiFileText"
+          subtitle="Vincular Documento"
+          title={data.title || "Documento"}
+        />
         {data.image && (
           <img
             src={data.image}
@@ -56,11 +80,17 @@ export const Document = ({ data, id, ...props }: Props) => {
             onChange={(event) => setValue(event.target.value)}
             className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
           >
-            {documents?.map((item) => {
+            {prepareDocuments.map((item) => {
               return (
-                <option value={item.Id} key={item.Id}>
-                  {item.Name}
-                </option>
+                <optgroup key={item.label} label={item.label}>
+                  {item.options.map((item) => {
+                    return (
+                      <option value={item.Id} key={item.Id}>
+                        {item.Name}
+                      </option>
+                    );
+                  })}
+                </optgroup>
               );
             })}
           </select>

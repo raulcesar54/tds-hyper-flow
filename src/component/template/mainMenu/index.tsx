@@ -41,7 +41,14 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       }  flex flex-col rounded-md shadow-sm w-[300px] bg-white`}
     >
       <CardHeader iconName="FiHome" title={"Menu"} subtitle="Menu" />
-      <div className="mt-4 flex flex-col">
+      {data.image && (
+        <img
+          src={data.image}
+          className="rounded-lg w-full max-h-50 object-cover mt-4"
+          alt="image_step"
+        />
+      )}
+      <div className="mt-2 flex flex-col">
         {targetNodes.map((item, index) => {
           return (
             item.nodeId && (
