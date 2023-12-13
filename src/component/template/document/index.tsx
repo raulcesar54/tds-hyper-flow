@@ -16,7 +16,7 @@ export const Document = ({ data, id, ...props }: Props) => {
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Documento",
-      description: "vincular documento",
+      description: "Vincular Documento",
       icon: "FiFileText",
       nodeId: id,
       type: "Document",
@@ -36,7 +36,7 @@ export const Document = ({ data, id, ...props }: Props) => {
     >
       <CardHeader
         iconName="FiFileText"
-        subtitle="vincular documento"
+        subtitle="Vincular Documento"
         title={data.title || "Documento"}
       />
       <div className="mt-4 flex flex-col">
@@ -48,7 +48,7 @@ export const Document = ({ data, id, ...props }: Props) => {
           />
         )}
         <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
-          Selecione a expressão
+          Selecione a Mensagem
         </label>
         <div className="flex flex-row gap-3">
           <select

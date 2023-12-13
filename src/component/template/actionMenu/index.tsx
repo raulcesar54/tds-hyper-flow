@@ -3,32 +3,32 @@ import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { Button } from "../../../component/uiKit/button";
 import { MainMenuProps, TargetNode } from "./types";
-import { TargetNodeItem } from "../../../component/uiKit/targetNodeItem";
+import { TargetNodeItemMenuAction } from "../../../component/uiKit/targetNodeItemMenuAction";
 import { CardHeader } from "../../../component/uiKit/cardHeader";
 import { v4 } from "uuid";
 import { useBoard } from "../../../hooks/useBoard";
 import { useProperty } from "../../../hooks/useProperty";
 
-export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
+export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
   const { updateNodeData } = useBoard();
-  const [targetNodes, setTargetNode] = useState<TargetNode[]>([]);
   const { handleSelectInfo } = useProperty();
+  const [targetNodes, setTargetNode] = useState<TargetNode[]>([]);
 
   useEffect(() => {
     if (!data.targetNode) return;
     setTargetNode(data.targetNode);
   }, [data]);
-
   useEffect(() => {
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
+
   const handleClick = useCallback(() => {
     handleSelectInfo({
-      label: "Menu",
-      description: "Menu",
-      icon: "FiHome",
+      label: "Menu de Ações",
+      description: "Menu de Ações",
+      icon: "FiShuffle",
       nodeId: id,
-      type: "Menu",
+      type: "ActionMenu",
       customInfo: data,
     });
   }, [props.selected]);
@@ -40,12 +40,16 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         props.selected ? "border-blue-400" : ""
       }  flex flex-col rounded-md shadow-sm w-[300px] bg-white`}
     >
-      <CardHeader iconName="FiHome" title={"Menu"} subtitle="Menu" />
+      <CardHeader
+        iconName="FiShuffle"
+        title={"Menu de Ações"}
+        subtitle="Menu de Ações"
+      />
       <div className="mt-4 flex flex-col">
         {targetNodes.map((item, index) => {
           return (
             item.nodeId && (
-              <TargetNodeItem
+              <TargetNodeItemMenuAction
                 sourceNodeId={item.nodeId}
                 name={item.name || ""}
                 index={index}

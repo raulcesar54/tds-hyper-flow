@@ -1,22 +1,18 @@
-import { FiShuffle } from "react-icons/fi";
 import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { Props } from "./types";
-import { useFlow } from "../../../hooks/useFlow";
 import { useProperty } from "../../../hooks/useProperty";
 import { CardHeader } from "../../uiKit/cardHeader";
 
 export const Action = ({ data, id, ...props }: Props) => {
-  const [value, setValue] = useState("");
-  const { data: flowData } = useFlow();
   const { handleSelectInfo } = useProperty();
 
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Ações",
-      description: "vincular ação",
-      icon: "FiShuffle",
+      description: "Vincular Ação",
+      icon: "FiCpu",
       nodeId: id,
       type: "Action",
       customInfo: { ...data },
@@ -35,9 +31,9 @@ export const Action = ({ data, id, ...props }: Props) => {
       }  w-[320px] flex flex-col rounded-lg bg-white`}
     >
       <CardHeader
-        iconName="FiShuffle"
-        subtitle="vincular ação"
-        title={data.title || "Ações"}
+        iconName="FiCpu"
+        subtitle="Ação"
+        title={data.title || "Ação"}
       />
       {data.image && (
         <img
@@ -46,25 +42,6 @@ export const Action = ({ data, id, ...props }: Props) => {
           alt="image_step"
         />
       )}
-      <div className="flex flex-row gap-3 mt-6">
-        <select
-          value={value}
-          onChange={(event) => {
-            event.stopPropagation();
-            setValue(event.target.value);
-          }}
-          className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
-        >
-          {flowData?.chatBot.Actions.map((item) => {
-            return (
-              <option value={item.Id} key={item.Id}>
-                {item.Value}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-
       <HandleStyled
         type="target"
         position={Position.Left}

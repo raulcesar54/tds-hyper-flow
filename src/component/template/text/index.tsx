@@ -31,7 +31,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Mensagem",
-      description: "vincular mensagem",
+      description: "Vincular Mensagem",
       icon: "FiType",
       nodeId: id,
       type: "Message",
@@ -49,7 +49,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       <CardHeader
         iconName="FiType"
         title={data.title || "Mensagem"}
-        subtitle="vincular mensagem"
+        subtitle="Vincular Mensagem"
       />
       <div className="mt-4 flex flex-col">
         {data.image && (
@@ -60,7 +60,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
           />
         )}
         <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
-          Selecione a expressão
+          Selecione a Mensagem
         </label>
         <div className="flex flex-row gap-3">
           <select

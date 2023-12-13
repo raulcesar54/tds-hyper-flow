@@ -3,8 +3,9 @@ import { HandleStyled } from "../handleStyle";
 import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
+import { useFlow } from "../../../hooks/useFlow";
 
-interface TargetNodeItemProps {
+interface TargetNodeItemMenuActionProps {
   sourceNodeId?: string;
   id?: string;
   index: number;
@@ -13,26 +14,29 @@ interface TargetNodeItemProps {
   handleUpdateNodeData: (targetId: string, value: string) => void;
 }
 
-export const TargetNodeItem = (props: TargetNodeItemProps) => {
+export const TargetNodeItemMenuAction = (
+  props: TargetNodeItemMenuActionProps
+) => {
   const { index, sourceNodeId, id, name, data, handleUpdateNodeData } = props;
   const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData } = useBoard();
+  const { data: flowData } = useFlow();
 
   useEffect(() => {
-    // connectNode({
-    //   source: String(id),
-    //   sourceHandle: `source_${sourceNodeId}`,
-    //   target: String(sourceNodeId),
-    //   targetHandle: `target_${sourceNodeId}`,
-    // });
-    // updateNodeData<{ title: string | null; index: number }>({
-    //   targetId: String(sourceNodeId),
-    //   value: {
-    //     title: name,
-    //     name,
-    //     index,
-    //   } as any,
-    // });
+    connectNode({
+      source: String(id),
+      sourceHandle: `source_${sourceNodeId}`,
+      target: String(sourceNodeId),
+      targetHandle: `target_${sourceNodeId}`,
+    });
+    updateNodeData<{ title: string | null; index: number }>({
+      targetId: String(sourceNodeId),
+      value: {
+        title: name,
+        name,
+        index,
+      } as any,
+    });
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -57,27 +61,25 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             className="mt-3 font-bold text-sm mb-1"
             htmlFor={`input_${index}`}
           >
-            Opção {index + 1}
+            Ação {index + 1}
           </label>
           <div className="flex gap-4">
-            <input
-              id={`input_${index}`}
-              className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 w-full disabled:bg-slate-200"
-              placeholder="opção do menu principal..."
-              name="text"
+            <select
               value={value}
               onChange={(event) => {
+                event.stopPropagation();
                 setValue(event.target.value);
-                updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(sourceNodeId),
-                  value: {
-                    title: event.target.value,
-                    name: event.target.value,
-                    index,
-                  } as any,
-                });
               }}
-            />
+              className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+            >
+              {flowData?.chatBot.Actions.map((item) => {
+                return (
+                  <option value={item.Id} key={item.Id}>
+                    {item.Value}
+                  </option>
+                );
+              })}
+            </select>
             <button
               onClick={() => handleRemoveItem(index)}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
@@ -95,7 +97,13 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
             removeEdge(`source_${sourceNodeId}`);
-            handleUpdateNodeData(String(params.target), value);
+            const findItem = flowData?.chatBot.Actions.find(
+              (item) => item.Id === value
+            );
+            handleUpdateNodeData(
+              String(params.target),
+              String(findItem?.Value)
+            );
             connectNode(params);
           }}
         />

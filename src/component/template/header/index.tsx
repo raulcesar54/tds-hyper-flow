@@ -10,7 +10,6 @@ export const Header = () => {
   const [saving, setSaving] = useState(false);
   const { data, loading } = useFlow();
   const handleSaveData = async () => {
-    // console.log(data?.nodes)
     setSaving(true);
     if (!data?.nodes) return;
     const preparation = data.nodes.map((data) => ({
@@ -78,7 +77,7 @@ export const Header = () => {
         className="p-3 px-8 py-4 bg-slate-50 h-full cursor-pointer hover:bg-blue-400 transition-all  hover:text-white"
         onClick={handleSaveData}
       >
-        {saving ? <Loading /> : "salvar"}
+        {saving ? <Loading /> : "Salvar"}
       </button>
     </div>
   );

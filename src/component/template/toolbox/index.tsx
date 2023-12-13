@@ -1,5 +1,5 @@
 import { HoverCard } from "../../../component/uiKit/hoverCard";
-import { FiFileText, FiHome, FiShuffle, FiType } from "react-icons/fi";
+import { FiCpu, FiFileText, FiHome, FiShuffle, FiType } from "react-icons/fi";
 
 export const Toolbox = () => {
   const onDragStart = (event: any, nodeType: any) => {
@@ -18,6 +18,15 @@ export const Toolbox = () => {
           <FiFileText />
         </button>
       </HoverCard>
+      <HoverCard title="Ação">
+        <button
+          onDragStart={(event) => onDragStart(event, "Action")}
+          draggable
+          className="b-none p-4 hover:bg-slate-50"
+        >
+          <FiCpu />
+        </button>
+      </HoverCard>
       <HoverCard title="Mensagem">
         <button
           onDragStart={(event) => onDragStart(event, "KPIText")}
@@ -29,7 +38,7 @@ export const Toolbox = () => {
       </HoverCard>
       <HoverCard title="Ações">
         <button
-          onDragStart={(event) => onDragStart(event, "Action")}
+          onDragStart={(event) => onDragStart(event, "ActionMenu")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >

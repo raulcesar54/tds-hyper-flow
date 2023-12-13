@@ -1,11 +1,8 @@
-import { useBoard } from "../../../hooks/useBoard";
-import { useState } from "react";
 import { Position } from "reactflow";
 import { FiChevronLeft } from "react-icons/fi";
 import { HandleStyled } from "../../uiKit/handleStyle";
 
 export const BackMenu = ({ data, id }: any) => {
-  const onChange = (evt: any) => {};
   return (
     <div
       className={`p-4 border-2 ${
@@ -21,7 +18,7 @@ export const BackMenu = ({ data, id }: any) => {
         </div>
         <div className="flex flex-col ">
           Ações
-          <small className="mt-[-4px] text-sm font-light">menu de ação</small>
+          <small className="mt-[-4px] text-sm font-light">Menu de Ação</small>
         </div>
       </label>
       <h1 className="max-w-[100px] text-sm mt-2">Voltar para menu anterior</h1>

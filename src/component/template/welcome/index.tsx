@@ -56,7 +56,7 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
               .getNode(params.target)
               ?.type?.includes("MenuPrincipal");
             if (!isValidTarget) {
-              alert("Atenção, o documento pode ligar apenas ao Menu");
+              alert("Atenção, o Documento pode ligar apenas ao Menu");
               return;
             }
           }

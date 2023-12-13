@@ -39,7 +39,7 @@ export const PropertyContainer = () => {
         {(cardInfo.type === "Message" || cardInfo.type === "Action") && (
           <div className="flex flex-col gap-1 w-full">
             <label className="mt-3 font-bold text-sm  w-full text-left">
-              mensagem de status
+              Mensagem de status
             </label>
             <input
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
@@ -64,10 +64,10 @@ export const PropertyContainer = () => {
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAANlBMVEXp7vG6vsHs8fS2ur3c4eTU2dzm6u3P1Ne4vL/u8/a4vL67v8G0ubzDx8rY3eDEyMvh5unKz9Izr04MAAADb0lEQVR4nO2c63KrIBRGFY1CY4x5/5c93nKiICZGGOvuWj86adowYc0HWxgxSQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOC3oiJwdJ/2oJr6Epy6Sc4qxeTXKtNPfoYfP9NXDj//f0xfv97oX2X6cU4l5pGl6TWNgdbF0b37AnPXUWwMVEd37wvqLKKQNnzm6A5uxcRMSEuWH93DrTRV/8XbaVBnQdFj9u4nm13Vpc+ILk3wy5FCn3LYqHL43hG+9ti0PqmRCNGO2HRMVJlGNqIx8mpakpEQyzRBRlSSd+u0vT0RY8Tkt6rq1mnXcl9fpBjp130DOt2Vk8HI9exG1G16VV81u5qWkBF7Ibxn6SrDSF5ZC7UdqxIRRoyzcZR9P25EGCnsiLRLwK87JMGIqt3NkjdL15VdQxFGSkfIm+v7Irt7jUmovm0f3B3o1Q7pVHuViMjIZeOo6aYdffP8hwQjSePuQq+U33Ee9ikRYcQ4tSar/Z996vMoEWHkue31wTSiJpV6WYkII4myjFS5rz/FdIAtKpFhxJpJqod3Xp3POEtKJFTf7vdGv2KSeYU4F7cLSoRkJFHJvRqcZDr3CnFrkntdIsVIW3CK8tam/ZEbb1+ckrSUEjlG2jeNUsbvw10PjimZf0KSkfVPLAyZxYHzV4woT0LcgSOk1rylWLu7YpaSv5KR9ftvpin5G0ZWhoyjRKIRU1tvF9XbO5JeSgQaMXU1nyrfJmSmRJ6RVkia3iZ/+CAhaVdcRiXijPRCpoPAex3iSYm06qvq+Q7ZZ0NmVDIxIiYjTyGdkv5vG4SINGIm9/32Kfl4yAg1YuppIlolWxIi0Yip7R2ybTdGizNiC9mMFlZr1O6zA8Iysjsh0oy0ZXf36SNRRsxlU1WRb8RcQpw/EmSkuw4JcGJPkJE6wJBJJVXfxXuMdho5d0YwkmDEBSM2GLGJboRaYxs5d0YSjNgZeVRBjoNXYowkTR6GsWkBRgI3jRG7aYzYTWPEbvqkRqI97sCc1MiwaaYfSRGa/JzPH3k+oyYNciEyZ2j4dE8Ac49vhmXHYdCjyOM+68p3QusXY8owm6uL6LPNqz0RlWTXozv3Haq5R5hXW66XMyakxwRb400p/IcNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FD+AZS0NBe99dfKAAAAAElFTkSuQmCC"
           }
           className="rounded-lg mt-1 w-full  max-h-50 object-cover  mt-4"
-          alt="Insira uma imagem corretamente"
+          alt="Insira uma Imagem corretamente"
         />
         <div className="flex flex-col gap-1 w-full">
-          <label className="mt-3 font-bold text-sm mb-1">imagem</label>
+          <label className="mt-3 font-bold text-sm mb-1">Imagem</label>
           <input
             className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
             placeholder="Imagem do menu (Link)"
@@ -113,6 +113,27 @@ export const PropertyContainer = () => {
               })}
             </div>
           </div>
+        )}
+        {(cardInfo.type === "Message" || cardInfo.type === "Document") && (
+          <label className="relative inline-flex items-center cursor-pointer mt-4">
+            <input
+              type="checkbox"
+              value={cardInfo?.customInfo.enabled}
+              onChange={(event) => {
+                updateNodeData({
+                  targetId: cardInfo.nodeId,
+                  value: {
+                    enabled: event.target.checked,
+                  },
+                });
+              }}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 rounded-full peer bg-blue-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-200"></div>
+            <span className="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">
+              Publicar
+            </span>
+          </label>
         )}
       </div>
     </div>
