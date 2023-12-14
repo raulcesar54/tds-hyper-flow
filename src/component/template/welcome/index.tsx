@@ -2,11 +2,13 @@ import { Position, useReactFlow } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { WelcomeProps } from "./types";
 import { useBoard } from "../../../hooks/useBoard";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useProperty } from "../../../hooks/useProperty";
 
 export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
   const reactflow = useReactFlow();
   const { connectNode } = useBoard();
+  const { handleSelectInfo } = useProperty();
 
   useEffect(() => {
     if (!data?.targetNode?.[0].nodeId) return;
@@ -18,8 +20,23 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
     });
   }, [data]);
 
+  useEffect(() => {
+    if (!props.selected) handleSelectInfo(null);
+  }, [props.selected]);
+
+  const handleClick = useCallback(() => {
+    handleSelectInfo({
+      label: "Bem vindo",
+      description: "Tela Inicial",
+      icon: "FiBox",
+      nodeId: id,
+      type: "Welcome",
+      customInfo: data,
+    });
+  }, [props.selected]);
   return (
     <div
+      onClick={handleClick}
       className={`p-4 border-2 ${
         data.selected || props.selected ? "border-blue-400" : "border-[#eee] "
       }  flex flex-col rounded-lg bg-white`}

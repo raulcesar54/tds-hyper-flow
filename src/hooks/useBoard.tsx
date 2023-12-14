@@ -8,7 +8,7 @@ import {
   useViewport,
 } from "reactflow";
 import { v4 } from "uuid";
-import { useFlow } from "./useFlow";
+import { Node, useFlow } from "./useFlow";
 interface nodeType {
   position: {
     x: number;
@@ -21,7 +21,7 @@ interface updateNodeData<T> {
   value: T;
 }
 interface contextBoardProps {
-  data: any;
+  data: Node[] | [];
   addNode: (nodeProps: nodeType) => void;
   removeEdges: (nodeProps: any, teest: any) => void;
   connectNode: (data: Edge | Connection) => void;
@@ -75,7 +75,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === targetId) {
-          console.log(node.data, value);
           return {
             ...node,
             data: {
@@ -135,7 +134,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   return (
     <ContextBoard.Provider
       value={{
-        data: nodes,
+        data: nodes as Node[],
         addNode,
         onNodesChange,
         removeEdge,

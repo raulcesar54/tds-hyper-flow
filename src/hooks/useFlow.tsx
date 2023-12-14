@@ -19,7 +19,7 @@ interface Edge {
   targetHandle: string;
   source: string;
 }
-interface Node {
+export interface Node {
   id: string;
   type: string;
   position: Position;

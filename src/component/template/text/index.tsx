@@ -70,6 +70,15 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
             alt="image_step"
           />
         )}
+        <h1
+          dangerouslySetInnerHTML={{
+            __html: `${data.statusMessage.replace(
+              "{{username}}",
+              "<strong class='text-blue-400'>Nome do usúario</strong>"
+            )}`,
+          }}
+          className="max-w-[250px] mt-1 text-sm text-slate-800 "
+        />
         <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
           Selecione a Mensagem
         </label>

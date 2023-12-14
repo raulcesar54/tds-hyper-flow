@@ -67,7 +67,7 @@ export const TargetNodeItemMenuAction = (
           </label>
           <div className="flex gap-4">
             <select
-              value={value}
+              value={name}
               onChange={(event) => {
                 event.stopPropagation();
                 setValue(event.target.value);

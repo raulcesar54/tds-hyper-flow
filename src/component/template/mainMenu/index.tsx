@@ -22,7 +22,8 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
   useEffect(() => {
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
-  const handleClick = useCallback(() => {
+
+  const handleClick = () => {
     handleSelectInfo({
       label: "Menu",
       description: "Menu",
@@ -31,7 +32,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       type: "Menu",
       customInfo: data,
     });
-  }, [props.selected]);
+  };
 
   return (
     <div
@@ -41,6 +42,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       }  flex flex-col rounded-md shadow-sm w-[300px] bg-white`}
     >
       <CardHeader iconName="FiHome" title={"Menu"} subtitle="Menu" />
+
       {data.image && (
         <img
           src={data.image}
@@ -48,6 +50,15 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           alt="image_step"
         />
       )}
+      <h1
+        dangerouslySetInnerHTML={{
+          __html: `${data.statusMessage.replace(
+            "{{username}}",
+            "<strong class='text-blue-400'>Nome do usúario</strong>"
+          )}`,
+        }}
+        className="max-w-[250px] mt-1 text-sm text-slate-800 "
+      />
       <div className="mt-2 flex flex-col">
         {targetNodes.map((item, index) => {
           return (

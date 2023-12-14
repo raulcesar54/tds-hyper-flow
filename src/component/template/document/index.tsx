@@ -11,19 +11,8 @@ import { groupBy } from "lodash";
 export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
   const { documents } = useFlow();
-  const { connectNode, removeEdge } = useBoard();
+  const { connectNode, removeEdge, updateNodeData } = useBoard();
   const [value, setValue] = useState(data.message);
-
-  const handleClick = useCallback(() => {
-    handleSelectInfo({
-      label: data.title || "Documento",
-      description: "Vincular Documento",
-      icon: "FiFileText",
-      nodeId: id,
-      type: "Document",
-      customInfo: data,
-    });
-  }, [props.selected]);
 
   const prepareDocuments = useMemo(() => {
     const doc = groupBy(documents, "Group");
@@ -39,21 +28,25 @@ export const Document = ({ data, id, ...props }: Props) => {
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
+  const handleClick = useCallback(() => {
+    handleSelectInfo({
+      label: data.title || "Documento",
+      description: "Vincular Documento",
+      icon: "FiFileText",
+      nodeId: id,
+      type: "Document",
+      customInfo: data,
+    });
+  }, [props.selected]);
+
   return (
     <div
       onClick={handleClick}
       className={`p-4 pt-2 border-2 ${
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  w-[320px] flex flex-col rounded-lg bg-white
-      
-     
       `}
     >
-      {!data.enabled && (
-        <h1 className="w-full text-center font-bold py-2 px-4 bg-slate-50 rounded-sm">
-          Nó Desabilitado
-        </h1>
-      )}
       <div
         className={`mt-4 flex flex-col
         ${!data.enabled && "opacity-30"}
@@ -71,13 +64,30 @@ export const Document = ({ data, id, ...props }: Props) => {
             alt="image_step"
           />
         )}
+        <h1
+          dangerouslySetInnerHTML={{
+            __html: `${data.statusMessage.replace(
+              "{{username}}",
+              "<strong class='text-blue-400'>Nome do usúario</strong>"
+            )}`,
+          }}
+          className="max-w-[250px] mt-1 text-sm text-slate-800 "
+        />
         <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
           Selecione a Mensagem
         </label>
         <div className="flex flex-row gap-3">
           <select
             value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) => {
+              setValue(event.target.value);
+              updateNodeData({
+                targetId: id,
+                value: {
+                  document: event.target.value,
+                },
+              });
+            }}
             className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
           >
             {prepareDocuments.map((item) => {

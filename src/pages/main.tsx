@@ -69,11 +69,15 @@ export default function Main() {
     if (!flowData) handleGetInformation();
   }, []);
   useEffect(() => {
-    if (flowData && reactFlowInstance) {
+    if (
+      flowData &&
+      flowData.chatBot.position.x &&
+      flowData.chatBot.position.y
+    ) {
       reactFlowInstance.setViewport({
-        zoom: flowData?.chatBot.zoom || 0,
-        x: flowData?.chatBot.position.x || 0,
-        y: flowData?.chatBot.position.y || 0,
+        zoom: flowData?.chatBot?.zoom || 0,
+        x: flowData?.chatBot?.position?.x || 0,
+        y: flowData?.chatBot?.position?.y || 0,
       });
     }
   }, [flowData]);

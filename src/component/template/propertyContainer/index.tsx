@@ -1,32 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useProperty } from "../../../hooks/useProperty";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { useBoard } from "../../../hooks/useBoard";
-import { useFlow } from "../../../hooks/useFlow";
+import { useFlow, Node } from "../../../hooks/useFlow";
+import { api } from "../../../services";
 
 export const PropertyContainer = () => {
   const { cardInfo } = useProperty();
+  const { data } = useBoard();
   const { outputDocs } = useFlow();
-  const [imageValue, setImageValue] = useState("");
-  const [statusMessae, setStatusMessage] = useState(() => {
-    return cardInfo?.customInfo?.statusMessage;
-  });
-  const [selectedFormat, setSelectedFormat] = useState<string>("");
-  const [enabledValue, setEnabledValue] = useState<boolean>(false);
+  const [information, setInformation] = useState<Node | undefined>();
+
   const { updateNodeData } = useBoard();
 
+  const handleGetFilters = async () => {
+    // const data = await api.get(`/ChatbotFlow/Filters?Node=${cardInfo?.nodeId}`);
+  };
   useEffect(() => {
-    setStatusMessage(cardInfo?.customInfo?.statusMessage);
-  }, [cardInfo?.customInfo?.statusMessage]);
-  useEffect(() => {
-    setSelectedFormat(cardInfo?.customInfo?.outputDocument);
-  }, [cardInfo?.customInfo?.outputDocument]);
-  useEffect(() => {
-    setImageValue(cardInfo?.customInfo?.image);
-  }, [cardInfo?.customInfo?.image]);
-  useEffect(() => {
-    setEnabledValue(cardInfo?.customInfo?.enabled);
-  }, [cardInfo?.customInfo?.enabled]);
+    if (!cardInfo?.nodeId) return;
+    handleGetFilters();
+  }, [cardInfo]);
+  useMemo(() => {
+    const findNode = data?.find((item) => item.id === cardInfo?.nodeId);
+    setInformation(findNode);
+  }, [data, cardInfo]);
 
   if (!cardInfo) {
     return <></>;
@@ -40,31 +37,30 @@ export const PropertyContainer = () => {
         title={cardInfo.label}
       />
       <div className="flex flex-col gap-0 w-full mt-2">
-        {(cardInfo.type === "Message" || cardInfo.type === "Action") && (
-          <div className="flex flex-col gap-1 w-full">
-            <label className="mt-3 font-bold text-sm  w-full text-left">
-              Mensagem de status
-            </label>
-            <input
-              className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
-              placeholder="Mensagem de status..."
-              name="text"
-              value={statusMessae}
-              onChange={(event) => {
-                setStatusMessage(event.target.value);
-                updateNodeData({
-                  targetId: cardInfo.nodeId,
-                  value: {
-                    statusMessage: event.target.value,
-                  },
-                });
-              }}
-            />
-          </div>
-        )}
+        <div className="flex flex-col gap-1 w-full">
+          <label className="mt-3 font-bold text-sm  w-full text-left">
+            Mensagem de status
+          </label>
+          <textarea
+            rows={4}
+            cols={16}
+            className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full py-3 placeholder:text-sm placeholder:px-2 rounded-md disabled:bg-slate-200"
+            placeholder="Mensagem de status..."
+            name="text"
+            value={information?.data.statusMessage}
+            onChange={(event) => {
+              updateNodeData({
+                targetId: cardInfo.nodeId,
+                value: {
+                  statusMessage: event.target.value,
+                },
+              });
+            }}
+          />
+        </div>
         <img
           src={
-            imageValue ||
+            information?.data.image ||
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAREAAAC4CAMAAADzLiguAAAANlBMVEXp7vG6vsHs8fS2ur3c4eTU2dzm6u3P1Ne4vL/u8/a4vL67v8G0ubzDx8rY3eDEyMvh5unKz9Izr04MAAADb0lEQVR4nO2c63KrIBRGFY1CY4x5/5c93nKiICZGGOvuWj86adowYc0HWxgxSQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOC3oiJwdJ/2oJr6Epy6Sc4qxeTXKtNPfoYfP9NXDj//f0xfv97oX2X6cU4l5pGl6TWNgdbF0b37AnPXUWwMVEd37wvqLKKQNnzm6A5uxcRMSEuWH93DrTRV/8XbaVBnQdFj9u4nm13Vpc+ILk3wy5FCn3LYqHL43hG+9ti0PqmRCNGO2HRMVJlGNqIx8mpakpEQyzRBRlSSd+u0vT0RY8Tkt6rq1mnXcl9fpBjp130DOt2Vk8HI9exG1G16VV81u5qWkBF7Ibxn6SrDSF5ZC7UdqxIRRoyzcZR9P25EGCnsiLRLwK87JMGIqt3NkjdL15VdQxFGSkfIm+v7Irt7jUmovm0f3B3o1Q7pVHuViMjIZeOo6aYdffP8hwQjSePuQq+U33Ee9ikRYcQ4tSar/Z996vMoEWHkue31wTSiJpV6WYkII4myjFS5rz/FdIAtKpFhxJpJqod3Xp3POEtKJFTf7vdGv2KSeYU4F7cLSoRkJFHJvRqcZDr3CnFrkntdIsVIW3CK8tam/ZEbb1+ckrSUEjlG2jeNUsbvw10PjimZf0KSkfVPLAyZxYHzV4woT0LcgSOk1rylWLu7YpaSv5KR9ftvpin5G0ZWhoyjRKIRU1tvF9XbO5JeSgQaMXU1nyrfJmSmRJ6RVkia3iZ/+CAhaVdcRiXijPRCpoPAex3iSYm06qvq+Q7ZZ0NmVDIxIiYjTyGdkv5vG4SINGIm9/32Kfl4yAg1YuppIlolWxIi0Yip7R2ybTdGizNiC9mMFlZr1O6zA8Iysjsh0oy0ZXf36SNRRsxlU1WRb8RcQpw/EmSkuw4JcGJPkJE6wJBJJVXfxXuMdho5d0YwkmDEBSM2GLGJboRaYxs5d0YSjNgZeVRBjoNXYowkTR6GsWkBRgI3jRG7aYzYTWPEbvqkRqI97sCc1MiwaaYfSRGa/JzPH3k+oyYNciEyZ2j4dE8Ac49vhmXHYdCjyOM+68p3QusXY8owm6uL6LPNqz0RlWTXozv3Haq5R5hXW66XMyakxwRb400p/IcNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4FD+AZS0NBe99dfKAAAAAElFTkSuQmCC"
           }
           className="rounded-lg mt-1 w-full  max-h-50 object-cover  mt-4"
@@ -73,12 +69,11 @@ export const PropertyContainer = () => {
         <div className="flex flex-col gap-1 w-full">
           <label className="mt-3 font-bold text-sm mb-1">Imagem</label>
           <input
-            className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
+            className="bg-slate-50 focus:bg-slate-100 text-sm p-2 w-full rounded-md py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200"
             placeholder="Imagem do menu (Link)"
             name="text"
-            value={imageValue}
+            value={information?.data.image}
             onChange={(event) => {
-              setImageValue(event.target.value);
               updateNodeData({
                 targetId: cardInfo.nodeId,
                 value: {
@@ -93,58 +88,69 @@ export const PropertyContainer = () => {
             <label className="mt-3 font-bold text-sm mb-1">
               Formato de saída
             </label>
-            <div className="flex flex-row gap-3 flex-wrap">
+            <ul className="flex flex-row gap-4 flex-wrap">
               {outputDocs?.map((item) => {
                 return (
-                  <div
-                    className={`p-2 ring-1 ring-slate-200 bg-slate-50 rounded-md max-w-fit ${
-                      selectedFormat === item.Name && "bg-blue-500"
+                  <li
+                    className={`ring-1 ring-slate-50 bg-slate-50 p-3 py-4 rounded-md max-w-fit cursor-pointer ${
+                      information?.data.documentOutput === item.Name &&
+                      "!bg-blue-500"
                     }`}
-                    key={item.Name}
-                    onClick={() => {
-                      updateNodeData({
-                        targetId: cardInfo.nodeId,
-                        value: {
-                          outputDocument: item.Name,
-                        },
-                      });
-                      setSelectedFormat(item.Name);
-                    }}
                   >
-                    <img src={item.Image} alt={item.Name} />
-                  </div>
+                    <input
+                      type="radio"
+                      id={item.Name}
+                      name={item.Name}
+                      value={item.Name}
+                      className="hidden peer"
+                      onChange={(event) => {
+                        updateNodeData({
+                          targetId: cardInfo.nodeId,
+                          value: {
+                            documentOutput: event.target.value,
+                          },
+                        });
+                      }}
+                      required
+                    />
+                    <label htmlFor={item.Name}>
+                      <img src={item.Image} alt={item.Name} />
+                    </label>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </div>
         )}
         <h1 className="text-black">{cardInfo.customInfo.enabled}</h1>
-        <label className="relative inline-flex items-center cursor-pointer mt-4">
-          <input
-            type="checkbox"
-            value={String(enabledValue)}
-            onChange={(event) => {
-              updateNodeData({
-                targetId: cardInfo.nodeId,
-                value: {
-                  enabled: event.target.checked,
-                },
-              });
-              setEnabledValue(event.target.checked);
-            }}
-            className="sr-only peer"
-          />
-          <div
-            className="w-11 h-6 rounded-full peer bg-blue-400 peer-checked:after:translate-x-full
+        {cardInfo.type !== "Welcome" && (
+          <label className="relative inline-flex items-center cursor-pointer mt-4">
+            <h1>{information?.data.enabled}</h1>
+            <input
+              type="checkbox"
+              checked={information?.data.enabled}
+              onChange={(event) => {
+                updateNodeData({
+                  targetId: cardInfo.nodeId,
+                  value: {
+                    enabled: event.target.checked,
+                  },
+                });
+              }}
+              className="sr-only peer"
+            />
+            <div
+              className="w-11 h-6 rounded-full peer bg-slate-100 peer-checked:after:translate-x-full
            rtl:peer-checked:after:-translate-x-full 
            peer-checked:after:border-white after:content-[''] 
            after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all 
-            peer-checked:bg-slate-200"
-          ></div>
-          <span className="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">
-            Publicar
-          </span>
-        </label>
+            peer-checked:bg-blue-400"
+            ></div>
+            <span className="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">
+              Publicar
+            </span>
+          </label>
+        )}
       </div>
     </div>
   );
