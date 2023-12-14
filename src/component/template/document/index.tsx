@@ -93,10 +93,10 @@ export const Document = ({ data, id, ...props }: Props) => {
             {prepareDocuments.map((item) => {
               return (
                 <optgroup key={item.label} label={item.label}>
-                  {item.options.map((item) => {
+                  {item.options.map((doc) => {
                     return (
-                      <option value={item.Id} key={item.Id}>
-                        {item.Name}
+                      <option value={doc.Id} key={doc.Id}>
+                        {doc.Name}
                       </option>
                     );
                   })}

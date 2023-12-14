@@ -76,6 +76,7 @@ export const TargetNodeItemMenuAction = (
                   value: {
                     title: event.target.value,
                     name: event.target.value,
+                    sequence: index,
                     index,
                   } as any,
                 });

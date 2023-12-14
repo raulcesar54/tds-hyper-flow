@@ -68,7 +68,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
       </div>
       <div className="flex flex-row gap-2 mt-4">
         <Button
-          label="adicionar"
+          label="Adicionar"
           onClick={() =>
             updateNodeData({
               targetId: id,

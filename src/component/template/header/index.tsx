@@ -1,4 +1,4 @@
-import { useFlow } from "../../../hooks/useFlow";
+import { FlowResponse, useFlow } from "../../../hooks/useFlow";
 import { Loading } from "../../../component/uiKit/loading";
 import logo from "../../../assets/logo.png";
 import { FaWhatsapp } from "react-icons/fa";
@@ -12,7 +12,7 @@ import { isEqual } from "lodash";
 export const Header = () => {
   const [saving, setSaving] = useState(false);
   const { data, loading } = useFlow();
-  const { data: info } = useBoard();
+  const { data: info, setNodes } = useBoard();
   const { zoom, x, y } = useViewport();
 
   const handleSaveData = async () => {
@@ -74,6 +74,12 @@ export const Header = () => {
         edges: [],
       };
       await api.put("ChatbotFlow/Save", prepareData);
+      const { data: nodes } = await api.get<FlowResponse>("ChatbotFlow/flow", {
+        params: {
+          id: data.chatBot.id,
+        },
+      });
+      setNodes(nodes.nodes);
     } catch (err) {
       alert("Tivemos um erro ao salvar o fluxo, entre em contato com suporte.");
     } finally {

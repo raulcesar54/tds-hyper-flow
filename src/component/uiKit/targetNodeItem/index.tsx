@@ -78,6 +78,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                   value: {
                     title: event.target.value,
                     name: event.target.value,
+                    sequence: String(index + 1),
                     index,
                   } as any,
                 });
@@ -105,6 +106,10 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           onConnect={(params) => {
             removeEdge(`source_${sourceNodeId}`);
             handleUpdateNodeData(String(params.target), value);
+            updateNodeData({
+              targetId: String(params.target),
+              value: { sequence: String(index + 1) },
+            });
             connectNode(params);
           }}
         />

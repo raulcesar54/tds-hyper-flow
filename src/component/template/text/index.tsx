@@ -12,7 +12,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const { handleSelectInfo } = useProperty();
   const { messages } = useFlow();
   const [value, setValue] = useState(data.message);
-  const { connectNode, removeEdge } = useBoard();
+  const { connectNode, removeEdge, updateNodeData } = useBoard();
 
   useEffect(() => {
     if (!data.targetNode) return;
@@ -40,7 +40,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
     });
   }, [props.selected]);
 
-  const prepareDocuments = useMemo(() => {
+  const prepareMessages = useMemo(() => {
     const doc = groupBy(messages, "Group");
     const info = Object.values(doc);
     const data = info.map((item) => ({
@@ -57,51 +57,65 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  w-[320px] flex flex-col rounded-lg bg-white`}
     >
-      <CardHeader
-        iconName="FiType"
-        title={data.title || "Mensagem"}
-        subtitle="Vincular Mensagem"
-      />
-      <div className="mt-4 flex flex-col">
-        {data.image && (
-          <img
-            src={data.image}
-            className="rounded-lg mt-1 w-full max-h-50 object-cover"
-            alt="image_step"
-          />
-        )}
-        <h1
-          dangerouslySetInnerHTML={{
-            __html: `${data.statusMessage.replace(
-              "{{username}}",
-              "<strong class='text-blue-400'>Nome do usúario</strong>"
-            )}`,
-          }}
-          className="max-w-[250px] mt-1 text-sm text-slate-800 "
+      <div
+        className={`mt-4 flex flex-col
+        ${!data.enabled && "opacity-30"}
+        `}
+      >
+        <CardHeader
+          iconName="FiType"
+          title={data.title || "Mensagem"}
+          subtitle="Vincular Mensagem"
         />
-        <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
-          Selecione a Mensagem
-        </label>
-        <div className="flex flex-row gap-3">
-          <select
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-            className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
-          >
-            {prepareDocuments.map((item) => {
-              return (
-                <optgroup key={item.label} label={item.label}>
-                  {item.options.map((item) => {
-                    return (
-                      <option value={item.Id} key={item.Id}>
-                        {item.Name}
-                      </option>
-                    );
-                  })}
-                </optgroup>
-              );
-            })}
-          </select>
+        <div className="mt-4 flex flex-col">
+          {data.image && (
+            <img
+              src={data.image}
+              className="rounded-lg mt-1 w-full max-h-50 object-cover"
+              alt="image_step"
+            />
+          )}
+          <h1
+            dangerouslySetInnerHTML={{
+              __html: `${data.statusMessage.replace(
+                "{{username}}",
+                "<strong class='text-blue-400'>Nome do usúario</strong>"
+              )}`,
+            }}
+            className="max-w-[250px] mt-1 text-sm text-slate-800 "
+          />
+          <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
+            Selecione a Mensagem
+          </label>
+          <div className="flex flex-row gap-3">
+            <select
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
+                updateNodeData({
+                  targetId: id,
+                  value: {
+                    message: event.target.value,
+                  },
+                });
+              }}
+              className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+            >
+              {prepareMessages.map((item) => {
+                return (
+                  <optgroup key={item.label} label={item.label}>
+                    {item.options.map((item) => {
+                      return (
+                        <option value={item.Id} key={item.Id}>
+                          {item.Name}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+                );
+              })}
+            </select>
+          </div>
         </div>
       </div>
       <HandleStyled
@@ -112,6 +126,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       <HandleStyled
         type="source"
         position={Position.Right}
+        id={`source_${id}`}
         onConnect={(params) => {
           removeEdge(`source_${id}`);
           connectNode(params);

@@ -73,6 +73,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                 handleUpdateNodeData={(target, value) => {
                   targetNodes[index].nodeId = target;
                   targetNodes[index].name = value;
+                  targetNodes[index].sequence = String(index + 1);
                   updateNodeData({ targetId: id, value: targetNodes });
                 }}
               />
@@ -82,7 +83,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       </div>
       <div className="flex flex-row gap-2 mt-4">
         <Button
-          label="adicionar"
+          label="Adicionar"
           onClick={() =>
             updateNodeData({
               targetId: id,

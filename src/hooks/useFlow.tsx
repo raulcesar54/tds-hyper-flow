@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 
-interface FlowResponse {
+export interface FlowResponse {
   chatBot: ChatBot;
   nodes: Node[];
   edges: Edge[];

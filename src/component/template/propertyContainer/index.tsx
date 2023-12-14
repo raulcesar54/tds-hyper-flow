@@ -4,21 +4,48 @@ import { CardHeader } from "../../uiKit/cardHeader";
 import { useBoard } from "../../../hooks/useBoard";
 import { useFlow, Node } from "../../../hooks/useFlow";
 import { api } from "../../../services";
-
+import { Loading } from "../../uiKit/loading";
+interface FilterResponse {
+  id: string;
+  name: string;
+  provider: string;
+  source: string;
+  tags: string[];
+  type: number;
+}
 export const PropertyContainer = () => {
   const { cardInfo } = useProperty();
   const { data } = useBoard();
   const { outputDocs } = useFlow();
   const [information, setInformation] = useState<Node | undefined>();
-
+  const [loading, setLoading] = useState(false);
   const { updateNodeData } = useBoard();
+  const [options, setOptions] = useState<FilterResponse[]>([]);
 
   const handleGetFilters = async () => {
-    // const data = await api.get(`/ChatbotFlow/Filters?Node=${cardInfo?.nodeId}`);
+    setLoading(true);
+    const prepareDoc = cardInfo?.type === "Document" ? "KPIDoc" : "KPIText";
+    const prepareId =
+      cardInfo?.type === "Document"
+        ? cardInfo?.customInfo.document
+        : cardInfo?.customInfo.message;
+    try {
+      const data = await api.get(
+        `/ChatbotFlow/Filters?Id=${prepareId}&Type=${prepareDoc}`
+      );
+      setOptions(data.data);
+    } catch (error) {
+      setOptions([]);
+    } finally {
+      setLoading(false);
+    }
   };
+
   useEffect(() => {
     if (!cardInfo?.nodeId) return;
-    handleGetFilters();
+    if (cardInfo.type === "Document" || cardInfo.type === "Message") {
+      handleGetFilters();
+    }
   }, [cardInfo]);
   useMemo(() => {
     const findNode = data?.find((item) => item.id === cardInfo?.nodeId);
@@ -122,7 +149,60 @@ export const PropertyContainer = () => {
             </ul>
           </div>
         )}
-        <h1 className="text-black">{cardInfo.customInfo.enabled}</h1>
+        {(cardInfo.type === "Document" || cardInfo.type === "Message") && (
+          <div className="flex flex-col">
+            <label className="mt-3 font-bold text-sm mb-1">Filtros</label>
+            {loading ? (
+              <div className="flex flex-row gap-2 items-center">
+                <Loading /> <small>Carregando Filtrors...</small>
+              </div>
+            ) : options.length ? (
+              <div className="flex flex-col gap-2">
+                <select
+                  placeholder="Filtro 1"
+                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+                >
+                  <option selected disabled>
+                    Selecione um filtro
+                  </option>
+                  {options.map((item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  placeholder="Filtro 2"
+                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+                >
+                  <option selected disabled>
+                    Selecione um filtro
+                  </option>
+                  {options.map((item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  placeholder="Filtro 3"
+                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+                >
+                  <option selected disabled>
+                    Selecione um filtro
+                  </option>
+                  {options.map((item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : (
+              <small className="text-slate-400">Sem Filtros Relacionados</small>
+            )}
+          </div>
+        )}
         {cardInfo.type !== "Welcome" && (
           <label className="relative inline-flex items-center cursor-pointer mt-4">
             <h1>{information?.data.enabled}</h1>
