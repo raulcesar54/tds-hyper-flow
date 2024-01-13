@@ -52,7 +52,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       )}
       <h1
         dangerouslySetInnerHTML={{
-          __html: `${data.statusMessage.replace(
+          __html: `${data?.statusMessage?.replace(
             "{{username}}",
             "<strong class='text-blue-400'>Nome do usúario</strong>"
           )}`,

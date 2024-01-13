@@ -39,7 +39,7 @@ export const Header = () => {
           image: data.data.image || "",
           targetNode: data.data.targetNode || [],
           filterNode: data.data.filterNode || [],
-          enabled: true,
+          enabled: data.enabled,
         },
         width: data.width,
         height: data.height,

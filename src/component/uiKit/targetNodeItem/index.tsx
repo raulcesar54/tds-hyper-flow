@@ -69,7 +69,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               onChange={(event) => {
                 setValue(event.target.value);
                 data.targetNode[index] = {
-                  ...data.targetNode[index],
+                  ...data?.targetNode?.[index],
                   name: event.target.value,
                 };
 

@@ -31,15 +31,21 @@ export default function Main() {
   const reactFlowWrapper: any = useRef(null);
   const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-  const { data, onNodesChange, removeEdges, onEdgesChange, edges, addNode } =
-    useBoard();
+  const {
+    data,
+    onNodesChange,
+    handleNodeChange,
+    removeEdges,
+    onEdgesChange,
+    edges,
+    addNode,
+  } = useBoard();
   const panOnDrag = [1, 2];
 
   const onDragOver = useCallback((event: any) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
-
   const onDrop = useCallback(
     (event: any) => {
       event.preventDefault();

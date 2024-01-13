@@ -54,7 +54,7 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
       )}
       <h1
         dangerouslySetInnerHTML={{
-          __html: `${data.statusMessage.replace(
+          __html: `${data?.statusMessage?.replace(
             "{{username}}",
             "<strong class='text-blue-400'>Nome do usúario</strong>"
           )}`,

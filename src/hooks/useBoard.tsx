@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect } from "react";
 import {
   Connection,
   Edge,
+  NodeChange,
   addEdge,
   useEdgesState,
   useNodesState,
@@ -29,6 +30,7 @@ interface contextBoardProps {
   setNodes: (data: any) => void;
   updateNodeData: <T>(params: updateNodeData<T>) => void;
   onEdgesChange: any;
+  handleNodeChange: (node: any) => void;
   edges: any;
   onNodesChange: any;
 }
@@ -70,7 +72,9 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     },
     [setEdges]
   );
-
+  function handleNodeChange(node: any) {
+    console.log(node);
+  }
   function updateNodeData<T>({ targetId, value }: updateNodeData<T>) {
     setNodes((nodes) =>
       nodes.map((node) => {
@@ -144,6 +148,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         edges,
         updateNodeData,
         onEdgesChange,
+        handleNodeChange,
       }}
     >
       {children}

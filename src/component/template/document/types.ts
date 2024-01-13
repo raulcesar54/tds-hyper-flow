@@ -4,6 +4,7 @@ interface RootObject {
   statusMessage: string;
   title: string;
   message: string;
+  document: string;
   image: string;
   documentOutput: string;
   targetNode: TargetNode[];

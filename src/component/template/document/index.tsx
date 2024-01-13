@@ -12,8 +12,7 @@ export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
   const { documents } = useFlow();
   const { connectNode, removeEdge, updateNodeData } = useBoard();
-  const [value, setValue] = useState(data.message);
-
+  const [value, setValue] = useState(data.document);
   const prepareDocuments = useMemo(() => {
     const doc = groupBy(documents, "Group");
     const info = Object.values(doc);
@@ -66,7 +65,7 @@ export const Document = ({ data, id, ...props }: Props) => {
         )}
         <h1
           dangerouslySetInnerHTML={{
-            __html: `${data.statusMessage.replace(
+            __html: `${data?.statusMessage?.replace(
               "{{username}}",
               "<strong class='text-blue-400'>Nome do usúario</strong>"
             )}`,
