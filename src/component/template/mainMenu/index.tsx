@@ -20,6 +20,12 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
   }, [data]);
 
   useEffect(() => {
+    updateNodeData({
+      targetId: id,
+      value: {
+        statusMessage: "Vincule ações aos items",
+      },
+    });
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
@@ -42,7 +48,6 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       }  flex flex-col rounded-md shadow-sm w-[300px] bg-white`}
     >
       <CardHeader iconName="FiHome" title={"Menu"} subtitle="Menu" />
-
       {data.image && (
         <img
           src={data.image}

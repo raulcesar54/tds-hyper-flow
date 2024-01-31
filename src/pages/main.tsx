@@ -17,12 +17,9 @@ import { useFlow } from "../hooks/useFlow";
 const nodeTypes = {
   Welcome,
   Action,
-
   StartMenu: MainMenu,
-
   MenuItem: MainMenu,
   ActionMenu,
-
   KPIDoc: Document,
   KPIText: Text,
 };
@@ -31,15 +28,8 @@ export default function Main() {
   const reactFlowWrapper: any = useRef(null);
   const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-  const {
-    data,
-    onNodesChange,
-    handleNodeChange,
-    removeEdges,
-    onEdgesChange,
-    edges,
-    addNode,
-  } = useBoard();
+  const { data, onNodesChange, removeEdges, onEdgesChange, edges, addNode } =
+    useBoard();
   const panOnDrag = [1, 2];
 
   const onDragOver = useCallback((event: any) => {
@@ -71,6 +61,7 @@ export default function Main() {
     });
   }
   const onConnect = useCallback((connection: any) => {}, []);
+
   useEffect(() => {
     if (!flowData) handleGetInformation();
   }, []);

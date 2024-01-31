@@ -19,47 +19,49 @@ export const Header = () => {
     setSaving(true);
     try {
       if (!data?.nodes) return;
+      const prepareNodes = info.map((information, index) => {
+        return {
+          id: information.id,
+          type: information.type,
+          chatbot: information.chatbot,
+          parent: information.parent || "00000000-0000-0000-0000-000000000000",
+          position: {
+            ...information.position,
+          },
+          data: {
+            sequence: String(index + 1),
+            name: information.data.name,
+            statusMessage: information.data.statusMessage,
+            document:
+              information.data.document ||
+              "00000000-0000-0000-0000-000000000000",
+            documentOutput: information.data.documentOutput || "PDF",
+            message:
+              information.data.message ||
+              "00000000-0000-0000-0000-000000000000",
+            image: information.data.image || "",
+            targetNode: information.data.targetNode || [],
+            filterNode: information.data.filterNode || [],
+            enabled: information.data.enabled,
+          },
+          width: information.width,
+          height: information.height,
+          selected: false,
+          positionAbsolute: {
+            ...information.position,
+          },
+          dragging: true,
+        };
+      });
 
-      const prepareNodes = info.map((data: any) => ({
-        id: data.id,
-        type: data.type,
-        chatbot: data.chatbot,
-        parent: "00000000-0000-0000-0000-000000000000",
-        position: {
-          ...data.position,
-        },
-        data: {
-          sequence: data.data.sequence,
-          name: data.data.name,
-          statusMessage: data.data.statusMessage,
-          document:
-            data.data.document || "00000000-0000-0000-0000-000000000000",
-          documentOutput: data.data.documentOutput || "",
-          message: data.data.message || "00000000-0000-0000-0000-000000000000",
-          image: data.data.image || "",
-          targetNode: data.data.targetNode || [],
-          filterNode: data.data.filterNode || [],
-          enabled: data.enabled,
-        },
-        width: data.width,
-        height: data.height,
-        selected: false,
-        positionAbsolute: {
-          ...data.position,
-        },
-        dragging: true,
-      }));
       const prepareData = {
         chatBot: {
-          ...data.chatBot,
-          actions: [
-            {
-              id: "string",
-              type: 0,
-              key: "string",
-              value: "string",
-            },
-          ],
+          id: data.chatBot.id,
+          name: data.chatBot.name,
+          enabled: data.chatBot.enabled,
+          type: data.chatBot.type,
+          description: data.chatBot.description,
+          actions: data.chatBot.Actions,
           zoom,
           position: {
             x,

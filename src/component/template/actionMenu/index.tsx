@@ -19,6 +19,12 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
     setTargetNode(data.targetNode);
   }, [data]);
   useEffect(() => {
+    updateNodeData({
+      targetId: id,
+      value: {
+        statusMessage: "Vincule ações aos items",
+      },
+    });
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 

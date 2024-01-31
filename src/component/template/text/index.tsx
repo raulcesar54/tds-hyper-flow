@@ -25,7 +25,26 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       });
     });
   }, []);
+
   useEffect(() => {
+    if (data.targetNode.length) {
+      data.targetNode.map((targetNode) => {
+        return connectNode({
+          source: String(id),
+          sourceHandle: `source_${id}`,
+          target: String(targetNode.nodeId),
+          targetHandle: `target_${targetNode.nodeId}`,
+        });
+      });
+    }
+  }, [data.targetNode]);
+  useEffect(() => {
+    updateNodeData({
+      targetId: id,
+      value: {
+        statusMessage: "Selecione uma das opcões para analisar",
+      },
+    });
     if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
@@ -101,6 +120,9 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
               }}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
             >
+              <option value="" selected disabled hidden>
+                Escolha um relatório
+              </option>
               {prepareMessages.map((item) => {
                 return (
                   <optgroup key={item.label} label={item.label}>

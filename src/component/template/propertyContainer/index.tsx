@@ -15,11 +15,10 @@ interface FilterResponse {
 }
 export const PropertyContainer = () => {
   const { cardInfo } = useProperty();
-  const { data } = useBoard();
+  const { data, updateNodeData } = useBoard();
   const { outputDocs } = useFlow();
   const [information, setInformation] = useState<Node | undefined>();
   const [loading, setLoading] = useState(false);
-  const { updateNodeData } = useBoard();
   const [options, setOptions] = useState<FilterResponse[]>([]);
 
   const handleGetFilters = async () => {
@@ -46,7 +45,7 @@ export const PropertyContainer = () => {
     if (cardInfo.type === "Document" || cardInfo.type === "Message") {
       handleGetFilters();
     }
-  }, [cardInfo]);
+  }, [cardInfo, data]);
   useMemo(() => {
     const findNode = data?.find((item) => item.id === cardInfo?.nodeId);
     setInformation(findNode);
