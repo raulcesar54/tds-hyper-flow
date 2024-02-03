@@ -22,7 +22,8 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
     updateNodeData({
       targetId: id,
       value: {
-        statusMessage: "Vincule ações aos items",
+        statusMessage:
+          data.statusMessage || " Selecione uma das opções para analisar",
       },
     });
     if (!props.selected) handleSelectInfo(null);
@@ -42,9 +43,9 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
   return (
     <div
       onClick={handleClick}
-      className={`p-4 border-2 ${
+      className={`border-2 p-4 ${
         props.selected ? "border-blue-400" : ""
-      }  flex flex-col rounded-md shadow-sm w-[300px] bg-white`}
+      }  flex w-[300px] flex-col rounded-md bg-white shadow-sm`}
     >
       <div className={`mt-4 flex flex-col   ${!data.enabled && "opacity-30"}`}>
         <CardHeader
@@ -55,7 +56,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
         {data.image && (
           <img
             src={data.image}
-            className="rounded-lg w-full max-h-50 object-cover mt-4"
+            className="max-h-50 mt-4 w-full rounded-lg object-cover"
             alt="image_step"
           />
         )}
@@ -66,7 +67,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
               "<strong class='text-blue-400'>Nome do usúario</strong>"
             )}`,
           }}
-          className="max-w-[250px] mt-1 text-sm text-slate-800 "
+          className="mt-1 max-w-[250px] text-sm text-slate-800 "
         />
         <div className="mt-4 flex flex-col">
           {targetNodes.map((item, index) => {
@@ -89,7 +90,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
             );
           })}
         </div>
-        <div className="flex flex-row gap-2 mt-4">
+        <div className="mt-4 flex flex-row gap-2">
           <Button
             label="Adicionar"
             onClick={() =>

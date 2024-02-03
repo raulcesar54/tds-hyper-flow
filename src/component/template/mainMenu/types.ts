@@ -10,6 +10,7 @@ interface RootObject {
   filterNode: any[];
   enabled: boolean;
   selected: boolean;
+  title: string;
 }
 export interface TargetNode {
   handleId?: string;

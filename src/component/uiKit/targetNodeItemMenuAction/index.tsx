@@ -4,15 +4,7 @@ import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { useFlow } from "../../../hooks/useFlow";
-
-interface TargetNodeItemMenuActionProps {
-  sourceNodeId?: string;
-  id?: string;
-  index: number;
-  name: string;
-  data?: any;
-  handleUpdateNodeData: (targetId: string, value: string) => void;
-}
+import { TargetNodeItemMenuActionProps } from "./types";
 
 export const TargetNodeItemMenuAction = (
   props: TargetNodeItemMenuActionProps
@@ -21,6 +13,7 @@ export const TargetNodeItemMenuAction = (
   const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData } = useBoard();
   const { data: flowData } = useFlow();
+  const [newName, setNewName] = useState(name);
 
   useEffect(() => {
     connectNode({
@@ -54,7 +47,7 @@ export const TargetNodeItemMenuAction = (
       },
     });
   };
-
+  console.log({ newName });
   return (
     <>
       <div className="flex flex-row items-center gap-2 justify-between">
@@ -67,10 +60,11 @@ export const TargetNodeItemMenuAction = (
           </label>
           <div className="flex gap-4">
             <select
-              value={name}
+              value={newName}
               onChange={(event) => {
                 event.stopPropagation();
                 setValue(event.target.value);
+                setNewName(event.target.value);
                 updateNodeData<{ title: string | null; index: number }>({
                   targetId: String(sourceNodeId),
                   value: {
@@ -83,6 +77,9 @@ export const TargetNodeItemMenuAction = (
               }}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
             >
+              <option value="" selected disabled hidden>
+                Escolha uma ação
+              </option>
               {flowData?.chatBot.Actions.map((item) => {
                 return (
                   <option value={String(item?.Value)} key={item.Id}>

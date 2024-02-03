@@ -6,7 +6,7 @@ export const ToolboxContainer = styled.div`
   left: 0;
   height: 100%;
   width: 100px;
-  padding: 24px 8px;
+  padding: 36px 14px;
   align-items: center;
   display: flex;
   z-index: 1000;

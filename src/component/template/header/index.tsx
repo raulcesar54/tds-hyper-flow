@@ -93,7 +93,6 @@ export const Header = () => {
   }, [data, info]);
   return (
     <div className="absolute flex flex-row z-50 bg-white left-4 top-4 gap-4 items-center shadow-md rounded-md pl-6 overflow-hidden">
-      <img className="my-4" src={logo} alt="logo hyper reports" width={80} />
       {loading && <Loading />}
       {!loading && (
         <>
@@ -105,6 +104,7 @@ export const Header = () => {
       )}
       <div className="flex flex-row gap-4 h-full border-l-2 pl-4">
         <FaWhatsapp
+          size={18}
           className={`text-blue-100  ${
             (data?.chatBot.type === "WhatsApp" ||
               data?.chatBot.type === "Both") &&
@@ -112,6 +112,7 @@ export const Header = () => {
           }`}
         />
         <LiaTelegramPlane
+          size={18}
           className={`text-blue-100   ${
             (data?.chatBot.type === "Telegram" ||
               data?.chatBot.type === "Both") &&

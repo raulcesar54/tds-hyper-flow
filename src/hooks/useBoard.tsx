@@ -41,7 +41,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   const { data, loading } = useFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
-
   useEffect(() => {
     if (!data?.nodes) return;
     if (!data?.edges) return;
@@ -92,10 +91,12 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     );
   }
   function addNode({ position, type }: nodeType) {
+    const uuidGenerated = v4();
+    const chatbot = chatBotId.replace("?id=", "");
     const newNode = {
-      id: v4(),
+      id: uuidGenerated,
       type,
-      chatbot: chatBotId.replace("?id=", ""),
+      chatbot,
       parent: "",
       data: {
         sequence: "",
@@ -116,6 +117,117 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       dragging: false,
       position,
     };
+    if (type === "KPIDoc" || type === "KPIText") {
+      const actionMenu = v4();
+      const backwardMenu = v4();
+      const mainMenu = v4();
+
+      const preparedSubItems = [
+        {
+          ...newNode,
+          data: {
+            ...newNode.data,
+            targetNode: [{ nodeId: actionMenu, name: "", sequence: "1" }],
+          },
+        },
+        {
+          id: backwardMenu,
+          type: "Action",
+          chatbot,
+          parent: "",
+          data: {
+            sequence: 0,
+            name: "Menu Anterior",
+            title: "Menu Anterior",
+            statusMessage: "",
+            document: "",
+            documentOutput: "",
+            message: "",
+            image: "",
+            targetNode: [],
+            filterNode: [],
+            enabled: true,
+          },
+          width: 320,
+          height: 100,
+          selected: false,
+          dragging: false,
+          position: {
+            x: position.x + 700,
+            y: position.y,
+          },
+        },
+        {
+          id: mainMenu,
+          type: "Action",
+          chatbot,
+          parent: "",
+          data: {
+            sequence: 1,
+            name: "Menu Principal",
+            title: "Menu Principal",
+            statusMessage: "",
+            document: "",
+            documentOutput: "",
+            message: "",
+            image: "",
+            targetNode: [],
+            filterNode: [],
+            enabled: true,
+          },
+          width: 320,
+          height: 100,
+          selected: false,
+          dragging: false,
+          position: {
+            x: position.x + 700,
+            y: position.y + 150,
+          },
+        },
+        {
+          id: actionMenu,
+          type: "ActionMenu",
+          chatbot,
+          parent: "",
+          data: {
+            sequence: "",
+            name: "",
+            title: "",
+            statusMessage: "Selecione uma das opções para analisar",
+            document: "",
+            documentOutput: "",
+            message: "",
+            image: "",
+            targetNode: [
+              {
+                nodeId: backwardMenu,
+                name: "Menu Anterior",
+                sequence: "1",
+              },
+              {
+                nodeId: mainMenu,
+                name: "Menu Principal",
+                sequence: "2",
+              },
+            ],
+            filterNode: [],
+            enabled: true,
+          },
+          width: 300,
+          height: 374,
+          selected: false,
+          dragging: false,
+          position: {
+            x: position.x + 360,
+            y: position.y - 100,
+          },
+        },
+      ];
+
+      setNodes((lastValue: any) => [...lastValue, ...preparedSubItems]);
+      return;
+    }
+
     setNodes((lastValue: any) => [...lastValue, newNode]);
   }
   function removeEdges(sourceId: string, targetId: string) {

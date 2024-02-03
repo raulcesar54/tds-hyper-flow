@@ -158,6 +158,24 @@ export const PropertyContainer = () => {
             ) : options.length ? (
               <div className="flex flex-col gap-2">
                 <select
+                  onChange={(event) => {
+                    const item = options.find(
+                      (item) => item.id === event.target.value
+                    );
+                    if (!item) return;
+                    updateNodeData({
+                      targetId: cardInfo.nodeId,
+                      value: {
+                        filterNode: [
+                          {
+                            id: item.id,
+                            name: item.name,
+                            type: item?.type,
+                          },
+                        ],
+                      },
+                    });
+                  }}
                   placeholder="Filtro 1"
                   className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
                 >
@@ -173,6 +191,24 @@ export const PropertyContainer = () => {
                 <select
                   placeholder="Filtro 2"
                   className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+                  onChange={(event) => {
+                    const item = options.find(
+                      (item) => item.id === event.target.value
+                    );
+                    if (!item) return;
+                    updateNodeData({
+                      targetId: cardInfo.nodeId,
+                      value: {
+                        filterNode: [
+                          {
+                            id: item.id,
+                            name: item.name,
+                            type: item?.type,
+                          },
+                        ],
+                      },
+                    });
+                  }}
                 >
                   <option selected disabled>
                     Selecione um filtro
@@ -186,6 +222,24 @@ export const PropertyContainer = () => {
                 <select
                   placeholder="Filtro 3"
                   className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+                  onChange={(event) => {
+                    const item = options.find(
+                      (item) => item.id === event.target.value
+                    );
+                    if (!item) return;
+                    updateNodeData({
+                      targetId: cardInfo.nodeId,
+                      value: {
+                        filterNode: [
+                          {
+                            id: item.id,
+                            name: item.name,
+                            type: item?.type,
+                          },
+                        ],
+                      },
+                    });
+                  }}
                 >
                   <option selected disabled>
                     Selecione um filtro

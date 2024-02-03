@@ -16,7 +16,7 @@ export const CardHeader = (props: CardHeaderProps) => {
       className="flex items-center flex-row text-lg font-bold gap-3 w-full "
     >
       <div className="p-3 ring-1 ring-slate-100 bg-slate-50 rounded-lg">
-        <Icons size={16} />
+        <Icons size={18} />
       </div>
       <div className="flex flex-col ">
         {title}

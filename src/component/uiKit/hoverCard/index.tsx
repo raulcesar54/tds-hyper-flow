@@ -12,10 +12,10 @@ export const HoverCard = (props: HoverCardProps) => {
         {props.children}
       </HoverCardPrimitive.Trigger>
       <HoverCardPrimitive.Content
-        sideOffset={8}
-        className={
-          "p-4 bg-white border-2 border-slate-100 "
-        }
+        sideOffset={16}
+        align="start"
+        side="left"
+        className={"p-4 bg-white border-2 border-slate-100 "}
       >
         <HoverCardPrimitive.Arrow className="fill-current text-slate-100" />
 

@@ -38,6 +38,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       });
     }
   }, [data.targetNode]);
+
   useEffect(() => {
     updateNodeData({
       targetId: id,
@@ -58,7 +59,6 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       customInfo: data,
     });
   }, [props.selected]);
-
   const prepareMessages = useMemo(() => {
     const doc = groupBy(messages, "Group");
     const info = Object.values(doc);
@@ -72,9 +72,9 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   return (
     <div
       onClick={handleClick}
-      className={`p-4 border-2 ${
+      className={`border-2 p-4 ${
         props.selected ? "border-blue-400" : "border-[#eee] "
-      }  w-[320px] flex flex-col rounded-lg bg-white`}
+      }  flex w-[320px] flex-col rounded-lg bg-white`}
     >
       <div
         className={`mt-4 flex flex-col
@@ -82,7 +82,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         `}
       >
         <CardHeader
-          iconName="FiType"
+          iconName="FiMail"
           title={data.title || "Mensagem"}
           subtitle="Vincular Mensagem"
         />
@@ -90,7 +90,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
           {data.image && (
             <img
               src={data.image}
-              className="rounded-lg mt-1 w-full max-h-50 object-cover"
+              className="max-h-50 mt-1 w-full rounded-lg object-cover"
               alt="image_step"
             />
           )}
@@ -101,9 +101,9 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
                 "<strong class='text-blue-400'>Nome do usúario</strong>"
               )}`,
             }}
-            className="max-w-[250px] mt-1 text-sm text-slate-800 "
+            className="mt-1 max-w-[250px] text-sm text-slate-800 "
           />
-          <label className="mt-3 font-bold text-sm mb-1" htmlFor="text">
+          <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
             Selecione a Mensagem
           </label>
           <div className="flex flex-row gap-3">
@@ -118,7 +118,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
                   },
                 });
               }}
-              className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
+              className="w-full bg-slate-50 p-2 py-3 text-sm placeholder:px-2 placeholder:text-sm focus:bg-slate-100 disabled:bg-slate-200"
             >
               <option value="" selected disabled hidden>
                 Escolha um relatório

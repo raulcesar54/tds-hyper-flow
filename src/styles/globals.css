@@ -13,3 +13,6 @@ body {
   background-color: #fff;
 }
 
+.react-flow__panel.react-flow__attribution.bottom.right {
+  display: none !important;
+}

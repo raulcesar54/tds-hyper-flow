@@ -50,10 +50,9 @@ export default function Main() {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-
       addNode({ position, type });
     },
-    [reactFlowInstance]
+    [reactFlowInstance],
   );
   function onRemoveEdge(data: any) {
     data.map((item: any) => {
@@ -104,7 +103,7 @@ export default function Main() {
         >
           <ZoomControl
             position="bottom-right"
-            className="flex flex-row px-3  !shadow-md bg-white rounded-md"
+            className="flex flex-row rounded-md  bg-white px-3 !shadow-md"
           />
           <Background style={{ backgroundColor: "#f2f2f2" }} />
         </ReactFlow>

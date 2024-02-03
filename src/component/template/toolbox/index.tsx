@@ -1,5 +1,12 @@
 import { HoverCard } from "../../../component/uiKit/hoverCard";
-import { FiCpu, FiFileText, FiHome, FiShuffle, FiType } from "react-icons/fi";
+import {
+  FiCpu,
+  FiFileText,
+  FiHome,
+  FiMail,
+  FiShuffle,
+  FiType,
+} from "react-icons/fi";
 
 export const Toolbox = () => {
   const onDragStart = (event: any, nodeType: any) => {
@@ -8,23 +15,14 @@ export const Toolbox = () => {
   };
 
   return (
-    <div className="absolute z-50 bg-white left-4 top-[35%] overflow-hidden flex flex-col items-center shadow-md rounded-md py-2">
+    <div className="absolute z-50 bg-white left-4 top-[35%] overflow-hidden flex flex-col gap-2 items-center shadow-md rounded-md p-2 py-4">
       <HoverCard title="Documento">
         <button
           onDragStart={(event) => onDragStart(event, "KPIDoc")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
-          <FiFileText />
-        </button>
-      </HoverCard>
-      <HoverCard title="Ação">
-        <button
-          onDragStart={(event) => onDragStart(event, "Action")}
-          draggable
-          className="b-none p-4 hover:bg-slate-50"
-        >
-          <FiCpu />
+          <FiFileText size={18} />
         </button>
       </HoverCard>
       <HoverCard title="Mensagem">
@@ -33,16 +31,18 @@ export const Toolbox = () => {
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
-          <FiType />
+          <FiMail size={18} />
         </button>
       </HoverCard>
-      <HoverCard title="Ações">
+
+      <hr className="h-px px-5 max-w-md  w-full opacity-50" />
+      <HoverCard title="Menu de Ações">
         <button
           onDragStart={(event) => onDragStart(event, "ActionMenu")}
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
-          <FiShuffle />
+          <FiShuffle size={18} />
         </button>
       </HoverCard>
       <HoverCard title="Menu">
@@ -51,7 +51,17 @@ export const Toolbox = () => {
           draggable
           className="b-none p-4 hover:bg-slate-50"
         >
-          <FiHome />
+          <FiHome size={18} />
+        </button>
+      </HoverCard>
+      <hr className="h-px px-5 max-w-md  w-full opacity-50" />
+      <HoverCard title="Ação">
+        <button
+          onDragStart={(event) => onDragStart(event, "Action")}
+          draggable
+          className="b-none p-4 hover:bg-slate-50"
+        >
+          <FiCpu size={18} />
         </button>
       </HoverCard>
     </div>
