@@ -3,6 +3,8 @@ interface CardHeaderProps {
   iconName: string;
   title: string;
   subtitle: string;
+  showCloseIcon?: boolean;
+  handleCloseIcon?: () => void;
 }
 
 export const CardHeader = (props: CardHeaderProps) => {
@@ -22,6 +24,14 @@ export const CardHeader = (props: CardHeaderProps) => {
         {title}
         <small className="mt-[-4px] text-sm font-light">{subtitle}</small>
       </div>
+      {props.showCloseIcon && (
+        <div
+          className="p-3 ring-1 ring-slate-100 bg-slate-50 rounded-lg ml-auto cursor-pointer"
+          onClick={props.handleCloseIcon}
+        >
+          {props.showCloseIcon && <icon.FiX />}
+        </div>
+      )}
     </label>
   );
 };

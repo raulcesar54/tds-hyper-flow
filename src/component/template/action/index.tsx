@@ -19,9 +19,9 @@ export const Action = ({ data, id, ...props }: Props) => {
     });
   }, [props.selected, data]);
 
-  useEffect(() => {
-    if (!props.selected) handleSelectInfo(null);
-  }, [props.selected]);
+  // useEffect(() => {
+  //   if (!props.selected) handleSelectInfo(null);
+  // }, [props.selected]);
 
   return (
     <div
@@ -30,7 +30,7 @@ export const Action = ({ data, id, ...props }: Props) => {
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  w-[320px] flex flex-col rounded-lg bg-white`}
     >
-      <div className={`mt-4 flex flex-col   ${!data.enabled && "opacity-30"}`}>
+      <div className={`flex flex-col   ${!data.enabled && "opacity-30"}`}>
         <CardHeader
           iconName="FiCpu"
           subtitle="Ação"
@@ -43,15 +43,17 @@ export const Action = ({ data, id, ...props }: Props) => {
             alt="image_step"
           />
         )}
-        <h1
-          dangerouslySetInnerHTML={{
-            __html: `${data?.statusMessage?.replace(
-              "{{username}}",
-              "<strong class='text-blue-400'>Nome do usúario</strong>"
-            )}`,
-          }}
-          className="max-w-[250px] mt-1 text-sm text-slate-800 "
-        />
+        {data?.statusMessage && (
+          <h1
+            dangerouslySetInnerHTML={{
+              __html: `${data?.statusMessage?.replace(
+                "{{username}}",
+                "<strong class='text-blue-400'>Nome do usúario</strong>"
+              )}`,
+            }}
+            className="max-w-[250px] mt-1 text-sm text-slate-800 "
+          />
+        )}
         <HandleStyled
           type="target"
           position={Position.Left}

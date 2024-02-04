@@ -1,55 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useProperty } from "../../../hooks/useProperty";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { useBoard } from "../../../hooks/useBoard";
-import { useFlow, Node } from "../../../hooks/useFlow";
-import { api } from "../../../services";
-import { Loading } from "../../uiKit/loading";
-interface FilterResponse {
-  id: string;
-  name: string;
-  provider: string;
-  source: string;
-  tags: string[];
-  type: number;
-}
+import { Node } from "../../../hooks/useFlow";
+import { OutputDoc } from "../../uiKit/outputDoc";
+
 export const PropertyContainer = () => {
-  const { cardInfo } = useProperty();
+  const { cardInfo, handleSelectInfo } = useProperty();
   const { data, updateNodeData } = useBoard();
-  const { outputDocs } = useFlow();
   const [information, setInformation] = useState<Node | undefined>();
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<FilterResponse[]>([]);
 
-  const handleGetFilters = async () => {
-    setLoading(true);
-    const prepareDoc = cardInfo?.type === "Document" ? "KPIDoc" : "KPIText";
-    const prepareId =
-      cardInfo?.type === "Document"
-        ? cardInfo?.customInfo.document
-        : cardInfo?.customInfo.message;
-    try {
-      const data = await api.get(
-        `/ChatbotFlow/Filters?Id=${prepareId}&Type=${prepareDoc}`
-      );
-      setOptions(data.data);
-    } catch (error) {
-      setOptions([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!cardInfo?.nodeId) return;
-    if (cardInfo.type === "Document" || cardInfo.type === "Message") {
-      handleGetFilters();
-    }
-  }, [cardInfo, data]);
   useMemo(() => {
     const findNode = data?.find((item) => item.id === cardInfo?.nodeId);
     setInformation(findNode);
-  }, [data, cardInfo]);
+  }, [cardInfo, data]);
 
   if (!cardInfo) {
     return <></>;
@@ -61,10 +25,12 @@ export const PropertyContainer = () => {
         iconName={cardInfo.icon}
         subtitle={cardInfo.description}
         title={cardInfo.label}
+        showCloseIcon
+        handleCloseIcon={() => handleSelectInfo(null)}
       />
       <div className="flex flex-col gap-0 w-full mt-2">
         <div className="flex flex-col gap-1 w-full">
-          <label className="mt-3 font-bold text-sm  w-full text-left">
+          <label className="mt-3 font-bold text-sm  w-full text-left ">
             Mensagem de status
           </label>
           <textarea
@@ -109,153 +75,7 @@ export const PropertyContainer = () => {
             }}
           />
         </div>
-        {cardInfo.type === "Document" && (
-          <div className="flex flex-col gap-1 w-full">
-            <label className="mt-3 font-bold text-sm mb-1">
-              Formato de saída
-            </label>
-            <ul className="flex flex-row gap-4 flex-wrap">
-              {outputDocs?.map((item) => {
-                return (
-                  <li
-                    className={`ring-1 ring-slate-50 bg-slate-50 p-3 py-4 rounded-md max-w-fit cursor-pointer ${
-                      information?.data.documentOutput === item.Name &&
-                      "!bg-blue-500"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      id={item.Name}
-                      name={item.Name}
-                      value={item.Name}
-                      className="hidden peer"
-                      onChange={(event) => {
-                        updateNodeData({
-                          targetId: cardInfo.nodeId,
-                          value: {
-                            documentOutput: event.target.value,
-                          },
-                        });
-                      }}
-                      required
-                    />
-                    <label htmlFor={item.Name}>
-                      <img src={item.Image} alt={item.Name} />
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-        {(cardInfo.type === "Document" || cardInfo.type === "Message") && (
-          <div className="flex flex-col">
-            <label className="mt-3 font-bold text-sm mb-1">Filtros</label>
-            {loading ? (
-              <div className="flex flex-row gap-2 items-center">
-                <Loading /> <small>Carregando Filtrors...</small>
-              </div>
-            ) : options.length ? (
-              <div className="flex flex-col gap-2">
-                <select
-                  onChange={(event) => {
-                    const item = options.find(
-                      (item) => item.id === event.target.value
-                    );
-                    if (!item) return;
-                    updateNodeData({
-                      targetId: cardInfo.nodeId,
-                      value: {
-                        filterNode: [
-                          {
-                            id: item.id,
-                            name: item.name,
-                            type: item?.type,
-                          },
-                        ],
-                      },
-                    });
-                  }}
-                  placeholder="Filtro 1"
-                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
-                >
-                  <option selected disabled>
-                    Selecione um filtro
-                  </option>
-                  {options.map((item) => (
-                    <option value={item.id} key={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  placeholder="Filtro 2"
-                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
-                  onChange={(event) => {
-                    const item = options.find(
-                      (item) => item.id === event.target.value
-                    );
-                    if (!item) return;
-                    updateNodeData({
-                      targetId: cardInfo.nodeId,
-                      value: {
-                        filterNode: [
-                          {
-                            id: item.id,
-                            name: item.name,
-                            type: item?.type,
-                          },
-                        ],
-                      },
-                    });
-                  }}
-                >
-                  <option selected disabled>
-                    Selecione um filtro
-                  </option>
-                  {options.map((item) => (
-                    <option value={item.id} key={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  placeholder="Filtro 3"
-                  className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
-                  onChange={(event) => {
-                    const item = options.find(
-                      (item) => item.id === event.target.value
-                    );
-                    if (!item) return;
-                    updateNodeData({
-                      targetId: cardInfo.nodeId,
-                      value: {
-                        filterNode: [
-                          {
-                            id: item.id,
-                            name: item.name,
-                            type: item?.type,
-                          },
-                        ],
-                      },
-                    });
-                  }}
-                >
-                  <option selected disabled>
-                    Selecione um filtro
-                  </option>
-                  {options.map((item) => (
-                    <option value={item.id} key={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ) : (
-              <small className="text-slate-400">Sem Filtros Relacionados</small>
-            )}
-          </div>
-        )}
+        {cardInfo.type === "Document" && <OutputDoc />}
         {cardInfo.type !== "Welcome" && (
           <label className="relative inline-flex items-center cursor-pointer mt-4">
             <h1>{information?.data.enabled}</h1>

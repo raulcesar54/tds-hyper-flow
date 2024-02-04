@@ -1,13 +1,4 @@
-export const ConenctionLine = ({
-  fromX,
-  fromY,
-  fromPosition,
-  toX,
-  toY,
-  toPosition,
-  connectionLineType,
-  connectionLineStyle,
-}: any) => {
+export const ConenctionLine = ({ fromX, fromY, toX, toY }: any) => {
   return (
     <g>
       <path

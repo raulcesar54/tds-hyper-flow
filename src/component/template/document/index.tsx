@@ -7,6 +7,7 @@ import { CardHeader } from "../../uiKit/cardHeader";
 import { useProperty } from "../../../hooks/useProperty";
 import { useBoard } from "../../../hooks/useBoard";
 import { groupBy } from "lodash";
+import { Filters } from "../../uiKit/filters";
 
 export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
@@ -24,7 +25,7 @@ export const Document = ({ data, id, ...props }: Props) => {
   }, [documents]);
 
   useEffect(() => {
-    if (data.targetNode.length) {
+    if (data?.targetNode?.length) {
       data.targetNode.map((targetNode) => {
         return connectNode({
           source: String(id),
@@ -39,14 +40,13 @@ export const Document = ({ data, id, ...props }: Props) => {
     updateNodeData({
       targetId: id,
       value: {
-        documentOutput: "PDF",
+        documentOutput: data.documentOutput || "PDF",
         statusMessage:
           data.statusMessage || "Selecione uma das opcões para analisar",
       },
     });
-    if (!props.selected) handleSelectInfo(null);
+    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
-
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Documento",
@@ -67,7 +67,7 @@ export const Document = ({ data, id, ...props }: Props) => {
       `}
     >
       <div
-        className={`mt-4 flex flex-col
+        className={` flex flex-col
         ${!data.enabled && "opacity-30"}
         `}
       >
@@ -87,10 +87,10 @@ export const Document = ({ data, id, ...props }: Props) => {
           dangerouslySetInnerHTML={{
             __html: `${data?.statusMessage?.replace(
               "{{username}}",
-              "<strong class='text-blue-400'>Nome do usúario</strong>",
+              "<strong class='text-blue-400'>Nome do usúario</strong>"
             )}`,
           }}
-          className="mt-1 max-w-[250px] text-sm text-slate-800 "
+          className=" mt-3 max-w-[250px] text-sm text-slate-800 "
         />
         <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
           Selecione a Mensagem
@@ -128,6 +128,13 @@ export const Document = ({ data, id, ...props }: Props) => {
             })}
           </select>
         </div>
+
+        <Filters
+          filterNode={data.filterNode}
+          filterId={value}
+          nodeId={id}
+          type="KPIDoc"
+        />
       </div>
 
       <HandleStyled

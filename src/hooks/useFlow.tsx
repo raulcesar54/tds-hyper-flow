@@ -141,7 +141,6 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
             },
           }),
         ]);
-
       setData(data.data);
       setMessages(messagesReport.data);
       setDocuments(documentReport.data);

@@ -41,6 +41,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   const { data, loading } = useFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
+
   useEffect(() => {
     if (!data?.nodes) return;
     if (!data?.edges) return;

@@ -20,9 +20,9 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
     });
   }, [data]);
 
-  useEffect(() => {
-    if (!props.selected) handleSelectInfo(null);
-  }, [props.selected]);
+  // useEffect(() => {
+  //   // if (!props.selected) handleSelectInfo(null);
+  // }, [props.selected]);
 
   const handleClick = useCallback(() => {
     handleSelectInfo({
@@ -59,7 +59,7 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
             "<strong class='text-blue-400'>Nome do usúario</strong>"
           )}`,
         }}
-        className="max-w-[250px] mt-4 text-sm "
+        className="max-w-[250px]  text-sm "
       />
       <HandleStyled
         type="source"

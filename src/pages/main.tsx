@@ -8,11 +8,11 @@ import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
 import { useBoard } from "../hooks/useBoard";
 import { useCallback, useEffect, useRef, useState } from "react";
-import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
 import { ZoomControl } from "./style";
 import { PropertyContainer } from "../component/template/propertyContainer";
-import "reactflow/dist/style.css";
 import { useFlow } from "../hooks/useFlow";
+import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
+import "reactflow/dist/style.css";
 
 const nodeTypes = {
   Welcome,
@@ -52,7 +52,7 @@ export default function Main() {
       });
       addNode({ position, type });
     },
-    [reactFlowInstance],
+    [reactFlowInstance]
   );
   function onRemoveEdge(data: any) {
     data.map((item: any) => {

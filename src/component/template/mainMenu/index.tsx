@@ -26,7 +26,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           data.statusMessage || "Selecione uma das opções para analisar",
       },
     });
-    if (!props.selected) handleSelectInfo(null);
+    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = () => {
@@ -55,7 +55,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       {data.image && (
         <img
           src={data.image}
-          className="max-h-50 mt-4 w-full rounded-lg object-cover"
+          className="max-h-50  w-full rounded-lg object-cover"
           alt="image_step"
         />
       )}
@@ -66,7 +66,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
             "<strong class='text-blue-400'>Nome do usúario</strong>"
           )}`,
         }}
-        className="mt-1 max-w-[250px] text-sm text-slate-800 "
+        className=" mt-3 max-w-[250px] text-sm text-slate-800 "
       />
       <div className="mt-2 flex flex-col">
         {targetNodes.map((item, index) => {
@@ -90,7 +90,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           );
         })}
       </div>
-      <div className="mt-4 flex flex-row gap-2">
+      <div className=" flex flex-row gap-2">
         <Button
           label="Adicionar"
           onClick={() =>

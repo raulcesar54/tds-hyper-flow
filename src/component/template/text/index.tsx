@@ -7,6 +7,7 @@ import { MainMenuProps } from "./types";
 import { useProperty } from "../../../hooks/useProperty";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { groupBy } from "lodash";
+import { Filters } from "../../uiKit/filters";
 
 export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const { handleSelectInfo } = useProperty();
@@ -27,7 +28,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   }, []);
 
   useEffect(() => {
-    if (data.targetNode.length) {
+    if (data?.targetNode?.length) {
       data.targetNode.map((targetNode) => {
         return connectNode({
           source: String(id),
@@ -46,7 +47,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         statusMessage: "Selecione uma das opcões para analisar",
       },
     });
-    if (!props.selected) handleSelectInfo(null);
+    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = useCallback(() => {
@@ -77,16 +78,16 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       }  flex w-[320px] flex-col rounded-lg bg-white`}
     >
       <div
-        className={`mt-4 flex flex-col
+        className={` flex flex-col
         ${!data.enabled && "opacity-30"}
         `}
       >
         <CardHeader
-          iconName="FiMail"
+          iconName="FiMessageSquare"
           title={data.title || "Mensagem"}
           subtitle="Vincular Mensagem"
         />
-        <div className="mt-4 flex flex-col">
+        <div className=" flex flex-col">
           {data.image && (
             <img
               src={data.image}
@@ -101,7 +102,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
                 "<strong class='text-blue-400'>Nome do usúario</strong>"
               )}`,
             }}
-            className="mt-1 max-w-[250px] text-sm text-slate-800 "
+            className=" mt-3 max-w-[250px] text-sm text-slate-800 "
           />
           <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
             Selecione a Mensagem
@@ -139,6 +140,13 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
             </select>
           </div>
         </div>
+
+        <Filters
+          filterNode={data.filterNode}
+          filterId={value}
+          nodeId={id}
+          type="KPIText"
+        />
       </div>
       <HandleStyled
         type="target"

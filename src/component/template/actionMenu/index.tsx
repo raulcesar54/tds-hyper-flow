@@ -26,7 +26,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
           data.statusMessage || " Selecione uma das opções para analisar",
       },
     });
-    if (!props.selected) handleSelectInfo(null);
+    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = useCallback(() => {
@@ -39,7 +39,6 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
       customInfo: data,
     });
   }, [props.selected]);
-
   return (
     <div
       onClick={handleClick}
@@ -47,7 +46,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
         props.selected ? "border-blue-400" : ""
       }  flex w-[300px] flex-col rounded-md bg-white shadow-sm`}
     >
-      <div className={`mt-4 flex flex-col   ${!data.enabled && "opacity-30"}`}>
+      <div className={` flex flex-col   ${!data.enabled && "opacity-30"}`}>
         <CardHeader
           iconName="FiShuffle"
           title={"Menu de Ações"}
@@ -56,7 +55,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
         {data.image && (
           <img
             src={data.image}
-            className="max-h-50 mt-4 w-full rounded-lg object-cover"
+            className="max-h-50  w-full rounded-lg object-cover"
             alt="image_step"
           />
         )}
@@ -67,9 +66,9 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
               "<strong class='text-blue-400'>Nome do usúario</strong>"
             )}`,
           }}
-          className="mt-1 max-w-[250px] text-sm text-slate-800 "
+          className=" mt-3 max-w-[250px] text-sm text-slate-800 "
         />
-        <div className="mt-4 flex flex-col">
+        <div className=" flex flex-col">
           {targetNodes.map((item, index) => {
             return (
               item.nodeId && (
@@ -79,7 +78,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
                   index={index}
                   id={id}
                   data={data}
-                  key={item.nodeId}
+                  key={item.name}
                   handleUpdateNodeData={(target, value) => {
                     targetNodes[index].nodeId = target;
                     targetNodes[index].name = value;
@@ -90,7 +89,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
             );
           })}
         </div>
-        <div className="mt-4 flex flex-row gap-2">
+        <div className=" flex flex-row gap-2">
           <Button
             label="Adicionar"
             onClick={() =>
