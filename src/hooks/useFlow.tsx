@@ -48,6 +48,12 @@ interface FilterNode {
   Id: string;
   Name: string;
   Type: string;
+  id?: string;
+  name?: string;
+  type?: string;
+  alias?: string;
+  input?: string;
+  argument?: string;
 }
 interface TargetNode {
   NodeId: string;
