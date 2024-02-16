@@ -76,12 +76,6 @@ export const Header = () => {
         edges: [],
       };
       await api.put("ChatbotFlow/Save", prepareData);
-      const { data: nodes } = await api.get<FlowResponse>("ChatbotFlow/flow", {
-        params: {
-          id: data.chatBot.id,
-        },
-      });
-      setNodes(nodes.nodes);
     } catch (err) {
       alert("Tivemos um erro ao salvar o fluxo, entre em contato com suporte.");
     } finally {
@@ -92,41 +86,46 @@ export const Header = () => {
     return isEqual(data?.nodes, info);
   }, [data, info]);
   return (
-    <div className="absolute flex flex-row z-50 bg-white left-4 top-4 gap-4 items-center shadow-md rounded-md pl-6 overflow-hidden">
-      {loading && <Loading />}
+    <header className="absolute flex flex-row z-50 bg-white left-4 top-4 gap-4 items-center shadow-md rounded-md pl-6 overflow-hidden">
+      <img src="/logo.svg" width={30} />
+      {loading && (
+        <div className="p-4">
+          <Loading />
+        </div>
+      )}
       {!loading && (
         <>
           <h1 className="font-bold py-4 text-xs">Fluxo</h1>
           <h2 className="font-bold py-4 text-xs text-blue-500 -ml-1">
             {data?.chatBot.name}
           </h2>
+          <div className="flex flex-row gap-4 h-full border-l-2 pl-4">
+            <FaWhatsapp
+              size={18}
+              className={`text-blue-100  ${
+                (data?.chatBot.type === "WhatsApp" ||
+                  data?.chatBot.type === "Both") &&
+                "!text-blue-500 "
+              }`}
+            />
+            <LiaTelegramPlane
+              size={18}
+              className={`text-blue-100   ${
+                (data?.chatBot.type === "Telegram" ||
+                  data?.chatBot.type === "Both") &&
+                "!text-blue-500 "
+              }`}
+            />
+          </div>
+          <button
+            disabled={isDisabled || saving || loading}
+            className="p-3 px-8 py-4 h-full cursor-pointer bg-blue-400 transition-all  text-white disabled:bg-slate-50 disabled:text-slate-300"
+            onClick={handleSaveData}
+          >
+            {saving ? <Loading /> : "Salvar"}
+          </button>
         </>
       )}
-      <div className="flex flex-row gap-4 h-full border-l-2 pl-4">
-        <FaWhatsapp
-          size={18}
-          className={`text-blue-100  ${
-            (data?.chatBot.type === "WhatsApp" ||
-              data?.chatBot.type === "Both") &&
-            "!text-blue-500 "
-          }`}
-        />
-        <LiaTelegramPlane
-          size={18}
-          className={`text-blue-100   ${
-            (data?.chatBot.type === "Telegram" ||
-              data?.chatBot.type === "Both") &&
-            "!text-blue-500 "
-          }`}
-        />
-      </div>
-      <button
-        disabled={isDisabled || saving || loading}
-        className="p-3 px-8 py-4 h-full cursor-pointer bg-blue-400 transition-all  text-white disabled:bg-slate-50 disabled:text-slate-300"
-        onClick={handleSaveData}
-      >
-        {saving ? <Loading /> : "Salvar"}
-      </button>
-    </div>
+    </header>
   );
 };
