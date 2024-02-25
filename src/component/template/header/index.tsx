@@ -56,8 +56,6 @@ export const Header = () => {
           dragging: true,
         };
       });
-      console.log(prepareNodes);
-
       const prepareData = {
         chatBot: {
           id: data.chatBot.id,

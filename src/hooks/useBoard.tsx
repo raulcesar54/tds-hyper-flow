@@ -72,9 +72,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     },
     [setEdges]
   );
-  function handleNodeChange(node: any) {
-    console.log(node);
-  }
+  function handleNodeChange(node: any) {}
   function updateNodeData<T>({ targetId, value }: updateNodeData<T>) {
     setNodes((nodes) =>
       nodes.map((node) => {
