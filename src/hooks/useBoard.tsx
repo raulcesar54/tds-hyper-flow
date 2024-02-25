@@ -28,6 +28,7 @@ interface contextBoardProps {
   connectNode: (data: Edge | Connection) => void;
   removeEdge: (sourceHandle: string) => void;
   setNodes: (data: any) => void;
+  setEdges: (data: any) => void;
   updateNodeData: <T>(params: updateNodeData<T>) => void;
   onEdgesChange: any;
   handleNodeChange: (node: any) => void;
@@ -46,8 +47,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     if (!data?.nodes) return;
     if (!data?.edges) return;
     setNodes(data?.nodes);
-
-    // setEdges(data?.edges);
   }, [loading]);
 
   const removeEdge = useCallback(
@@ -64,6 +63,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         addEdge(
           {
             ...params,
+            type: "default",
             // animated: true,
           },
           actualNode
@@ -257,6 +257,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         removeEdge,
         connectNode,
         removeEdges,
+        setEdges,
         setNodes,
         edges,
         updateNodeData,

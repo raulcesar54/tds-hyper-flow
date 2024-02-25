@@ -12,7 +12,7 @@ interface RootObject {
   selected: boolean;
 }
 export interface TargetNode {
-  handleId?: string;
+  flowId?: string;
   name?: string;
   nodeId: string;
   sequence?: string;

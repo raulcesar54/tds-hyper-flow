@@ -9,7 +9,14 @@ interface TargetNodeItemProps {
   id?: string;
   index: number;
   name: string;
-  data?: any;
+  data?: {
+    targetNode: {
+      name: string;
+      nodeId: string;
+      sequence: string;
+      flowId?: string;
+    }[];
+  };
   handleUpdateNodeData: (targetId: string, value: string) => void;
 }
 
@@ -18,28 +25,18 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
   const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData } = useBoard();
 
-  useEffect(() => {
-    connectNode({
-      source: String(id),
-      sourceHandle: `source_${sourceNodeId}`,
-      target: String(sourceNodeId),
-      targetHandle: `target_${sourceNodeId}`,
-    });
-    updateNodeData<{ title: string | null; index: number }>({
-      targetId: String(sourceNodeId),
-      value: {
-        title: name,
-        name,
-        index,
-      } as any,
-    });
-  }, []);
-
-  const handleRemoveItem = (index: number) => {
+  const handleRemoveItem = (index: number, targetId?: string) => {
     removeEdge(`source_${sourceNodeId}`);
     removeEdge(`target_${sourceNodeId}`);
+    if (!data?.targetNode) return;
     let provisoreItem = data.targetNode;
     const removedItems = provisoreItem.splice(index, 1);
+    if (targetId) {
+      updateNodeData({
+        targetId: String(targetId),
+        value: { sequence: String(index + 1), parent: "", name: "", title: "" },
+      });
+    }
     updateNodeData({
       targetId: String(id),
       value: {
@@ -48,7 +45,34 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
       },
     });
   };
-
+  useEffect(() => {
+    const item = data?.targetNode.find((item) => item.nodeId === sourceNodeId);
+    const itemIndex = data?.targetNode.findIndex(
+      (item) => item.nodeId === sourceNodeId
+    );
+    if (
+      item?.flowId === "00000000-0000-0000-0000-000000000000" ||
+      !item?.flowId
+    )
+      return;
+    updateNodeData<{ title: string | null; index: number }>({
+      targetId: String(item?.flowId),
+      value: {
+        title: item.name,
+        name: item.name,
+        parent: item?.flowId,
+        sequence: String((itemIndex || 0) + 1),
+        index: itemIndex,
+      } as any,
+    });
+    setValue(item.name);
+    connectNode({
+      source: String(id),
+      sourceHandle: `source_${item.nodeId}`,
+      target: item.flowId,
+      targetHandle: `target_${item.flowId}`,
+    });
+  }, []);
   return (
     <>
       <div className="flex flex-row items-center gap-2 justify-between">
@@ -68,28 +92,32 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               value={value}
               onChange={(event) => {
                 setValue(event.target.value);
-                data.targetNode[index] = {
-                  ...data?.targetNode?.[index],
-                  name: event.target.value,
-                };
-
+                if (!data) return;
+                const getValueById = data.targetNode.find(
+                  (item) => item.nodeId === sourceNodeId
+                );
+                handleUpdateNodeData(String(getValueById?.flowId), value);
                 updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(sourceNodeId),
+                  targetId: String(getValueById?.flowId),
                   value: {
                     title: event.target.value,
                     name: event.target.value,
+                    parent: getValueById?.flowId,
                     sequence: String(index + 1),
                     index,
                   } as any,
                 });
-                updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(id),
-                  value: data as any,
-                });
               }}
             />
             <button
-              onClick={() => handleRemoveItem(index)}
+              onClick={() => {
+                if (!data) return;
+
+                const getValueById = data.targetNode.find(
+                  (item) => item.nodeId === sourceNodeId
+                );
+                handleRemoveItem(index, getValueById?.flowId);
+              }}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
             >
               <FiTrash />
@@ -104,11 +132,10 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           position={Position.Right}
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
-            removeEdge(`source_${sourceNodeId}`);
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
-              value: { sequence: String(index + 1) },
+              value: { sequence: String(index + 1), parent: sourceNodeId },
             });
             connectNode(params);
           }}

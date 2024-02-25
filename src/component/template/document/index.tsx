@@ -45,7 +45,6 @@ export const Document = ({ data, id, ...props }: Props) => {
           data.statusMessage || "Selecione uma das opcões para analisar",
       },
     });
-    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
   const handleClick = useCallback(() => {
     handleSelectInfo({
@@ -57,11 +56,10 @@ export const Document = ({ data, id, ...props }: Props) => {
       customInfo: data,
     });
   }, [handleSelectInfo, data, id]);
-
   return (
     <div
       onClick={handleClick}
-      className={`border-2 p-4 pt-2 ${
+      className={`border-2 p-4 ${
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  flex w-[320px] flex-col rounded-lg bg-white
       `}

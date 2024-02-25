@@ -15,38 +15,52 @@ export const TargetNodeItemMenuAction = (
   const { data: flowData } = useFlow();
   const [newName, setNewName] = useState(name);
 
-  useEffect(() => {
-    connectNode({
-      source: String(id),
-      sourceHandle: `source_${sourceNodeId}`,
-      target: String(sourceNodeId),
-      targetHandle: `target_${sourceNodeId}`,
-    });
-    updateNodeData<{ title: string | null; index: number }>({
-      targetId: String(sourceNodeId),
-      value: {
-        title: name,
-        name,
-        index,
-      } as any,
-    });
-    const data = flowData?.chatBot.Actions.find((item) => item.Value === name);
-    setValue(String(data?.Id));
-  }, []);
-
-  const handleRemoveItem = (index: number) => {
+  const handleRemoveItem = (index: number, targetId?: string) => {
     removeEdge(`source_${sourceNodeId}`);
     removeEdge(`target_${sourceNodeId}`);
+    if (!data?.targetNode) return;
     let provisoreItem = data.targetNode;
     const removedItems = provisoreItem.splice(index, 1);
-    updateNodeData({
-      targetId: String(id),
-      value: {
-        ...data,
-        targetNode: provisoreItem,
-      },
-    });
+    if (targetId) {
+      updateNodeData({
+        targetId: String(id),
+        value: {
+          ...data,
+          targetNode: provisoreItem,
+        },
+      });
+    }
   };
+  useEffect(() => {
+    const item = data?.targetNode.find(
+      (item: any) => item.nodeId === sourceNodeId
+    );
+    const itemIndex = data?.targetNode.findIndex(
+      (item: any) => item.nodeId === sourceNodeId
+    );
+    if (
+      item?.flowId === "00000000-0000-0000-0000-000000000000" ||
+      !item?.flowId
+    )
+      return;
+    updateNodeData<{ title: string | null; index: number }>({
+      targetId: String(item?.flowId),
+      value: {
+        title: item.name,
+        name: item.name,
+        parent: item?.flowId,
+        sequence: String((itemIndex || 0) + 1),
+        index: itemIndex,
+      } as any,
+    });
+    setValue(item.name);
+    connectNode({
+      source: String(id),
+      sourceHandle: `source_${item.nodeId}`,
+      target: item.flowId,
+      targetHandle: `target_${item.flowId}`,
+    });
+  }, []);
 
   return (
     <>
@@ -64,13 +78,24 @@ export const TargetNodeItemMenuAction = (
               onChange={(event) => {
                 event.stopPropagation();
                 setValue(event.target.value);
+                if (!data) return;
+                const getValueById = data.targetNode.find(
+                  (item: any) => item.nodeId === sourceNodeId
+                );
                 setNewName(event.target.value);
+
+                handleUpdateNodeData(
+                  String(getValueById?.flowId),
+                  event.target.value
+                );
+
                 updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(sourceNodeId),
+                  targetId: String(getValueById?.flowId),
                   value: {
                     title: event.target.value,
                     name: event.target.value,
-                    sequence: index,
+                    parent: getValueById?.flowId,
+                    sequence: String(index + 1),
                     index,
                   } as any,
                 });
@@ -89,7 +114,14 @@ export const TargetNodeItemMenuAction = (
               })}
             </select>
             <button
-              onClick={() => handleRemoveItem(index)}
+              onClick={() => {
+                if (!data) return;
+
+                const getValueById = data.targetNode.find(
+                  (item: any) => item.nodeId === sourceNodeId
+                );
+                handleRemoveItem(index);
+              }}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
             >
               <FiTrash />
@@ -104,11 +136,11 @@ export const TargetNodeItemMenuAction = (
           position={Position.Right}
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
-            removeEdge(`source_${sourceNodeId}`);
-            const findItem = flowData?.chatBot.Actions.find(
-              (item) => item.Id === value
-            );
-            handleUpdateNodeData(String(params.target), findItem?.Value || "");
+            handleUpdateNodeData(String(params.target), value || "");
+            updateNodeData({
+              targetId: String(params.target),
+              value: { sequence: String(index + 1), parent: sourceNodeId },
+            });
             connectNode(params);
           }}
         />

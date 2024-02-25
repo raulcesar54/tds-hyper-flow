@@ -77,13 +77,16 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                 name={item.name || ""}
                 index={index}
                 id={id}
-                data={data}
+                data={data as any}
                 key={item.nodeId}
                 handleUpdateNodeData={(target, value) => {
-                  targetNodes[index].nodeId = target;
                   targetNodes[index].name = value;
                   targetNodes[index].sequence = String(index + 1);
-                  updateNodeData({ targetId: id, value: targetNodes });
+                  targetNodes[index].flowId = target;
+                  updateNodeData({
+                    targetId: target,
+                    value: { title: value },
+                  });
                 }}
               />
             )

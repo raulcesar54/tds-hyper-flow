@@ -1,6 +1,5 @@
-import { FlowResponse, useFlow } from "../../../hooks/useFlow";
+import { useFlow } from "../../../hooks/useFlow";
 import { Loading } from "../../../component/uiKit/loading";
-import logo from "../../../assets/logo.png";
 import { FaWhatsapp } from "react-icons/fa";
 import { LiaTelegramPlane } from "react-icons/lia";
 import { api } from "../../../services";
@@ -8,11 +7,12 @@ import { useMemo, useState } from "react";
 import { useBoard } from "../../../hooks/useBoard";
 import { useViewport } from "reactflow";
 import { isEqual } from "lodash";
+import { v4 } from "uuid";
 
 export const Header = () => {
   const [saving, setSaving] = useState(false);
   const { data, loading } = useFlow();
-  const { data: info, setNodes } = useBoard();
+  const { data: info, edges } = useBoard();
   const { zoom, x, y } = useViewport();
 
   const handleSaveData = async () => {
@@ -24,7 +24,10 @@ export const Header = () => {
           id: information.id,
           type: information.type,
           chatbot: information.chatbot,
-          parent: information.parent || "00000000-0000-0000-0000-000000000000",
+          parent:
+            information.data.parent ||
+            information.parent ||
+            "00000000-0000-0000-0000-000000000000",
           position: {
             ...information.position,
           },
@@ -53,6 +56,7 @@ export const Header = () => {
           dragging: true,
         };
       });
+      console.log(prepareNodes);
 
       const prepareData = {
         chatBot: {
@@ -73,7 +77,12 @@ export const Header = () => {
           },
         },
         nodes: prepareNodes,
-        edges: [],
+        edges:
+          edges.map((item: any) => {
+            item.id = v4;
+
+            return item;
+          }) || [],
       };
       await api.put("ChatbotFlow/Save", prepareData);
     } catch (err) {

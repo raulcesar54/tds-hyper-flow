@@ -16,6 +16,7 @@ export interface TargetNode {
   handleId?: string;
   name?: string;
   nodeId: string;
+  flowId?: string;
   sequence?: string;
 }
 export interface MainMenuProps {

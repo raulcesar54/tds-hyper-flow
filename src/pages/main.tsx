@@ -11,8 +11,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ZoomControl } from "./style";
 import { PropertyContainer } from "../component/template/propertyContainer";
 import { useFlow } from "../hooks/useFlow";
-import ReactFlow, { Background, ReactFlowProvider } from "reactflow";
+import ReactFlow, {
+  Background,
+  ConnectionMode,
+  ReactFlowProvider,
+} from "reactflow";
 import "reactflow/dist/style.css";
+import { CustomEdge } from "../component/uiKit/customEdge";
 
 const nodeTypes = {
   Welcome,
@@ -28,8 +33,7 @@ export default function Main() {
   const reactFlowWrapper: any = useRef(null);
   const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-  const { data, onNodesChange, removeEdges, onEdgesChange, edges, addNode } =
-    useBoard();
+  const { data, onNodesChange, edges, addNode } = useBoard();
   const panOnDrag = [1, 2];
 
   const onDragOver = useCallback((event: any) => {
@@ -54,11 +58,7 @@ export default function Main() {
     },
     [reactFlowInstance]
   );
-  function onRemoveEdge(data: any) {
-    data.map((item: any) => {
-      removeEdges(item.source, item.target);
-    });
-  }
+
   const onConnect = useCallback((connection: any) => {}, []);
 
   useEffect(() => {
@@ -93,10 +93,12 @@ export default function Main() {
           }}
           ref={reactFlowWrapper}
           panOnDrag={panOnDrag}
-          onEdgesDelete={onRemoveEdge}
           onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+          connectionMode={ConnectionMode.Loose}
           nodeTypes={nodeTypes}
+          edgeTypes={{
+            default: CustomEdge,
+          }}
           onDragOver={onDragOver}
           onDrop={onDrop}
           onConnect={onConnect}

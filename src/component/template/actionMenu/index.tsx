@@ -78,11 +78,15 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
                   index={index}
                   id={id}
                   data={data}
-                  key={item.name}
+                  key={item.nodeId}
                   handleUpdateNodeData={(target, value) => {
-                    targetNodes[index].nodeId = target;
                     targetNodes[index].name = value;
-                    updateNodeData({ targetId: id, value: targetNodes });
+                    targetNodes[index].sequence = String(index + 1);
+                    targetNodes[index].flowId = target;
+                    updateNodeData({
+                      targetId: target,
+                      value: { title: value },
+                    });
                   }}
                 />
               )

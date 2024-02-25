@@ -40,6 +40,8 @@ interface Data {
   documentOutput?: any;
   message: string;
   image?: string;
+  parent?: string;
+
   targetNode?: TargetNode[];
   filterNode?: FilterNode[];
   enabled: boolean;
@@ -57,6 +59,7 @@ interface FilterNode {
 }
 interface TargetNode {
   NodeId: string;
+  flowId?: string;
   Sequence: string;
   Name: string;
 }

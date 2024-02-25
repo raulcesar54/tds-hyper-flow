@@ -3,6 +3,8 @@ import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 interface HoverCardProps {
   children: JSX.Element;
   title: string;
+  position?: "left" | "top" | "right" | "bottom";
+  subtitle?: string;
 }
 
 export const HoverCard = (props: HoverCardProps) => {
@@ -14,7 +16,7 @@ export const HoverCard = (props: HoverCardProps) => {
       <HoverCardPrimitive.Content
         sideOffset={16}
         align="start"
-        side="left"
+        side={props.position || "left"}
         className={"p-4 bg-white border-2 border-slate-100 "}
       >
         <HoverCardPrimitive.Arrow className="fill-current text-slate-100" />
@@ -26,7 +28,7 @@ export const HoverCard = (props: HoverCardProps) => {
             </h3>
 
             <p className="mt-1 text-sm font-normal text-gray-700 dark:text-gray-400">
-              Arraste e solte no board
+              {props.subtitle || "Arraste e solte no board"}
             </p>
           </div>
         </div>

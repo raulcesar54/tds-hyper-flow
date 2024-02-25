@@ -16,3 +16,23 @@ body {
 .react-flow__panel.react-flow__attribution.bottom.right {
   display: none !important;
 }
+
+.edgebutton {
+  width: 30px;
+  height: 30px;
+  background: #FFF;
+  /* background: #f2f2f2; */
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid #777;
+
+  font-size: 14px;
+  line-height: 1;
+transition: .3s;
+}
+
+.edgebutton:hover {
+  background: #3f72ff;
+  color: white;
+  border: 1px solid #777;
+}

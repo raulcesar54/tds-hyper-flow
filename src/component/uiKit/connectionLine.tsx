@@ -1,4 +1,11 @@
-export const ConenctionLine = ({ fromX, fromY, toX, toY }: any) => {
+import { ConnectionLineComponentProps } from "reactflow";
+
+export const ConenctionLine = ({
+  fromX,
+  fromY,
+  toX,
+  toY,
+}: ConnectionLineComponentProps) => {
   return (
     <g>
       <path
@@ -12,7 +19,7 @@ export const ConenctionLine = ({ fromX, fromY, toX, toY }: any) => {
         cx={toX}
         cy={toY}
         fill="#fff"
-        r={3}
+        r={5}
         stroke="#222"
         strokeWidth={1.5}
       />
