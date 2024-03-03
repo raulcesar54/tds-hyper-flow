@@ -18,6 +18,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { CustomEdge } from "../component/uiKit/customEdge";
+import { EdgeNoLine } from "../component/uiKit/baseEdge";
 
 const nodeTypes = {
   Welcome,
@@ -98,6 +99,7 @@ export default function Main() {
           nodeTypes={nodeTypes}
           edgeTypes={{
             default: CustomEdge,
+            base: EdgeNoLine,
           }}
           onDragOver={onDragOver}
           onDrop={onDrop}

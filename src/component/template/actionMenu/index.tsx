@@ -29,7 +29,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
     // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     handleSelectInfo({
       label: "Menu de Ações",
       description: "Menu de Ações",
@@ -38,7 +38,7 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
       type: "ActionMenu",
       customInfo: data,
     });
-  }, [props.selected]);
+  };
   return (
     <div
       onClick={handleClick}
@@ -72,23 +72,25 @@ export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
           {targetNodes.map((item, index) => {
             return (
               item.nodeId && (
-                <TargetNodeItemMenuAction
-                  sourceNodeId={item.nodeId}
-                  name={item.name || ""}
-                  index={index}
-                  id={id}
-                  data={data}
-                  key={item.nodeId}
-                  handleUpdateNodeData={(target, value) => {
-                    targetNodes[index].name = value;
-                    targetNodes[index].sequence = String(index + 1);
-                    targetNodes[index].flowId = target;
-                    updateNodeData({
-                      targetId: target,
-                      value: { title: value },
-                    });
-                  }}
-                />
+                <>
+                  <TargetNodeItemMenuAction
+                    sourceNodeId={item.nodeId}
+                    name={item.name || ""}
+                    index={index}
+                    id={id}
+                    data={data}
+                    key={item.nodeId}
+                    handleUpdateNodeData={(target, value) => {
+                      targetNodes[index].name = value;
+                      targetNodes[index].sequence = String(index + 1);
+                      targetNodes[index].flowId = target;
+                      updateNodeData({
+                        targetId: target,
+                        value: { title: value },
+                      });
+                    }}
+                  />
+                </>
               )
             );
           })}

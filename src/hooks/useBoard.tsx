@@ -1,12 +1,12 @@
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import {
   Connection,
   Edge,
   NodeChange,
+  OnNodesChange,
   addEdge,
   useEdgesState,
   useNodesState,
-  useViewport,
 } from "reactflow";
 import { v4 } from "uuid";
 import { Node, useFlow } from "./useFlow";
@@ -41,37 +41,43 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   const chatBotId = window.location.search;
   const { data, loading } = useFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [nodes, setNodes, onChangeNode] = useNodesState([]);
 
   useEffect(() => {
     if (!data?.nodes) return;
-    if (!data?.edges) return;
+    // if (!data?.edges) return;
     setNodes(data?.nodes);
   }, [loading]);
-
-  const removeEdge = useCallback(
-    (sourceHandleName: string) => {
-      return setEdges((edegs) =>
-        edegs.filter((item) => item.sourceHandle !== sourceHandleName)
-      );
-    },
-    [setEdges]
-  );
-  const connectNode = useCallback(
-    (params: Edge | Connection) => {
-      return setEdges((actualNode) =>
-        addEdge(
-          {
-            ...params,
-            type: "default",
-            // animated: true,
-          },
-          actualNode
-        )
-      );
-    },
-    [setEdges]
-  );
+  useEffect(() => {
+    const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
+    if (!getWelcomeNode) return;
+    if (!edges.length) return;
+    setEdges((edges) =>
+      edges.map((item) => {
+        if (item.source === getWelcomeNode.id) {
+          return { ...item, type: "base" };
+        }
+        return item;
+      })
+    );
+  }, [data]);
+  const removeEdge = (sourceHandleName: string) => {
+    return setEdges((edegs) =>
+      edegs.filter((item) => item.sourceHandle !== sourceHandleName)
+    );
+  };
+  const connectNode = (params: Edge | Connection) => {
+    return setEdges((actualNode) =>
+      addEdge(
+        {
+          ...params,
+          type: "default",
+          // animated: true,
+        },
+        actualNode
+      )
+    );
+  };
   function handleNodeChange(node: any) {}
   function updateNodeData<T>({ targetId, value }: updateNodeData<T>) {
     setNodes((nodes) =>
@@ -200,11 +206,13 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
             targetNode: [
               {
                 nodeId: backwardMenu,
+                flowId: backwardMenu,
                 name: "Menu Anterior",
                 sequence: "1",
               },
               {
                 nodeId: mainMenu,
+                flowId: mainMenu,
                 name: "Menu Principal",
                 sequence: "2",
               },
@@ -245,7 +253,21 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       })
     );
   }
-
+  function onNodesChange(data: any) {
+    if (data[0].type === "remove") {
+      const localeItem = nodes.find((item) => item.id === data[0].id);
+      if (!localeItem) return;
+      if (localeItem.type === "Welcome") {
+        alert("Não é permitido remover o inicio do bot.");
+        return;
+      }
+      if (localeItem.type === "StartMenu") {
+        alert("Não é permitido remover o menu de inicio do bot.");
+        return;
+      }
+    }
+    onChangeNode(data);
+  }
   return (
     <ContextBoard.Provider
       value={{

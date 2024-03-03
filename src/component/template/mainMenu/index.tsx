@@ -72,23 +72,25 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         {targetNodes.map((item, index) => {
           return (
             item.nodeId && (
-              <TargetNodeItem
-                sourceNodeId={item.nodeId}
-                name={item.name || ""}
-                index={index}
-                id={id}
-                data={data as any}
-                key={item.nodeId}
-                handleUpdateNodeData={(target, value) => {
-                  targetNodes[index].name = value;
-                  targetNodes[index].sequence = String(index + 1);
-                  targetNodes[index].flowId = target;
-                  updateNodeData({
-                    targetId: target,
-                    value: { title: value },
-                  });
-                }}
-              />
+              <>
+                <TargetNodeItem
+                  sourceNodeId={item.nodeId}
+                  name={item.name || ""}
+                  index={index}
+                  id={id}
+                  data={data as any}
+                  key={item.nodeId}
+                  handleUpdateNodeData={(target, value) => {
+                    targetNodes[index].name = value;
+                    targetNodes[index].sequence = String(index + 1);
+                    targetNodes[index].flowId = target;
+                    updateNodeData({
+                      targetId: target,
+                      value: { title: value },
+                    });
+                  }}
+                />
+              </>
             )
           );
         })}

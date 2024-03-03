@@ -35,7 +35,7 @@ export const ListFilters = (props: Props) => {
     <div className="flex flex-col">
       {filterNodes?.data.filterNode?.map((item) => {
         return (
-          <div className="flex flex-col gap-2">
+          <div key={item.Id} className="flex flex-col gap-2">
             <label className="mt-3 font-bold text-sm mb-1">{item.name}</label>
             <input
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 w-full disabled:bg-slate-200"

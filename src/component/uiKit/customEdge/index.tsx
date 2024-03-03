@@ -15,6 +15,10 @@ export function CustomEdge({
   targetY,
   sourcePosition,
   targetPosition,
+  target,
+  source,
+  sourceHandleId,
+  targetHandleId,
 }: EdgeProps) {
   const { setEdges, updateNodeData, data } = useBoard();
 
@@ -28,44 +32,31 @@ export function CustomEdge({
   });
 
   const onEdgeClick = () => {
-    setEdges((edges: any) => {
-      const selectEdge = edges.find((item: any) => item.id === id);
-      const selectNode =
-        selectEdge?.source &&
-        (data.find((item) => item.id === selectEdge.source) as any);
-      if (selectEdge?.target) {
-        updateNodeData({
-          targetId: String(selectEdge.target),
-          value: { sequence: null, parent: "", name: "", title: "" },
-        });
-      }
-      if (
-        selectEdge?.source &&
-        (selectNode.type === "StartMenu" || selectNode.type === "ActionMenu")
-      ) {
-        const treatTargetNode =
-          selectNode &&
-          selectNode?.data.targetNode.map((item: any) => {
-            if (
-              item.nodeId === selectEdge.sourceHandle.replace("source_", "")
-            ) {
-              return {
-                ...item,
-                flowId: "00000000-0000-0000-0000-000000000000",
-              };
-            }
-            return item;
-          });
-        updateNodeData({
-          targetId: selectNode.id,
-          value: {
-            ...selectNode.data,
-            targetNode: treatTargetNode,
-          },
-        });
-      }
-      return edges.filter((edge: any) => edge.id !== id);
+    updateNodeData({
+      targetId: String(target),
+      value: { sequence: null, parent: "", name: "", title: "" },
     });
+
+    const selectItem = data.find((item) => item.id === source);
+    const treatTargetNode = selectItem?.data?.targetNode?.map((item) => {
+      if (item.flowId === target) {
+        return {
+          ...item,
+          flowId: "00000000-0000-0000-0000-000000000000",
+        };
+      }
+      return item;
+    });
+    if (!selectItem) return;
+    updateNodeData({
+      targetId: selectItem.id,
+      value: {
+        ...selectItem.data,
+        targetNode: treatTargetNode,
+      },
+    });
+
+    setEdges((edges: any) => edges.filter((edge: any) => edge.id !== id));
   };
 
   return (
