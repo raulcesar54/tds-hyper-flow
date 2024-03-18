@@ -2,8 +2,6 @@ import { createContext, useContext, useEffect } from "react";
 import {
   Connection,
   Edge,
-  NodeChange,
-  OnNodesChange,
   addEdge,
   useEdgesState,
   useNodesState,
@@ -45,8 +43,8 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (!data?.nodes) return;
-    // if (!data?.edges) return;
     setNodes(data?.nodes);
+    setEdges(data?.edges);
   }, [loading]);
   useEffect(() => {
     const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
@@ -61,23 +59,23 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       })
     );
   }, [data]);
-  const removeEdge = (sourceHandleName: string) => {
+
+  function removeEdge(sourceHandleName: string) {
     return setEdges((edegs) =>
       edegs.filter((item) => item.sourceHandle !== sourceHandleName)
     );
-  };
-  const connectNode = (params: Edge | Connection) => {
+  }
+  function connectNode(params: Edge | Connection) {
     return setEdges((actualNode) =>
       addEdge(
         {
           ...params,
           type: "default",
-          // animated: true,
         },
         actualNode
       )
     );
-  };
+  }
   function handleNodeChange(node: any) {}
   function updateNodeData<T>({ targetId, value }: updateNodeData<T>) {
     setNodes((nodes) =>
@@ -132,7 +130,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           ...newNode,
           data: {
             ...newNode.data,
-            targetNode: [{ nodeId: actionMenu, name: "", sequence: "1" }],
+            targetNode: [{ nodeId: actionMenu, name: "asdf", sequence: "1" }],
           },
         },
         {

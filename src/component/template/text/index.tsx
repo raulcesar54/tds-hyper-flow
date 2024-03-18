@@ -16,18 +16,6 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const { connectNode, removeEdge, updateNodeData } = useBoard();
 
   useEffect(() => {
-    if (!data.targetNode) return;
-    data.targetNode.map((item) => {
-      connectNode({
-        source: String(id),
-        sourceHandle: `source_${item.nodeId}`,
-        target: String(item.nodeId),
-        targetHandle: `target_${item.nodeId}`,
-      });
-    });
-  }, []);
-
-  useEffect(() => {
     if (data?.targetNode?.length) {
       data.targetNode.map((targetNode) => {
         return connectNode({
@@ -38,7 +26,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         });
       });
     }
-  }, [data.targetNode]);
+  }, []);
 
   useEffect(() => {
     updateNodeData({
@@ -47,7 +35,6 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         statusMessage: "Selecione uma das opcões para analisar",
       },
     });
-    // if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = useCallback(() => {

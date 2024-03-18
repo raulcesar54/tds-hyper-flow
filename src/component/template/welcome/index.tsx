@@ -10,15 +10,15 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
   const { connectNode } = useBoard();
   const { handleSelectInfo } = useProperty();
 
-  useEffect(() => {
-    if (!data?.targetNode?.[0].nodeId) return;
-    connectNode({
-      source: String(id),
-      sourceHandle: `source_${data?.targetNode?.[0].nodeId}`,
-      target: String(data?.targetNode?.[0].nodeId),
-      targetHandle: `target_${data?.targetNode?.[0].nodeId}`,
-    });
-  }, [data]);
+  // useEffect(() => {
+  //   if (!data?.targetNode?.[0].nodeId) return;
+  //   connectNode({
+  //     source: String(id),
+  //     sourceHandle: `source_${data?.targetNode?.[0].nodeId}`,
+  //     target: String(data?.targetNode?.[0].nodeId),
+  //     targetHandle: `target_${data?.targetNode?.[0].nodeId}`,
+  //   });
+  // }, [data]);
 
   // useEffect(() => {
   //   // if (!props.selected) handleSelectInfo(null);

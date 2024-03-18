@@ -19,10 +19,6 @@ export const Action = ({ data, id, ...props }: Props) => {
     });
   }, [props.selected, data]);
 
-  // useEffect(() => {
-  //   if (!props.selected) handleSelectInfo(null);
-  // }, [props.selected]);
-
   return (
     <div
       onClick={handleClick}

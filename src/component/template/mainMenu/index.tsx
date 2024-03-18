@@ -11,7 +11,9 @@ import { MainMenuProps, TargetNode } from "./types";
 
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
   const { updateNodeData } = useBoard();
-  const [targetNodes, setTargetNode] = useState<TargetNode[]>([]);
+  const [targetNodes, setTargetNode] = useState<TargetNode[]>(
+    data.targetNode || []
+  );
   const { handleSelectInfo } = useProperty();
 
   useEffect(() => {
@@ -19,14 +21,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
     setTargetNode(data.targetNode);
   }, [data]);
   useEffect(() => {
-    updateNodeData({
-      targetId: id,
-      value: {
-        statusMessage:
-          data.statusMessage || "Selecione uma das opções para analisar",
-      },
-    });
-    // if (!props.selected) handleSelectInfo(null);
+    if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = () => {

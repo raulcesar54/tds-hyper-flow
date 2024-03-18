@@ -35,7 +35,7 @@ export const Document = ({ data, id, ...props }: Props) => {
         });
       });
     }
-  }, [data.targetNode]);
+  }, []);
   useEffect(() => {
     updateNodeData({
       targetId: id,
@@ -118,7 +118,7 @@ export const Document = ({ data, id, ...props }: Props) => {
                     {item.options.map((doc) => {
                       return (
                         <option value={doc.Id} key={doc.Id}>
-                          {doc.Id} {doc.Name}
+                          {doc.Name}
                         </option>
                       );
                     })}

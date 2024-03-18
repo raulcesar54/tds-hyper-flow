@@ -1,11 +1,5 @@
+import { createContext, useCallback, useContext, useState } from "react";
 import { api } from "../services";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
 
 export interface FlowResponse {
   chatBot: ChatBot;

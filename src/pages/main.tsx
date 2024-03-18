@@ -7,7 +7,7 @@ import { Text } from "../component/template/text";
 import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
 import { useBoard } from "../hooks/useBoard";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ZoomControl } from "./style";
 import { PropertyContainer } from "../component/template/propertyContainer";
 import { useFlow } from "../hooks/useFlow";
@@ -20,22 +20,31 @@ import "reactflow/dist/style.css";
 import { CustomEdge } from "../component/uiKit/customEdge";
 import { EdgeNoLine } from "../component/uiKit/baseEdge";
 
-const nodeTypes = {
-  Welcome,
-  Action,
-  StartMenu: MainMenu,
-  MenuItem: MainMenu,
-  ActionMenu,
-  KPIDoc: Document,
-  KPIText: Text,
-};
-
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
   const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const { data, onNodesChange, edges, addNode } = useBoard();
   const panOnDrag = [1, 2];
+  const nodeTypes = useMemo(
+    () => ({
+      Welcome,
+      Action,
+      StartMenu: MainMenu,
+      MenuItem: MainMenu,
+      ActionMenu,
+      KPIDoc: Document,
+      KPIText: Text,
+    }),
+    []
+  );
+  const edgeTypes = useMemo(
+    () => ({
+      default: CustomEdge,
+      base: EdgeNoLine,
+    }),
+    []
+  );
 
   const onDragOver = useCallback((event: any) => {
     event.preventDefault();
@@ -59,8 +68,6 @@ export default function Main() {
     },
     [reactFlowInstance]
   );
-
-  const onConnect = useCallback((connection: any) => {}, []);
 
   useEffect(() => {
     if (!flowData) handleGetInformation();
@@ -97,13 +104,17 @@ export default function Main() {
           onNodesChange={onNodesChange}
           connectionMode={ConnectionMode.Loose}
           nodeTypes={nodeTypes}
-          edgeTypes={{
-            default: CustomEdge,
-            base: EdgeNoLine,
-          }}
+          edgeTypes={edgeTypes}
           onDragOver={onDragOver}
           onDrop={onDrop}
-          onConnect={onConnect}
+          onConnect={(prop) => {
+            // updateNodeData({
+            //   targetId: String(prop.target),
+            //   value: {
+            //     parent: prop.sourceHandle || prop.source,
+            //   },
+            // });
+          }}
         >
           <ZoomControl
             position="bottom-right"

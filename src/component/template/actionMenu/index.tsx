@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Position } from "reactflow";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { Button } from "../../../component/uiKit/button";
@@ -12,21 +12,16 @@ import { useProperty } from "../../../hooks/useProperty";
 export const ActionMenu = ({ data, id, ...props }: MainMenuProps) => {
   const { updateNodeData } = useBoard();
   const { handleSelectInfo } = useProperty();
-  const [targetNodes, setTargetNode] = useState<TargetNode[]>([]);
+  const [targetNodes, setTargetNode] = useState<TargetNode[]>(
+    data.targetNode || []
+  );
 
   useEffect(() => {
     if (!data.targetNode) return;
     setTargetNode(data.targetNode);
   }, [data]);
   useEffect(() => {
-    updateNodeData({
-      targetId: id,
-      value: {
-        statusMessage:
-          data.statusMessage || " Selecione uma das opções para analisar",
-      },
-    });
-    // if (!props.selected) handleSelectInfo(null);
+    if (!props.selected) handleSelectInfo(null);
   }, [props.selected]);
 
   const handleClick = () => {
