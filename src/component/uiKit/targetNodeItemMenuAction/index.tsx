@@ -48,7 +48,6 @@ export const TargetNodeItemMenuAction = (
       value: {
         title: item.name,
         name: item.name,
-        parent: item?.flowId,
         sequence: String((itemIndex || 0) + 1),
         index: itemIndex,
       } as any,
@@ -94,7 +93,6 @@ export const TargetNodeItemMenuAction = (
                   value: {
                     title: event.target.value,
                     name: event.target.value,
-                    parent: getValueById?.flowId,
                     sequence: String(index + 1),
                     index,
                   } as any,

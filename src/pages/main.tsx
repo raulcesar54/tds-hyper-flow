@@ -24,7 +24,7 @@ export default function Main() {
   const reactFlowWrapper: any = useRef(null);
   const { data: flowData, handleGetInformation } = useFlow();
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
-  const { data, onNodesChange, edges, addNode } = useBoard();
+  const { data, onNodesChange, edges, addNode, updateNodeData } = useBoard();
   const panOnDrag = [1, 2];
   const nodeTypes = useMemo(
     () => ({
@@ -85,7 +85,6 @@ export default function Main() {
       });
     }
   }, [flowData]);
-
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <ReactFlowProvider>
@@ -108,12 +107,12 @@ export default function Main() {
           onDragOver={onDragOver}
           onDrop={onDrop}
           onConnect={(prop) => {
-            // updateNodeData({
-            //   targetId: String(prop.target),
-            //   value: {
-            //     parent: prop.sourceHandle || prop.source,
-            //   },
-            // });
+            updateNodeData({
+              targetId: String(prop.target),
+              value: {
+                parent: prop.source,
+              },
+            });
           }}
         >
           <ZoomControl

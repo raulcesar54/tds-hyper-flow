@@ -81,7 +81,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                     targetNodes[index].flowId = target;
                     updateNodeData({
                       targetId: target,
-                      value: { title: value },
+                      value: { title: value, name: value },
                     });
                   }}
                 />

@@ -77,7 +77,7 @@ export const Header = () => {
         nodes: prepareNodes,
         edges:
           edges.map((item: any) => {
-            item.id = v4;
+            item.id = v4();
 
             return item;
           }) || [],

@@ -124,20 +124,24 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       const actionMenu = v4();
       const backwardMenu = v4();
       const mainMenu = v4();
+      const handleActionMenuId = v4();
+      const handleActionBackwardMenuId = v4();
 
       const preparedSubItems = [
         {
           ...newNode,
           data: {
             ...newNode.data,
-            targetNode: [{ nodeId: actionMenu, name: "asdf", sequence: "1" }],
+            targetNode: [
+              { nodeId: actionMenu, name: newNode.data.name, sequence: "1" },
+            ],
           },
         },
         {
           id: backwardMenu,
           type: "Action",
           chatbot,
-          parent: "",
+          parent: actionMenu,
           data: {
             sequence: 0,
             name: "Menu Anterior",
@@ -164,7 +168,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           id: mainMenu,
           type: "Action",
           chatbot,
-          parent: "",
+          parent: actionMenu,
           data: {
             sequence: 1,
             name: "Menu Principal",
@@ -191,10 +195,10 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           id: actionMenu,
           type: "ActionMenu",
           chatbot,
-          parent: "",
+          parent: newNode.id,
           data: {
             sequence: "",
-            name: "",
+            name: "Menu de Ação",
             title: "",
             statusMessage: "Selecione uma das opções para analisar",
             document: "",
@@ -203,13 +207,13 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
             image: "",
             targetNode: [
               {
-                nodeId: backwardMenu,
+                nodeId: handleActionMenuId,
                 flowId: backwardMenu,
                 name: "Menu Anterior",
                 sequence: "1",
               },
               {
-                nodeId: mainMenu,
+                nodeId: handleActionBackwardMenuId,
                 flowId: mainMenu,
                 name: "Menu Principal",
                 sequence: "2",

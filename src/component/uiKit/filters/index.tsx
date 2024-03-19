@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useProperty } from "../../../hooks/useProperty";
 import { api } from "../../../services";
 import { Loading } from "../loading";
 import { useBoard } from "../../../hooks/useBoard";
