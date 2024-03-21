@@ -135,7 +135,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
-              value: { sequence: String(index + 1), parent: sourceNodeId },
+              value: { sequence: String(index + 1), parent: id },
             });
             connectNode(params);
           }}
