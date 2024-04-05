@@ -4,5 +4,7 @@ export interface TargetNodeItemMenuActionProps {
   index: number;
   name?: string;
   data?: any;
+  i?: number;
+  handleRemoveItem: () => void;
   handleUpdateNodeData: (targetId: string, value: string) => void;
 }

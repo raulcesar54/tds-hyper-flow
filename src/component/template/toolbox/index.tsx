@@ -36,15 +36,6 @@ export const Toolbox = () => {
         </button>
       </HoverCard>
       <hr className="h-px px-5 max-w-md  w-full opacity-50" />
-      <HoverCard title="Menu de Ações">
-        <button
-          onDragStart={(event) => onDragStart(event, "ActionMenu")}
-          draggable
-          className="b-none p-4 hover:bg-slate-50"
-        >
-          <FiShuffle size={18} />
-        </button>
-      </HoverCard>
       <HoverCard title="Menu">
         <button
           onDragStart={(event) => onDragStart(event, "MenuItem")}

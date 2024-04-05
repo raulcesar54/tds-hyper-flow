@@ -83,6 +83,7 @@ export const Header = () => {
           }) || [],
       };
       await api.put("ChatbotFlow/Save", prepareData);
+      window.location.reload();
     } catch (err) {
       alert("Tivemos um erro ao salvar o fluxo, entre em contato com suporte.");
     } finally {

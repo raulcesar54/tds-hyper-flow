@@ -1,10 +1,12 @@
+import { MouseEventHandler } from "react";
+
 export const Button = ({
   label,
   onClick,
   remove,
 }: {
   label: string;
-  onClick: () => void;
+  onClick: MouseEventHandler<HTMLButtonElement>;
   remove?: boolean;
 }) => (
   <button

@@ -9,9 +9,10 @@ import { TargetNodeItemMenuActionProps } from "./types";
 export const TargetNodeItemMenuAction = (
   props: TargetNodeItemMenuActionProps
 ) => {
-  const { index, sourceNodeId, id, name, data, handleUpdateNodeData } = props;
+  const { index, i, sourceNodeId, id, name, data, handleUpdateNodeData } =
+    props;
   const [value, setValue] = useState(name);
-  const { connectNode, removeEdge, updateNodeData } = useBoard();
+  const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
   const { data: flowData } = useFlow();
   const [newName, setNewName] = useState(name);
 
@@ -69,11 +70,12 @@ export const TargetNodeItemMenuAction = (
             className="mt-3 font-bold text-sm mb-1"
             htmlFor={`input_${index}`}
           >
-            Ação {index + 1}
+            Ação {i && i}
           </label>
           <div className="flex gap-4">
             <select
               value={newName}
+              onClick={(event) => event.stopPropagation()}
               onChange={(event) => {
                 event.stopPropagation();
                 setValue(event.target.value);
@@ -112,7 +114,8 @@ export const TargetNodeItemMenuAction = (
               })}
             </select>
             <button
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 if (!data) return;
 
                 const getValueById = data.targetNode.find(
@@ -134,6 +137,13 @@ export const TargetNodeItemMenuAction = (
           position={Position.Right}
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
+            const getValueById = nodes.find(
+              (item) => item.id === params.target
+            );
+            if (getValueById?.type !== "Action") {
+              alert("Você só pode conectar a ações");
+              return;
+            }
             handleUpdateNodeData(String(params.target), value || "");
             updateNodeData({
               targetId: String(params.target),

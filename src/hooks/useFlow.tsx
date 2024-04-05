@@ -52,10 +52,10 @@ interface FilterNode {
   argument?: string;
 }
 interface TargetNode {
-  NodeId: string;
+  nodeId: string;
   flowId?: string;
-  Sequence: string;
-  Name: string;
+  sequence: string;
+  name: string;
 }
 interface Position {
   x: number;

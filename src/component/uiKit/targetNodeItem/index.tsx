@@ -23,14 +23,16 @@ interface TargetNodeItemProps {
 export const TargetNodeItem = (props: TargetNodeItemProps) => {
   const { index, sourceNodeId, id, name, data, handleUpdateNodeData } = props;
   const [value, setValue] = useState(name);
-  const { connectNode, removeEdge, updateNodeData } = useBoard();
+  const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
 
-  const handleRemoveItem = (index: number, targetId?: string) => {
+  const handleRemoveItem = (targetId?: string) => {
     removeEdge(`source_${sourceNodeId}`);
     removeEdge(`target_${sourceNodeId}`);
     if (!data?.targetNode) return;
-    let provisoreItem = data.targetNode;
-    const removedItems = provisoreItem.splice(index, 1);
+    let provisoreItem = data.targetNode.filter(
+      (item) => item.nodeId !== sourceNodeId
+    );
+
     if (targetId) {
       updateNodeData({
         targetId: String(targetId),
@@ -90,6 +92,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               placeholder="opção do menu principal..."
               name="text"
               value={value}
+              onClick={(event) => event.stopPropagation()}
               onChange={(event) => {
                 setValue(event.target.value);
                 if (!data) return;
@@ -110,13 +113,14 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               }}
             />
             <button
-              onClick={() => {
+              onClick={(event) => {
+                event?.stopPropagation();
                 if (!data) return;
 
                 const getValueById = data.targetNode.find(
                   (item) => item.nodeId === sourceNodeId
                 );
-                handleRemoveItem(index, getValueById?.flowId);
+                handleRemoveItem(getValueById?.flowId);
               }}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
             >
@@ -132,6 +136,16 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
           position={Position.Right}
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
+            const getValueById = nodes.find(
+              (item) => item.id === params.target
+            );
+            if (
+              getValueById?.type !== "KPIDoc" &&
+              getValueById?.type !== "KPIText"
+            ) {
+              alert("Você só pode conectar a Documentos ou Mensagens");
+              return;
+            }
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),

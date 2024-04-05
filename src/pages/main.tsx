@@ -2,7 +2,6 @@ import { Header } from "../component/template/header";
 import { Action } from "../component/template/action";
 import { Document } from "../component/template/document";
 import { MainMenu } from "../component/template/mainMenu";
-import { ActionMenu } from "../component/template/actionMenu";
 import { Text } from "../component/template/text";
 import { Toolbox } from "../component/template/toolbox";
 import { Welcome } from "../component/template/welcome";
@@ -32,7 +31,6 @@ export default function Main() {
       Action,
       StartMenu: MainMenu,
       MenuItem: MainMenu,
-      ActionMenu,
       KPIDoc: Document,
       KPIText: Text,
     }),

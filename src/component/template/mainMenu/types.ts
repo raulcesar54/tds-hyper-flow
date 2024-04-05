@@ -17,6 +17,7 @@ export interface TargetNode {
   name?: string;
   nodeId: string;
   flowId?: string;
+  type: "action" | "text" | null;
   sequence?: string;
 }
 export interface MainMenuProps {

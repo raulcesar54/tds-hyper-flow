@@ -193,7 +193,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         },
         {
           id: actionMenu,
-          type: "ActionMenu",
+          type: "StartMenu",
           chatbot,
           parent: newNode.id,
           data: {
@@ -211,12 +211,14 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
                 flowId: backwardMenu,
                 name: "Menu Anterior",
                 sequence: "1",
+                type: "action",
               },
               {
                 nodeId: handleActionBackwardMenuId,
                 flowId: mainMenu,
                 name: "Menu Principal",
                 sequence: "2",
+                type: "action",
               },
             ],
             filterNode: [],
@@ -263,7 +265,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         alert("Não é permitido remover o inicio do bot.");
         return;
       }
-      if (localeItem.type === "StartMenu") {
+      if (localeItem.type === "StartMenu" && localeItem.data.sequence === "2") {
         alert("Não é permitido remover o menu de inicio do bot.");
         return;
       }
