@@ -35,11 +35,16 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
     handleRemoverItem,
   } = props;
   const [value, setValue] = useState(name);
-  const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
+  const {
+    connectNode,
+    removeEdge,
+    updateNodeData,
+    data: nodes,
+    edges,
+  } = useBoard();
 
   const handleRemove = () => {
     removeEdge(`source_${sourceNodeId}`);
-    removeEdge(`target_${sourceNodeId}`);
     handleRemoverItem();
   };
   useEffect(() => {
@@ -57,7 +62,6 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
       value: {
         title: item.name,
         name: item.name,
-        parent: item?.nodeId,
         sequence: String((itemIndex || 0) + 1),
         index: itemIndex,
       } as any,
@@ -102,6 +106,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                     value: {
                       title: event.target.value,
                       name: event.target.value,
+                      parent: id,
                       sequence: String(index + 1),
                       index,
                     } as any,

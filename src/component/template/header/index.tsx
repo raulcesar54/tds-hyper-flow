@@ -25,8 +25,8 @@ export const Header = () => {
           type: information.type,
           chatbot: information.chatbot,
           parent:
-            information.data.parent ||
             information.parent ||
+            information.data.parent ||
             "00000000-0000-0000-0000-000000000000",
           position: {
             ...information.position,

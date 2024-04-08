@@ -133,7 +133,12 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           data: {
             ...newNode.data,
             targetNode: [
-              { nodeId: actionMenu, name: newNode.data.name, sequence: "1" },
+              {
+                flowId: v4(),
+                nodeId: actionMenu,
+                name: newNode.data.name,
+                sequence: "1",
+              },
             ],
           },
         },
@@ -148,6 +153,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
             title: "Menu Anterior",
             statusMessage: "",
             document: "",
+            parent: actionMenu,
             documentOutput: "",
             message: "",
             image: "",
@@ -175,6 +181,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
             title: "Menu Principal",
             statusMessage: "",
             document: "",
+            parent: actionMenu,
             documentOutput: "",
             message: "",
             image: "",
@@ -234,7 +241,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           },
         },
       ];
-
       setNodes((lastValue: any) => [...lastValue, ...preparedSubItems]);
       return;
     }

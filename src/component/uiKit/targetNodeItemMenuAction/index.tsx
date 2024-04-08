@@ -94,6 +94,7 @@ export const TargetNodeItemMenuAction = (
                       title: event.target.value,
                       name: event.target.value,
                       sequence: String(index + 1),
+                      parent: id,
                       index,
                     } as any,
                   });

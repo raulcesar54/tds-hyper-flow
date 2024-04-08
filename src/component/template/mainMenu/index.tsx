@@ -11,7 +11,7 @@ import { MainMenuProps, TargetNode } from "./types";
 import { TargetNodeItemMenuAction } from "../../uiKit/targetNodeItemMenuAction";
 
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
-  const { updateNodeData } = useBoard();
+  const { updateNodeData, data: nodes } = useBoard();
   const [targetNodes, setTargetNode] = useState<TargetNode[]>(
     data.targetNode || []
   );
