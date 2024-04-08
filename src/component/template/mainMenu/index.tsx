@@ -44,6 +44,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           ...(data.targetNode || []),
           {
             flowId: v4(),
+            nodeId: "00000000-0000-0000-0000-000000000000",
             name: "",
             sequence: String(data?.targetNode?.length + 1 || 0),
             type,
@@ -161,19 +162,22 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                     index={index}
                     id={id}
                     i={indexAction}
-                    data={data}
+                    data={data as any}
                     key={item.flowId}
                     handleRemoveItem={() =>
                       item.flowId && handleRemoveItem(item.flowId, item.nodeId)
                     }
+                    handleRemoverItemAnotherTargetId={(paramId) => {
+                      const idx = targetNodes.findIndex(
+                        (i) => i.nodeId === paramId
+                      );
+                      targetNodes[idx].nodeId =
+                        "00000000-0000-0000-0000-000000000000";
+                    }}
                     handleUpdateNodeData={(target, value) => {
                       targetNodes[index].name = value;
                       targetNodes[index].sequence = String(index + 1);
-                      targetNodes[index].flowId = target;
-                      updateNodeData({
-                        targetId: target,
-                        value: { title: value },
-                      });
+                      targetNodes[index].nodeId = target;
                     }}
                   />
                 )

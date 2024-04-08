@@ -45,7 +45,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
   useEffect(() => {
     const item = data?.targetNode.find((item) => item.flowId === sourceNodeId);
     const itemIndex = data?.targetNode.findIndex(
-      (item) => item.nodeId === sourceNodeId
+      (item) => item.flowId === sourceNodeId
     );
     if (
       item?.nodeId === "00000000-0000-0000-0000-000000000000" ||
@@ -102,7 +102,6 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                     value: {
                       title: event.target.value,
                       name: event.target.value,
-                      // parent: getValueById?.nodeId,
                       sequence: String(index + 1),
                       index,
                     } as any,

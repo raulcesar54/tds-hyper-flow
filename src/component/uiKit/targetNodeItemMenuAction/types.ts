@@ -3,8 +3,16 @@ export interface TargetNodeItemMenuActionProps {
   id?: string;
   index: number;
   name?: string;
-  data?: any;
+  data?: {
+    targetNode: {
+      name: string;
+      nodeId: string;
+      sequence: string;
+      flowId?: string;
+    }[];
+  };
   i?: number;
+  handleRemoverItemAnotherTargetId: (targetId: string) => void;
   handleRemoveItem: () => void;
-  handleUpdateNodeData: (targetId: string, value: string) => void;
+  handleUpdateNodeData: (targetId: string, value?: string) => void;
 }

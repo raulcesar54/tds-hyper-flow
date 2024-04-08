@@ -26,7 +26,6 @@ export const Action = ({ data, id, ...props }: Props) => {
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  w-[320px] flex flex-col rounded-lg bg-white`}
     >
-      {id}
       <div className={`flex flex-col   ${!data.enabled && "opacity-30"}`}>
         <CardHeader
           iconName="FiCpu"

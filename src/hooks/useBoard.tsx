@@ -160,8 +160,8 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           selected: false,
           dragging: false,
           position: {
-            x: position.x + 700,
-            y: position.y,
+            x: position.x + 750,
+            y: position.y + 200,
           },
         },
         {
@@ -187,8 +187,8 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           selected: false,
           dragging: false,
           position: {
-            x: position.x + 700,
-            y: position.y + 150,
+            x: position.x + 750,
+            y: position.y + 300,
           },
         },
         {
@@ -207,15 +207,15 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
             image: "",
             targetNode: [
               {
-                nodeId: handleActionMenuId,
-                flowId: backwardMenu,
+                flowId: handleActionMenuId,
+                nodeId: backwardMenu,
                 name: "Menu Anterior",
                 sequence: "1",
                 type: "action",
               },
               {
-                nodeId: handleActionBackwardMenuId,
-                flowId: mainMenu,
+                flowId: handleActionBackwardMenuId,
+                nodeId: mainMenu,
                 name: "Menu Principal",
                 sequence: "2",
                 type: "action",
@@ -229,7 +229,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
           selected: false,
           dragging: false,
           position: {
-            x: position.x + 360,
+            x: position.x + 400,
             y: position.y - 100,
           },
         },

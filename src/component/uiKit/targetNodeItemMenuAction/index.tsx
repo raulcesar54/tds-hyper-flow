@@ -31,10 +31,10 @@ export const TargetNodeItemMenuAction = (
   };
   useEffect(() => {
     const item = data?.targetNode.find(
-      (item: any) => item.nodeId === sourceNodeId
+      (item: any) => item.flowId === sourceNodeId
     );
     const itemIndex = data?.targetNode.findIndex(
-      (item: any) => item.nodeId === sourceNodeId
+      (item: any) => item.flowId === sourceNodeId
     );
     if (
       item?.nodeId === "00000000-0000-0000-0000-000000000000" ||
@@ -47,15 +47,16 @@ export const TargetNodeItemMenuAction = (
         title: item.name,
         name: item.name,
         sequence: String((itemIndex || 0) + 1),
+        parent: item?.nodeId,
         index: itemIndex,
       } as any,
     });
     setValue(item.name);
     connectNode({
       source: String(id),
-      sourceHandle: `source_${item.nodeId}`,
+      sourceHandle: `source_${item.flowId}`,
       target: item.nodeId,
-      targetHandle: `target_${item.flowId}`,
+      targetHandle: `target_${item.nodeId}`,
     });
   }, []);
 
@@ -68,35 +69,35 @@ export const TargetNodeItemMenuAction = (
             htmlFor={`input_${index}`}
           >
             Ação {i && i}
-            {index}
           </label>
           <div className="flex gap-4">
             <select
               value={newName}
               onClick={(event) => event.stopPropagation()}
               onChange={(event) => {
-                event.stopPropagation();
                 setValue(event.target.value);
-                if (!data) return;
-                const getValueById = data.targetNode.find(
-                  (item: any) => item.nodeId === sourceNodeId
-                );
                 setNewName(event.target.value);
 
-                handleUpdateNodeData(
-                  String(getValueById?.flowId),
-                  event.target.value
+                if (!data) return;
+                const getValueById = data.targetNode.find(
+                  (item) => item.flowId === sourceNodeId
                 );
 
-                updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(getValueById?.flowId),
-                  value: {
-                    title: event.target.value,
-                    name: event.target.value,
-                    sequence: String(index + 1),
-                    index,
-                  } as any,
-                });
+                handleUpdateNodeData(
+                  String(getValueById?.nodeId),
+                  event.target.value
+                );
+                if (getValueById?.nodeId) {
+                  updateNodeData<{ title: string | null; index: number }>({
+                    targetId: String(getValueById?.nodeId),
+                    value: {
+                      title: event.target.value,
+                      name: event.target.value,
+                      sequence: String(index + 1),
+                      index,
+                    } as any,
+                  });
+                }
               }}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
             >
@@ -138,10 +139,15 @@ export const TargetNodeItemMenuAction = (
               alert("Você só pode conectar a ações");
               return;
             }
-            handleUpdateNodeData(String(params.target), value || "");
+            handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
-              value: { sequence: String(index + 1), parent: id },
+              value: {
+                sequence: String(index + 1),
+                parent: id,
+                title: value,
+                name: value,
+              },
             });
             connectNode(params);
           }}
