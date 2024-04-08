@@ -49,12 +49,14 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
     const findItem = edges.find(
       (item: any) => item.sourceHandle === `source_${sourceNodeId}`
     );
-    setEdges((edge: any) =>
-      edge.filter(
-        (item: any) =>
-          item.id !== findItem.id && item.target !== findItem.target
-      )
-    );
+    if (findItem) {
+      setEdges((edge: any) =>
+        edge.filter(
+          (item: any) =>
+            item?.id !== findItem?.id && item?.target !== findItem?.target
+        )
+      );
+    }
     removeEdge(`source_${sourceNodeId}`);
     handleRemoverItem();
   };

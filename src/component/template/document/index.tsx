@@ -66,7 +66,6 @@ export const Document = ({ data, id, ...props }: Props) => {
       }  flex w-[320px] flex-col rounded-lg bg-white
       `}
     >
-      {id}
       <div
         className={` flex flex-col
         ${!data.enabled && "opacity-30"}

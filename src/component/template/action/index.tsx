@@ -1,11 +1,14 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Position } from "reactflow";
 import { useProperty } from "../../../hooks/useProperty";
 import { CardHeader } from "../../uiKit/cardHeader";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { Props } from "./types";
+import { useFlow } from "../../../hooks/useFlow";
+import { useBoard } from "../../../hooks/useBoard";
 
 export const Action = ({ data, id, ...props }: Props) => {
+  const { updateNodeData } = useBoard();
   const { handleSelectInfo } = useProperty();
 
   const handleClick = useCallback(() => {
@@ -18,7 +21,14 @@ export const Action = ({ data, id, ...props }: Props) => {
       customInfo: { ...data },
     });
   }, [props.selected, data]);
-
+  useEffect(() => {
+    updateNodeData({
+      targetId: id,
+      value: {
+        statusMessage: data.statusMessage || "Ação",
+      },
+    });
+  }, []);
   return (
     <div
       onClick={handleClick}
@@ -39,7 +49,7 @@ export const Action = ({ data, id, ...props }: Props) => {
             alt="image_step"
           />
         )}
-        {data?.statusMessage && (
+        {data?.statusMessage && data.statusMessage !== "Ação" && (
           <h1
             dangerouslySetInnerHTML={{
               __html: `${data?.statusMessage?.replace(

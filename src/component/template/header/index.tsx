@@ -43,7 +43,11 @@ export const Header = () => {
               information.data.message ||
               "00000000-0000-0000-0000-000000000000",
             image: information.data.image || "",
-            targetNode: information.data.targetNode || [],
+            targetNode:
+              information.data.targetNode?.map((item, index) => ({
+                ...item,
+                name: item.name || `Opção ${index + 1}`,
+              })) || [],
             filterNode: information.data.filterNode || [],
             enabled: information.data.enabled,
           },
