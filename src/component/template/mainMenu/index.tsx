@@ -11,12 +11,11 @@ import { MainMenuProps, TargetNode } from "./types";
 import { TargetNodeItemMenuAction } from "../../uiKit/targetNodeItemMenuAction";
 
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
-  const { updateNodeData, data: nodes } = useBoard();
+  const { updateNodeData, updateNodeParams, data: nodes, edges } = useBoard();
   const [targetNodes, setTargetNode] = useState<TargetNode[]>(
     data.targetNode || []
   );
   const { handleSelectInfo } = useProperty();
-
   useEffect(() => {
     if (!data.targetNode) return;
     setTargetNode(data.targetNode);
@@ -63,13 +62,18 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       },
     });
     if (nodeId) {
+      updateNodeParams({
+        targetId: nodeId,
+        value: {
+          parent: null,
+        },
+      });
       updateNodeData({
         targetId: nodeId,
         value: { sequence: 0, parent: null, title: "", name: "" },
       });
     }
   };
-
   let indexAction = 0;
   let indexText = 0;
   return (

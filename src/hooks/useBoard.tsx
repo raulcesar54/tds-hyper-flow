@@ -15,7 +15,7 @@ interface nodeType {
   };
   type: string;
 }
-interface updateNodeData<T> {
+interface iupdateNodeData<T> {
   targetId: string;
   value: T;
 }
@@ -27,7 +27,8 @@ interface contextBoardProps {
   removeEdge: (sourceHandle: string) => void;
   setNodes: (data: any) => void;
   setEdges: (data: any) => void;
-  updateNodeData: <T>(params: updateNodeData<T>) => void;
+  updateNodeData: <T>(params: iupdateNodeData<T>) => void;
+  updateNodeParams: <T>(params: iupdateNodeData<T>) => void;
   onEdgesChange: any;
   handleNodeChange: (node: any) => void;
   edges: any;
@@ -43,20 +44,22 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (!data?.nodes) return;
-    setNodes(data?.nodes);
     setEdges(data?.edges);
+    setNodes(data?.nodes);
   }, [loading]);
   useEffect(() => {
     const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
     if (!getWelcomeNode) return;
     if (!edges.length) return;
     setEdges((edges) =>
-      edges.map((item) => {
-        if (item.source === getWelcomeNode.id) {
-          return { ...item, type: "base" };
-        }
-        return item;
-      })
+      edges
+        .filter((item) => item.id !== "00000000-0000-0000-0000-000000000000")
+        .map((item) => {
+          if (item.source === getWelcomeNode.id) {
+            return { ...item, type: "base" };
+          }
+          return item;
+        })
     );
   }, [data]);
 
@@ -77,7 +80,20 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     );
   }
   function handleNodeChange(node: any) {}
-  function updateNodeData<T>({ targetId, value }: updateNodeData<T>) {
+  function updateNodeParams<T>({ targetId, value }: iupdateNodeData<T>) {
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === targetId) {
+          return {
+            ...node,
+            ...value,
+          };
+        }
+        return node;
+      })
+    );
+  }
+  function updateNodeData<T>({ targetId, value }: iupdateNodeData<T>) {
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === targetId) {
@@ -291,6 +307,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         setNodes,
         edges,
         updateNodeData,
+        updateNodeParams,
         onEdgesChange,
         handleNodeChange,
       }}

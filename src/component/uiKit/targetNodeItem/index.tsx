@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { Position } from "reactflow";
 import { useBoard } from "../../../hooks/useBoard";
-import { HandleStyled } from "../handleStyle";
+import { HandleStyled, HandleVectorItem } from "../handleStyle";
 
 interface TargetNodeItemProps {
   sourceNodeId?: string;
@@ -39,11 +39,22 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
     connectNode,
     removeEdge,
     updateNodeData,
+    updateNodeParams,
     data: nodes,
     edges,
+    setEdges,
   } = useBoard();
 
   const handleRemove = () => {
+    const findItem = edges.find(
+      (item: any) => item.sourceHandle === `source_${sourceNodeId}`
+    );
+    setEdges((edge: any) =>
+      edge.filter(
+        (item: any) =>
+          item.id !== findItem.id && item.target !== findItem.target
+      )
+    );
     removeEdge(`source_${sourceNodeId}`);
     handleRemoverItem();
   };
@@ -101,6 +112,12 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                 );
                 handleUpdateNodeData(String(getValueById?.nodeId), value);
                 if (getValueById?.nodeId) {
+                  updateNodeParams({
+                    targetId: String(getValueById?.nodeId),
+                    value: {
+                      parent: id,
+                    },
+                  });
                   updateNodeData<{ title: string | null; index: number }>({
                     targetId: String(getValueById?.nodeId),
                     value: {
@@ -128,8 +145,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
         </div>
       </div>
       <div className="relative">
-        <HandleStyled
-          isVectorItems
+        <HandleVectorItem
           type="source"
           position={Position.Right}
           id={`source_${sourceNodeId}`}
@@ -145,7 +161,12 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               alert("Você só pode conectar a Documentos ou Mensagens");
               return;
             }
-
+            updateNodeParams({
+              targetId: String(params.target),
+              value: {
+                parent: id,
+              },
+            });
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
@@ -156,6 +177,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                 name: value,
               },
             });
+
             connectNode(params);
           }}
         />

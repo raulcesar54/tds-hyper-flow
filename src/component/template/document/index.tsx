@@ -8,6 +8,7 @@ import { useProperty } from "../../../hooks/useProperty";
 import { useBoard } from "../../../hooks/useBoard";
 import { groupBy } from "lodash";
 import { Filters } from "../../uiKit/filters";
+import { v4 } from "uuid";
 
 export const Document = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
@@ -18,6 +19,7 @@ export const Document = ({ data, id, ...props }: Props) => {
     const doc = groupBy(documents, "Group");
     const info = Object.values(doc);
     const data = info.map((item) => ({
+      id: v4(),
       label: item[0].Group,
       options: item,
     }));
@@ -64,6 +66,7 @@ export const Document = ({ data, id, ...props }: Props) => {
       }  flex w-[320px] flex-col rounded-lg bg-white
       `}
     >
+      {id}
       <div
         className={` flex flex-col
         ${!data.enabled && "opacity-30"}
@@ -107,23 +110,21 @@ export const Document = ({ data, id, ...props }: Props) => {
             }}
             className="w-full bg-slate-50 p-2 py-3 text-sm placeholder:px-2 placeholder:text-sm focus:bg-slate-100 disabled:bg-slate-200"
           >
-            <option value="" selected disabled hidden>
+            <option value="" disabled hidden>
               Escolha um relatório
             </option>
 
             {prepareDocuments.map((item) => {
               return (
-                <>
-                  <optgroup key={item.label} label={item.label}>
-                    {item.options.map((doc) => {
-                      return (
-                        <option value={doc.Id} key={doc.Id}>
-                          {doc.Name}
-                        </option>
-                      );
-                    })}
-                  </optgroup>
-                </>
+                <optgroup key={item.id} label={item.label}>
+                  {item.options.map((doc) => {
+                    return (
+                      <option value={doc.Id} key={doc.Name}>
+                        {doc.Name}
+                      </option>
+                    );
+                  })}
+                </optgroup>
               );
             })}
           </select>

@@ -1,5 +1,5 @@
 import { Position } from "reactflow";
-import { HandleStyled } from "../handleStyle";
+import { HandleStyled, HandleVectorItem } from "../handleStyle";
 import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
@@ -102,7 +102,7 @@ export const TargetNodeItemMenuAction = (
               }}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 disabled:bg-slate-200 w-full"
             >
-              <option value="" selected disabled hidden>
+              <option value="" disabled hidden>
                 Escolha uma ação
               </option>
               {flowData?.chatBot.Actions.map((item) => {
@@ -127,8 +127,7 @@ export const TargetNodeItemMenuAction = (
         </div>
       </div>
       <div className="relative">
-        <HandleStyled
-          isVectorItems
+        <HandleVectorItem
           type="source"
           position={Position.Right}
           id={`source_${sourceNodeId}`}
