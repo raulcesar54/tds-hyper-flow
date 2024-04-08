@@ -9,28 +9,25 @@ import { TargetNodeItemMenuActionProps } from "./types";
 export const TargetNodeItemMenuAction = (
   props: TargetNodeItemMenuActionProps
 ) => {
-  const { index, i, sourceNodeId, id, name, data, handleUpdateNodeData } =
-    props;
+  const {
+    index,
+    i,
+    sourceNodeId,
+    id,
+    name,
+    data,
+    handleUpdateNodeData,
+    handleRemoveItem,
+  } = props;
   const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
   const { data: flowData } = useFlow();
   const [newName, setNewName] = useState(name);
 
-  const handleRemoveItem = (index: number, targetId?: string) => {
+  const handleRemove = () => {
     removeEdge(`source_${sourceNodeId}`);
     removeEdge(`target_${sourceNodeId}`);
-    if (!data?.targetNode) return;
-    let provisoreItem = data.targetNode;
-    const removedItems = provisoreItem.splice(index, 1);
-    if (targetId) {
-      updateNodeData({
-        targetId: String(id),
-        value: {
-          ...data,
-          targetNode: provisoreItem,
-        },
-      });
-    }
+    handleRemoveItem();
   };
   useEffect(() => {
     const item = data?.targetNode.find(
@@ -40,12 +37,12 @@ export const TargetNodeItemMenuAction = (
       (item: any) => item.nodeId === sourceNodeId
     );
     if (
-      item?.flowId === "00000000-0000-0000-0000-000000000000" ||
-      !item?.flowId
+      item?.nodeId === "00000000-0000-0000-0000-000000000000" ||
+      !item?.nodeId
     )
       return;
     updateNodeData<{ title: string | null; index: number }>({
-      targetId: String(item?.flowId),
+      targetId: String(item?.nodeId),
       value: {
         title: item.name,
         name: item.name,
@@ -57,7 +54,7 @@ export const TargetNodeItemMenuAction = (
     connectNode({
       source: String(id),
       sourceHandle: `source_${item.nodeId}`,
-      target: item.flowId,
+      target: item.nodeId,
       targetHandle: `target_${item.flowId}`,
     });
   }, []);
@@ -71,6 +68,7 @@ export const TargetNodeItemMenuAction = (
             htmlFor={`input_${index}`}
           >
             Ação {i && i}
+            {index}
           </label>
           <div className="flex gap-4">
             <select
@@ -117,11 +115,7 @@ export const TargetNodeItemMenuAction = (
               onClick={(event) => {
                 event.stopPropagation();
                 if (!data) return;
-
-                const getValueById = data.targetNode.find(
-                  (item: any) => item.nodeId === sourceNodeId
-                );
-                handleRemoveItem(index);
+                handleRemove();
               }}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
             >

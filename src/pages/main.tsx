@@ -76,7 +76,7 @@ export default function Main() {
       flowData.chatBot.position.x &&
       flowData.chatBot.position.y
     ) {
-      reactFlowInstance.setViewport({
+      reactFlowInstance?.setViewport({
         zoom: flowData?.chatBot?.zoom || 0,
         x: flowData?.chatBot?.position?.x || 0,
         y: flowData?.chatBot?.position?.y || 0,

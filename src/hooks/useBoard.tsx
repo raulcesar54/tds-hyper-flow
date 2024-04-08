@@ -61,8 +61,8 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
   }, [data]);
 
   function removeEdge(sourceHandleName: string) {
-    return setEdges((edegs) =>
-      edegs.filter((item) => item.sourceHandle !== sourceHandleName)
+    return setEdges((edges) =>
+      edges.filter((item) => item.sourceHandle !== sourceHandleName)
     );
   }
   function connectNode(params: Edge | Connection) {

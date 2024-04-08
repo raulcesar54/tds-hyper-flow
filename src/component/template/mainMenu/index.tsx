@@ -35,7 +35,42 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       customInfo: data,
     });
   };
-  let i = 0;
+  const handleAddNodeData = (type: "action" | "text") => {
+    updateNodeData({
+      targetId: id,
+      value: {
+        ...data,
+        targetNode: [
+          ...(data.targetNode || []),
+          {
+            flowId: v4(),
+            name: "",
+            sequence: String(data?.targetNode?.length + 1 || 0),
+            type,
+          },
+        ],
+      },
+    });
+  };
+  const handleRemoveItem = (flowId: string, nodeId?: string) => {
+    const removedItems = targetNodes.filter((data) => data.flowId !== flowId);
+    updateNodeData({
+      targetId: id,
+      value: {
+        ...data,
+        targetNode: removedItems,
+      },
+    });
+    if (nodeId) {
+      updateNodeData({
+        targetId: nodeId,
+        value: { sequence: 0, parent: null, title: "", name: "" },
+      });
+    }
+  };
+
+  let indexAction = 0;
+  let indexText = 0;
   return (
     <div
       onClick={handleClick}
@@ -68,31 +103,37 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       <div className="mt-2 flex flex-col">
         <h1 className="font-semibold">Mensagem ou Documento</h1>
         {targetNodes.filter((item) => item.type === "text").length ? (
-          targetNodes
-            .filter((item) => item.type === "text")
-            .map((item, index) => {
-              return (
-                item.nodeId && (
+          targetNodes.map((item, index) => {
+            item.type === "text" && indexText++;
+            return item.type === "text"
+              ? item.flowId && (
                   <TargetNodeItem
-                    sourceNodeId={item.nodeId}
+                    sourceNodeId={item.flowId}
                     name={item.name || ""}
                     index={index}
                     id={id}
+                    i={indexText}
                     data={data as any}
-                    key={item.nodeId}
+                    key={item.flowId}
+                    handleRemoverItemAnotherTargetId={(paramId) => {
+                      const idx = targetNodes.findIndex(
+                        (i) => i.nodeId === paramId
+                      );
+                      targetNodes[idx].nodeId =
+                        "00000000-0000-0000-0000-000000000000";
+                    }}
+                    handleRemoverItem={() =>
+                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
+                    }
                     handleUpdateNodeData={(target, value) => {
                       targetNodes[index].name = value;
                       targetNodes[index].sequence = String(index + 1);
-                      targetNodes[index].flowId = target;
-                      updateNodeData({
-                        targetId: target,
-                        value: { title: value, name: value },
-                      });
+                      targetNodes[index].nodeId = target;
                     }}
                   />
                 )
-              );
-            })
+              : null;
+          })
         ) : (
           <small className="text-slate-400">Sem textos vinculados</small>
         )}
@@ -101,21 +142,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
             label="Adicionar texto"
             onClick={(event) => {
               event?.stopPropagation();
-              updateNodeData({
-                targetId: id,
-                value: {
-                  ...data,
-                  targetNode: [
-                    ...(data.targetNode || []),
-                    {
-                      nodeId: v4(),
-                      name: "",
-                      sequence: String(data?.targetNode?.length + 1 || 0),
-                      type: "text",
-                    },
-                  ],
-                },
-              });
+              handleAddNodeData("text");
             }}
           />
         </div>
@@ -125,18 +152,20 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         <h1 className="font-semibold">Ações</h1>
         {targetNodes.filter((item) => item.type === "action").length ? (
           targetNodes.map((item, index) => {
-            item.type === "action" && i++;
+            item.type === "action" && indexAction++;
             return item.type === "action"
-              ? item.nodeId && (
+              ? item.flowId && (
                   <TargetNodeItemMenuAction
-                    sourceNodeId={item.nodeId}
+                    sourceNodeId={item.flowId}
                     name={item.name || ""}
                     index={index}
                     id={id}
-                    i={i}
+                    i={indexAction}
                     data={data}
-                    key={item.nodeId}
-                    handleRemoveItem={() => {}}
+                    key={item.flowId}
+                    handleRemoveItem={() =>
+                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
+                    }
                     handleUpdateNodeData={(target, value) => {
                       targetNodes[index].name = value;
                       targetNodes[index].sequence = String(index + 1);
@@ -158,21 +187,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
             label="Adicionar ações"
             onClick={(event) => {
               event.stopPropagation();
-              updateNodeData({
-                targetId: id,
-                value: {
-                  ...data,
-                  targetNode: [
-                    ...(data.targetNode || []),
-                    {
-                      nodeId: v4(),
-                      name: "",
-                      sequence: String(data?.targetNode?.length + 1 || 0),
-                      type: "action",
-                    },
-                  ],
-                },
-              });
+              handleAddNodeData("action");
             }}
           />
         </div>

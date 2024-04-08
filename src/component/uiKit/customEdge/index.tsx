@@ -36,18 +36,18 @@ export function CustomEdge({
       targetId: String(target),
       value: { sequence: null, parent: "", name: "", title: "" },
     });
-
     const selectItem = data.find((item) => item.id === source);
     const treatTargetNode = selectItem?.data?.targetNode?.map((item) => {
-      if (item.flowId === target) {
+      if (item.nodeId === target) {
         return {
           ...item,
-          flowId: "00000000-0000-0000-0000-000000000000",
+          nodeId: "00000000-0000-0000-0000-000000000000",
         };
       }
       return item;
     });
     if (!selectItem) return;
+
     updateNodeData({
       targetId: selectItem.id,
       value: {

@@ -1,14 +1,15 @@
-import { Position } from "reactflow";
-import { HandleStyled } from "../handleStyle";
-import { useBoard } from "../../../hooks/useBoard";
 import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
+import { Position } from "reactflow";
+import { useBoard } from "../../../hooks/useBoard";
+import { HandleStyled } from "../handleStyle";
 
 interface TargetNodeItemProps {
   sourceNodeId?: string;
   id?: string;
   index: number;
   name: string;
+  i: number;
   data?: {
     targetNode: {
       name: string;
@@ -17,52 +18,46 @@ interface TargetNodeItemProps {
       flowId?: string;
     }[];
   };
+  handleRemoverItem: () => void;
+  handleRemoverItemAnotherTargetId: (targetId: string) => void;
   handleUpdateNodeData: (targetId: string, value: string) => void;
 }
 
 export const TargetNodeItem = (props: TargetNodeItemProps) => {
-  const { index, sourceNodeId, id, name, data, handleUpdateNodeData } = props;
+  const {
+    index,
+    sourceNodeId,
+    id,
+    name,
+    i,
+    data,
+    handleUpdateNodeData,
+    handleRemoverItem,
+  } = props;
   const [value, setValue] = useState(name);
   const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
 
-  const handleRemoveItem = (targetId?: string) => {
+  const handleRemove = () => {
     removeEdge(`source_${sourceNodeId}`);
     removeEdge(`target_${sourceNodeId}`);
-    if (!data?.targetNode) return;
-    let provisoreItem = data.targetNode.filter(
-      (item) => item.nodeId !== sourceNodeId
-    );
-
-    if (targetId) {
-      updateNodeData({
-        targetId: String(targetId),
-        value: { sequence: String(index + 1), parent: "", name: "", title: "" },
-      });
-    }
-    updateNodeData({
-      targetId: String(id),
-      value: {
-        ...data,
-        targetNode: provisoreItem,
-      },
-    });
+    handleRemoverItem();
   };
   useEffect(() => {
-    const item = data?.targetNode.find((item) => item.nodeId === sourceNodeId);
+    const item = data?.targetNode.find((item) => item.flowId === sourceNodeId);
     const itemIndex = data?.targetNode.findIndex(
       (item) => item.nodeId === sourceNodeId
     );
     if (
-      item?.flowId === "00000000-0000-0000-0000-000000000000" ||
-      !item?.flowId
+      item?.nodeId === "00000000-0000-0000-0000-000000000000" ||
+      !item?.nodeId
     )
       return;
     updateNodeData<{ title: string | null; index: number }>({
-      targetId: String(item?.flowId),
+      targetId: String(item?.nodeId),
       value: {
         title: item.name,
         name: item.name,
-        parent: item?.flowId,
+        parent: item?.nodeId,
         sequence: String((itemIndex || 0) + 1),
         index: itemIndex,
       } as any,
@@ -70,11 +65,12 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
     setValue(item.name);
     connectNode({
       source: String(id),
-      sourceHandle: `source_${item.nodeId}`,
-      target: item.flowId,
-      targetHandle: `target_${item.flowId}`,
+      sourceHandle: `source_${item.flowId}`,
+      target: item.nodeId,
+      targetHandle: `target_${item.nodeId}`,
     });
   }, []);
+
   return (
     <>
       <div className="flex flex-row items-center gap-2 justify-between">
@@ -83,7 +79,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             className="mt-3 font-bold text-sm mb-1"
             htmlFor={`input_${index}`}
           >
-            Opção {index + 1}
+            Opção {i}
           </label>
           <div className="flex gap-4">
             <input
@@ -97,30 +93,28 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                 setValue(event.target.value);
                 if (!data) return;
                 const getValueById = data.targetNode.find(
-                  (item) => item.nodeId === sourceNodeId
+                  (item) => item.flowId === sourceNodeId
                 );
-                handleUpdateNodeData(String(getValueById?.flowId), value);
-                updateNodeData<{ title: string | null; index: number }>({
-                  targetId: String(getValueById?.flowId),
-                  value: {
-                    title: event.target.value,
-                    name: event.target.value,
-                    parent: getValueById?.flowId,
-                    sequence: String(index + 1),
-                    index,
-                  } as any,
-                });
+                handleUpdateNodeData(String(getValueById?.nodeId), value);
+                if (getValueById?.nodeId) {
+                  updateNodeData<{ title: string | null; index: number }>({
+                    targetId: String(getValueById?.nodeId),
+                    value: {
+                      title: event.target.value,
+                      name: event.target.value,
+                      // parent: getValueById?.nodeId,
+                      sequence: String(index + 1),
+                      index,
+                    } as any,
+                  });
+                }
               }}
             />
             <button
               onClick={(event) => {
                 event?.stopPropagation();
                 if (!data) return;
-
-                const getValueById = data.targetNode.find(
-                  (item) => item.nodeId === sourceNodeId
-                );
-                handleRemoveItem(getValueById?.flowId);
+                handleRemove();
               }}
               className="flex flex-1 p-3 items-center bg-slate-50 rounded-md hover:bg-slate-200 cursor-pointer"
             >
@@ -139,6 +133,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             const getValueById = nodes.find(
               (item) => item.id === params.target
             );
+
             if (
               getValueById?.type !== "KPIDoc" &&
               getValueById?.type !== "KPIText"
@@ -146,10 +141,16 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               alert("Você só pode conectar a Documentos ou Mensagens");
               return;
             }
+
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
-              value: { sequence: String(index + 1), parent: id },
+              value: {
+                sequence: String(index + 1),
+                parent: id,
+                title: value,
+                name: value,
+              },
             });
             connectNode(params);
           }}

@@ -1,9 +1,9 @@
+import { useCallback } from "react";
 import { Position } from "reactflow";
-import { HandleStyled } from "../../uiKit/handleStyle";
-import { useCallback, useEffect } from "react";
-import { Props } from "./types";
 import { useProperty } from "../../../hooks/useProperty";
 import { CardHeader } from "../../uiKit/cardHeader";
+import { HandleStyled } from "../../uiKit/handleStyle";
+import { Props } from "./types";
 
 export const Action = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
@@ -26,6 +26,7 @@ export const Action = ({ data, id, ...props }: Props) => {
         props.selected ? "border-blue-400" : "border-[#eee] "
       }  w-[320px] flex flex-col rounded-lg bg-white`}
     >
+      {id}
       <div className={`flex flex-col   ${!data.enabled && "opacity-30"}`}>
         <CardHeader
           iconName="FiCpu"
