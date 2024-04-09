@@ -40,7 +40,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Mensagem",
-      description: "Vincular Mensagem",
+      description: "Mensagem",
       icon: "FiType",
       nodeId: id,
       type: "Message",
@@ -72,7 +72,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
         <CardHeader
           iconName="FiMessageSquare"
           title={data.title || "Mensagem"}
-          subtitle="Vincular Mensagem"
+          subtitle="Mensagem"
         />
         <div className=" flex flex-col">
           {data.image && (
@@ -82,7 +82,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
               alt="image_step"
             />
           )}
-          <h1
+          {/* <h1
             dangerouslySetInnerHTML={{
               __html: `${data?.statusMessage?.replace(
                 "{{username}}",
@@ -90,7 +90,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
               )}`,
             }}
             className=" mt-3 max-w-[250px] text-sm text-slate-800 "
-          />
+          /> */}
           <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
             Selecione a Mensagem
           </label>

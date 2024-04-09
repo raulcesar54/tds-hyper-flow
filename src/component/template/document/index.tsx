@@ -51,7 +51,7 @@ export const Document = ({ data, id, ...props }: Props) => {
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Documento",
-      description: "Vincular Documento",
+      description: "Documento",
       icon: "FiFileText",
       nodeId: id,
       type: "Document",
@@ -73,7 +73,7 @@ export const Document = ({ data, id, ...props }: Props) => {
       >
         <CardHeader
           iconName="FiFileText"
-          subtitle="Vincular Documento"
+          subtitle="Documento"
           title={data.title || "Documento"}
         />
         {data.image && (
@@ -83,7 +83,7 @@ export const Document = ({ data, id, ...props }: Props) => {
             alt="image_step"
           />
         )}
-        <h1
+        {/* <h1
           dangerouslySetInnerHTML={{
             __html: `${data?.statusMessage?.replace(
               "{{username}}",
@@ -91,7 +91,7 @@ export const Document = ({ data, id, ...props }: Props) => {
             )}`,
           }}
           className=" mt-3 max-w-[250px] text-sm text-slate-800 "
-        />
+        /> */}
         <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
           Selecione a Mensagem
         </label>

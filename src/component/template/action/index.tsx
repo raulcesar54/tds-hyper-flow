@@ -39,7 +39,7 @@ export const Action = ({ data, id, ...props }: Props) => {
             alt="image_step"
           />
         )}
-        {data?.statusMessage && data.statusMessage !== "Ação" && (
+        {/* {data?.statusMessage && data.statusMessage !== "Ação" && (
           <h1
             dangerouslySetInnerHTML={{
               __html: `${data?.statusMessage?.replace(
@@ -49,7 +49,7 @@ export const Action = ({ data, id, ...props }: Props) => {
             }}
             className="max-w-[250px] mt-1 text-sm text-slate-800 "
           />
-        )}
+        )} */}
         <HandleStyled
           type="target"
           position={Position.Left}

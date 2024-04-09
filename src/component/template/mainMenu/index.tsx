@@ -101,7 +101,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           alt="image_step"
         />
       )}
-      <h1
+      {/* <h1
         dangerouslySetInnerHTML={{
           __html: `${data?.statusMessage?.replace(
             "{{username}}",
@@ -109,7 +109,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           )}`,
         }}
         className=" mt-3 max-w-[250px] text-sm text-slate-800 "
-      />
+      /> */}
       <hr className="mt-4" />
       <div className="mt-2 flex flex-col">
         <h1 className="font-semibold">Mensagem ou Documento</h1>
