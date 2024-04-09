@@ -11,7 +11,7 @@ export const Action = ({ data, id, ...props }: Props) => {
   const handleClick = useCallback(() => {
     handleSelectInfo({
       label: data.title || "Ações",
-      description: "Vincular Ação",
+      description: "Ação",
       icon: "FiCpu",
       nodeId: id,
       type: "Action",
