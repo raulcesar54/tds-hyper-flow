@@ -20,13 +20,31 @@ export const TargetNodeItemMenuAction = (
     handleRemoveItem,
   } = props;
   const [value, setValue] = useState(name);
-  const { connectNode, removeEdge, updateNodeData, data: nodes } = useBoard();
+  const {
+    connectNode,
+    removeEdge,
+    updateNodeParams,
+    updateNodeData,
+    setEdges,
+    edges,
+    data: nodes,
+  } = useBoard();
   const { data: flowData } = useFlow();
   const [newName, setNewName] = useState(name);
 
   const handleRemove = () => {
+    const findItem = edges.find(
+      (item: any) => item.sourceHandle === `source_${sourceNodeId}`
+    );
+    if (findItem) {
+      setEdges((edge: any) =>
+        edge.filter(
+          (item: any) =>
+            item?.id !== findItem?.id && item?.target !== findItem?.target
+        )
+      );
+    }
     removeEdge(`source_${sourceNodeId}`);
-    removeEdge(`target_${sourceNodeId}`);
     handleRemoveItem();
   };
   useEffect(() => {
@@ -90,6 +108,12 @@ export const TargetNodeItemMenuAction = (
                   event.target.value
                 );
                 if (getValueById?.nodeId) {
+                  updateNodeParams({
+                    targetId: String(getValueById?.nodeId),
+                    value: {
+                      parent: id,
+                    },
+                  });
                   updateNodeData<{ title: string | null; index: number }>({
                     targetId: String(getValueById?.nodeId),
                     value: {
@@ -145,6 +169,12 @@ export const TargetNodeItemMenuAction = (
               return;
             }
             // const getDataNode = nodes.find((i) => i.id === params.target);
+            updateNodeParams({
+              targetId: String(params.target),
+              value: {
+                parent: id,
+              },
+            });
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),

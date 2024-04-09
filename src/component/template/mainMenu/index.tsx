@@ -174,9 +174,6 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                     i={indexAction}
                     data={data as any}
                     key={item.flowId}
-                    handleRemoveItem={() =>
-                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
-                    }
                     handleRemoverItemAnotherTargetId={(paramId) => {
                       const idx = targetNodes.findIndex(
                         (i) => i.nodeId === paramId
@@ -184,6 +181,9 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
                       targetNodes[idx].nodeId =
                         "00000000-0000-0000-0000-000000000000";
                     }}
+                    handleRemoveItem={() =>
+                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
+                    }
                     handleUpdateNodeData={(target, value) => {
                       targetNodes[index].name = value;
                       targetNodes[index].sequence = String(index + 1);

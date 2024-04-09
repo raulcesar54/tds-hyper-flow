@@ -44,8 +44,8 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (!data?.nodes) return;
-    setEdges(data?.edges);
     setNodes(data?.nodes);
+    setEdges(data?.edges);
   }, [loading]);
   useEffect(() => {
     const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
