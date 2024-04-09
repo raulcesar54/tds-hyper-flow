@@ -108,6 +108,13 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
               }}
               className="w-full bg-slate-50 p-2 py-3 text-sm placeholder:px-2 placeholder:text-sm focus:bg-slate-100 disabled:bg-slate-200"
             >
+              <option
+                value="00000000-0000-0000-0000-000000000000"
+                disabled
+                hidden
+              >
+                Escolha um relatório
+              </option>
               <option value="" disabled hidden>
                 Escolha um relatório
               </option>

@@ -105,6 +105,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               placeholder="opção do menu principal..."
               name="text"
               value={value}
+              maxLength={25}
               onClick={(event) => event.stopPropagation()}
               onChange={(event) => {
                 setValue(event.target.value);

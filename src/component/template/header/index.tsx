@@ -34,7 +34,8 @@ export const Header = () => {
           data: {
             sequence: String(index + 1),
             name: information.data.name,
-            statusMessage: information.data.statusMessage,
+            statusMessage:
+              information.data.statusMessage || information.data.name,
             document:
               information.data.document ||
               "00000000-0000-0000-0000-000000000000",
