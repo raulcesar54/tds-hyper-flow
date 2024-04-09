@@ -135,6 +135,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                 }
               }}
             />
+
             <button
               onClick={(event) => {
                 event?.stopPropagation();

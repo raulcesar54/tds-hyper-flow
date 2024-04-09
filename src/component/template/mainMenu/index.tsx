@@ -9,6 +9,7 @@ import { useProperty } from "../../../hooks/useProperty";
 import { HandleStyled } from "../../uiKit/handleStyle";
 import { MainMenuProps, TargetNode } from "./types";
 import { TargetNodeItemMenuAction } from "../../uiKit/targetNodeItemMenuAction";
+import { HoverCard } from "../../uiKit/hoverCard";
 
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
   const { updateNodeData, updateNodeParams, data: nodes, edges } = useBoard();
@@ -82,6 +83,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
   };
   let indexAction = 0;
   let indexText = 0;
+
   return (
     <div
       onClick={handleClick}
@@ -148,15 +150,25 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         ) : (
           <small className="text-slate-400">Sem opções vinculadas</small>
         )}
-        <div className=" flex flex-row gap-2">
-          <Button
-            label="Adicionar opção"
-            onClick={(event) => {
-              event?.stopPropagation();
-              handleAddNodeData("text");
-            }}
-          />
-        </div>
+
+        <HoverCard
+          position="bottom"
+          title=""
+          subtitle="*É permitido no máximo 5 opções."
+        >
+          <div className=" flex flex-row gap-2">
+            <Button
+              label="Adicionar opção"
+              disabled={
+                targetNodes.filter((item) => item.type === "text").length >= 5
+              }
+              onClick={(event) => {
+                event?.stopPropagation();
+                handleAddNodeData("text");
+              }}
+            />
+          </div>
+        </HoverCard>
       </div>
       <hr className="mt-4" />
       <div className="mt-2 flex flex-col">
@@ -196,15 +208,24 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
         ) : (
           <small className="text-slate-400">Sem ações vinculadas</small>
         )}
-        <div className=" flex flex-row gap-2">
-          <Button
-            label="Adicionar ação"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleAddNodeData("action");
-            }}
-          />
-        </div>
+        <HoverCard
+          position="bottom"
+          title=""
+          subtitle="*É permitido no máximo 5 ações."
+        >
+          <div className=" flex flex-row gap-2">
+            <Button
+              label="Adicionar ação"
+              disabled={
+                targetNodes.filter((item) => item.type === "action").length >= 5
+              }
+              onClick={(event) => {
+                event.stopPropagation();
+                handleAddNodeData("action");
+              }}
+            />
+          </div>
+        </HoverCard>
       </div>
 
       <HandleStyled
