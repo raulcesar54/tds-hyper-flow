@@ -209,6 +209,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
 
       <HandleStyled
         type="target"
+        className="commonHandler"
         position={Position.Left}
         id={`target_${id}`}
       />

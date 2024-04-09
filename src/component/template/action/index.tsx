@@ -51,6 +51,7 @@ export const Action = ({ data, id, ...props }: Props) => {
           />
         )} */}
         <HandleStyled
+          className="commonHandler"
           type="target"
           position={Position.Left}
           id="target"

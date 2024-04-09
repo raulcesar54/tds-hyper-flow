@@ -22,7 +22,12 @@ export const BackMenu = ({ data, id }: any) => {
         </div>
       </label>
       <h1 className="max-w-[100px] text-sm mt-2">Voltar para menu anterior</h1>
-      <HandleStyled type="target" position={Position.Left} id="target" />
+      <HandleStyled
+        className="commonHandler"
+        type="target"
+        position={Position.Left}
+        id="target"
+      />
     </div>
   );
 };

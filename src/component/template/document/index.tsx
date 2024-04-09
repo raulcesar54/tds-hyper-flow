@@ -146,11 +146,13 @@ export const Document = ({ data, id, ...props }: Props) => {
 
       <HandleStyled
         type="target"
+        className="commonHandler"
         position={Position.Left}
         id={`target_${id}`}
       />
       <HandleStyled
         type="source"
+        className="commonHandler"
         position={Position.Right}
         id={`source_${id}`}
         onConnect={(params) => {

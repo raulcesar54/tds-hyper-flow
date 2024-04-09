@@ -41,7 +41,7 @@ export const ListFilters = (props: Props) => {
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 w-full disabled:bg-slate-200"
               placeholder="Apelido"
               name="alias"
-              value={item.alias}
+              value={item.alias || item.name}
               onChange={(event) => {
                 if (!item.id) return;
                 handleUpdatedFilter(item.id, event.target.value, "alias");

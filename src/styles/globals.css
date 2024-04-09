@@ -36,3 +36,23 @@ transition: .3s;
   color: white;
   border: 1px solid #777;
 }
+
+.withHandler {
+  padding: 4px;
+  border-radius: 0px;
+  height: -20px;
+  border: 2px solid black;
+  border-radius: 100px;
+  background-color: #fff;
+  top: -22px;
+  right: -22px;
+}
+
+.commonHandler {
+  padding: 4px;
+  border-radius: 0px;
+  height: -20px;
+  border: 2px solid black;
+  border-radius: 100px;
+  background-color: #fff;
+}

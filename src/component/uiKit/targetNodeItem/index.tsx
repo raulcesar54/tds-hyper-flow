@@ -152,6 +152,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
         <HandleVectorItem
           type="source"
           position={Position.Right}
+          className="withHandler"
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
             const getValueById = nodes.find(
@@ -161,7 +162,8 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             if (
               getValueById?.type !== "KPIDoc" &&
               getValueById?.type !== "KPIText" &&
-              getValueById?.type !== "StartMenu"
+              getValueById?.type !== "StartMenu" &&
+              getValueById?.type !== "MenuItem"
             ) {
               toast("Você só pode conectar a Documentos ou Mensagens", {
                 type: "error",

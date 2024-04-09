@@ -65,6 +65,7 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
       <HandleStyled
         type="source"
         position={Position.Right}
+        className="commonHandler"
         id={`source_${id}`}
         onConnect={(params) => {
           if (params.target === null) return;

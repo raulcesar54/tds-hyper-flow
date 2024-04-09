@@ -145,11 +145,13 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
       <HandleStyled
         type="target"
         position={Position.Left}
+        className="commonHandler"
         id={`target_${id}`}
       />
       <HandleStyled
         type="source"
         position={Position.Right}
+        className="commonHandler"
         id={`source_${id}`}
         onConnect={(params) => {
           removeEdge(`source_${id}`);

@@ -159,6 +159,7 @@ export const TargetNodeItemMenuAction = (
       <div className="relative">
         <HandleVectorItem
           type="source"
+          className="withHandler"
           position={Position.Right}
           id={`source_${sourceNodeId}`}
           onConnect={(params) => {
