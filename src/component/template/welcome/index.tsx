@@ -4,6 +4,7 @@ import { WelcomeProps } from "./types";
 import { useBoard } from "../../../hooks/useBoard";
 import { useCallback, useEffect } from "react";
 import { useProperty } from "../../../hooks/useProperty";
+import { toast } from "react-toastify";
 
 export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
   const reactflow = useReactFlow();
@@ -73,11 +74,17 @@ export const Welcome = ({ data, id, ...props }: WelcomeProps) => {
               .getNode(params.target)
               ?.type?.includes("MenuPrincipal");
             if (!isValidTarget) {
-              alert("Atenção, o Documento pode ligar apenas ao Menu");
+              toast("Atenção, o Documento pode ligar apenas ao Menu", {
+                type: "error",
+                position: "top-center",
+              });
               return;
             }
           }
-          alert("nó não valido");
+          toast("Nó não valido", {
+            type: "error",
+            position: "top-center",
+          });
         }}
       />
     </div>

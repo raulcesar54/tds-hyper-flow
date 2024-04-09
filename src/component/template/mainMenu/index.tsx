@@ -112,7 +112,7 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       /> */}
       <hr className="mt-4" />
       <div className="mt-2 flex flex-col">
-        <h1 className="font-semibold">Mensagem ou Documento</h1>
+        <h1 className="font-semibold">Opções</h1>
         {targetNodes.filter((item) => item.type === "text").length ? (
           targetNodes.map((item, index) => {
             item.type === "text" && indexText++;
@@ -146,11 +146,11 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
               : null;
           })
         ) : (
-          <small className="text-slate-400">Sem textos vinculados</small>
+          <small className="text-slate-400">Sem opções vinculadas</small>
         )}
         <div className=" flex flex-row gap-2">
           <Button
-            label="Adicionar texto"
+            label="Adicionar opção"
             onClick={(event) => {
               event?.stopPropagation();
               handleAddNodeData("text");
@@ -194,11 +194,11 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
               : null;
           })
         ) : (
-          <small className="text-slate-400">Sem ações vinculados</small>
+          <small className="text-slate-400">Sem ações vinculadas</small>
         )}
         <div className=" flex flex-row gap-2">
           <Button
-            label="Adicionar ações"
+            label="Adicionar ação"
             onClick={(event) => {
               event.stopPropagation();
               handleAddNodeData("action");

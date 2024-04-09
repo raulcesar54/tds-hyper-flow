@@ -113,10 +113,10 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
                 disabled
                 hidden
               >
-                Escolha um relatório
+                Escolha uma mensagem
               </option>
               <option value="" disabled hidden>
-                Escolha um relatório
+                Escolha uma mensagem
               </option>
               {prepareMessages.map((item) => {
                 return (

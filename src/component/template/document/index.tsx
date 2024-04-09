@@ -93,7 +93,7 @@ export const Document = ({ data, id, ...props }: Props) => {
           className=" mt-3 max-w-[250px] text-sm text-slate-800 "
         /> */}
         <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
-          Selecione a Mensagem
+          Selecione o Documento
         </label>
         <div className="flex flex-row gap-3">
           <select
@@ -114,10 +114,10 @@ export const Document = ({ data, id, ...props }: Props) => {
               disabled
               hidden
             >
-              Escolha um relatório
+              Escolha um documento
             </option>
             <option value="" disabled hidden>
-              Escolha um relatório
+              Escolha um documento
             </option>
 
             {prepareDocuments.map((item) => {

@@ -8,6 +8,7 @@ import {
 } from "reactflow";
 import { v4 } from "uuid";
 import { Node, useFlow } from "./useFlow";
+import { toast } from "react-toastify";
 interface nodeType {
   position: {
     x: number;
@@ -216,7 +217,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
         },
         {
           id: actionMenu,
-          type: "StartMenu",
+          type: "MenuItem",
           chatbot,
           parent: newNode.id,
           data: {
@@ -284,11 +285,17 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       const localeItem = nodes.find((item) => item.id === data[0].id);
       if (!localeItem) return;
       if (localeItem.type === "Welcome") {
-        alert("Não é permitido remover o inicio do bot.");
+        toast("Não é permitido remover o inicio do bot.", {
+          type: "error",
+          position: "top-center",
+        });
         return;
       }
       if (localeItem.type === "StartMenu" && localeItem.data.sequence === "2") {
-        alert("Não é permitido remover o menu de inicio do bot.");
+        toast("Não é permitido remover o menu de inicio do bot.", {
+          type: "error",
+          position: "top-center",
+        });
         return;
       }
     }

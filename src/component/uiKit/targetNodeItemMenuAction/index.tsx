@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
 import { useFlow } from "../../../hooks/useFlow";
 import { TargetNodeItemMenuActionProps } from "./types";
+import { toast } from "react-toastify";
 
 export const TargetNodeItemMenuAction = (
   props: TargetNodeItemMenuActionProps
@@ -165,7 +166,10 @@ export const TargetNodeItemMenuAction = (
               (item) => item.id === params.target
             );
             if (getValueById?.type !== "Action") {
-              alert("Você só pode conectar a ações");
+              toast("Você só pode conectar a ações", {
+                type: "error",
+                position: "top-center",
+              });
               return;
             }
             // const getDataNode = nodes.find((i) => i.id === params.target);

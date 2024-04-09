@@ -8,6 +8,7 @@ import { useBoard } from "../../../hooks/useBoard";
 import { useViewport } from "reactflow";
 import { isEqual } from "lodash";
 import { v4 } from "uuid";
+import { toast } from "react-toastify";
 
 export const Header = () => {
   const [saving, setSaving] = useState(false);
@@ -90,7 +91,13 @@ export const Header = () => {
       await api.put("ChatbotFlow/Save", prepareData);
       window.location.reload();
     } catch (err) {
-      alert("Tivemos um erro ao salvar o fluxo, entre em contato com suporte.");
+      toast(
+        "Tivemos um erro ao salvar o fluxo, entre em contato com suporte.",
+        {
+          type: "error",
+          position: "top-center",
+        }
+      );
     } finally {
       setSaving(false);
     }

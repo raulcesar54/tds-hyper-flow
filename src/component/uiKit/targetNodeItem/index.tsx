@@ -3,6 +3,7 @@ import { FiTrash } from "react-icons/fi";
 import { Position } from "reactflow";
 import { useBoard } from "../../../hooks/useBoard";
 import { HandleStyled, HandleVectorItem } from "../handleStyle";
+import { toast } from "react-toastify";
 
 interface TargetNodeItemProps {
   sourceNodeId?: string;
@@ -102,7 +103,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             <input
               id={`input_${index}`}
               className="bg-slate-50 focus:bg-slate-100 text-sm p-2 py-3 placeholder:text-sm placeholder:px-2 w-full disabled:bg-slate-200"
-              placeholder="opção do menu principal..."
+              placeholder="Opção do menu"
               name="text"
               value={value}
               maxLength={25}
@@ -159,9 +160,13 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
 
             if (
               getValueById?.type !== "KPIDoc" &&
-              getValueById?.type !== "KPIText"
+              getValueById?.type !== "KPIText" &&
+              getValueById?.type !== "StartMenu"
             ) {
-              alert("Você só pode conectar a Documentos ou Mensagens");
+              toast("Você só pode conectar a Documentos ou Mensagens", {
+                type: "error",
+                position: "top-center",
+              });
               return;
             }
             updateNodeParams({
