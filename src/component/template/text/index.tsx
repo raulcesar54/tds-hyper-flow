@@ -32,7 +32,7 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
     updateNodeData({
       targetId: id,
       value: {
-        statusMessage: "Selecione uma das opcões para analisar",
+        statusMessage: data.statusMessage || "Aguarde gerando mensagem",
       },
     });
   }, [props.selected]);

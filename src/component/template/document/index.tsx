@@ -43,8 +43,7 @@ export const Document = ({ data, id, ...props }: Props) => {
       targetId: id,
       value: {
         documentOutput: data.documentOutput || "PDF",
-        statusMessage:
-          data.statusMessage || "Selecione uma das opcões para analisar",
+        statusMessage: data.statusMessage || "Aguarde gerando documento",
       },
     });
   }, [props.selected]);
