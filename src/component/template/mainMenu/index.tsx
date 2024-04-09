@@ -70,7 +70,13 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       });
       updateNodeData({
         targetId: nodeId,
-        value: { sequence: 0, parent: null, title: "", name: "" },
+        value: {
+          sequence: 0,
+          parent: null,
+          title: "",
+          name: "",
+          statusMessage: "",
+        },
       });
     }
   };

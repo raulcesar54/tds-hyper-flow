@@ -82,7 +82,9 @@ export const TargetNodeItemMenuAction = (
                 const getValueById = data.targetNode.find(
                   (item) => item.flowId === sourceNodeId
                 );
-
+                // const getDataNode = nodes.find(
+                //   (i) => i.id === getValueById?.nodeId
+                // );
                 handleUpdateNodeData(
                   String(getValueById?.nodeId),
                   event.target.value
@@ -92,6 +94,9 @@ export const TargetNodeItemMenuAction = (
                     targetId: String(getValueById?.nodeId),
                     value: {
                       title: event.target.value,
+                      // ...(getDataNode?.data.statusMessage === "" && {
+                      statusMessage: event.target.value,
+                      // }),
                       name: event.target.value,
                       sequence: String(index + 1),
                       parent: id,
@@ -139,6 +144,7 @@ export const TargetNodeItemMenuAction = (
               alert("Você só pode conectar a ações");
               return;
             }
+            // const getDataNode = nodes.find((i) => i.id === params.target);
             handleUpdateNodeData(String(params.target), value);
             updateNodeData({
               targetId: String(params.target),
@@ -147,6 +153,9 @@ export const TargetNodeItemMenuAction = (
                 parent: id,
                 title: value,
                 name: value,
+                // ...(getDataNode?.data.statusMessage === "" && {
+                statusMessage: value,
+                // }),
               },
             });
             connectNode(params);

@@ -34,7 +34,13 @@ export function CustomEdge({
   const onEdgeClick = () => {
     updateNodeData({
       targetId: String(target),
-      value: { sequence: null, parent: "", name: "", title: "" },
+      value: {
+        sequence: null,
+        parent: "",
+        name: "",
+        title: "",
+        statusMessage: "",
+      },
     });
     const selectItem = data.find((item) => item.id === source);
     const treatTargetNode = selectItem?.data?.targetNode?.map((item) => {
