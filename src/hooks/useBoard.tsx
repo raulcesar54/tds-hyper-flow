@@ -49,19 +49,19 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     setEdges(data?.edges);
   }, [loading]);
   useEffect(() => {
-    const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
-    if (!getWelcomeNode) return;
-    if (!edges.length) return;
-    setEdges((edges) =>
-      edges
-        .filter((item) => item.id !== "00000000-0000-0000-0000-000000000000")
-        .map((item) => {
-          if (item.source === getWelcomeNode.id) {
-            return { ...item, type: "base" };
-          }
-          return item;
-        })
-    );
+    // const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
+    // if (!getWelcomeNode) return;
+    // if (!edges.length) return;
+    // setEdges((edges) =>
+    //   edges
+    //     .filter((item) => item.id !== "00000000-0000-0000-0000-000000000000")
+    //     .map((item) => {
+    //       if (item.source === getWelcomeNode.id) {
+    //         return { ...item, type: "base" };
+    //       }
+    //       return item;
+    //     })
+    // );
   }, [data]);
 
   function removeEdge(sourceHandleName: string) {

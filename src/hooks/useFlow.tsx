@@ -144,7 +144,17 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
             },
           }),
         ]);
-      setData(data.data);
+      const getWelcomeNode = data.data.nodes.find(
+        (item) => item?.type === "Welcome"
+      );
+      const edges = data.data.edges.map((item) => {
+        if (item?.source === getWelcomeNode?.id) {
+          return { ...item, type: "base" };
+        }
+        return item;
+      });
+
+      setData({ ...data.data, edges });
       setMessages(messagesReport.data);
       setDocuments(documentReport.data);
       setOutputDocs(outputDocs.data);

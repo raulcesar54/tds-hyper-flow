@@ -28,12 +28,14 @@ export function EdgeNoLine({
       <BaseEdge path={edgePath} markerEnd={MarkerType.ArrowClosed} />
       <EdgeLabelRenderer>
         <div
-          style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            fontSize: 12,
-            pointerEvents: "all",
-          }}
+          style={
+            {
+              // position: "absolute",
+              // transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              // fontSize: 12,
+              // pointerEvents: "all",
+            }
+          }
           className="nodrag nopan "
         ></div>
       </EdgeLabelRenderer>
