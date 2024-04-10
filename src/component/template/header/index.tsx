@@ -21,6 +21,26 @@ export const Header = () => {
     try {
       if (!data?.nodes) return;
       const prepareNodes = info.map((information, index) => {
+        const prepareText =
+          information.data.targetNode
+            ?.filter((item) => item.type === "text")
+            .map((item, index) => {
+              return {
+                ...item,
+                sequence: String(index + 1),
+                name: item.name || `Opção ${index + 1}`,
+              };
+            }) || [];
+        const prepareAction =
+          information.data.targetNode
+            ?.filter((item) => item.type === "action")
+            .map((item, index) => {
+              return {
+                ...item,
+                sequence: String(index + 1),
+                name: item.name || `Ação ${index + 1}`,
+              };
+            }) || [];
         return {
           id: information.id,
           type: information.type,
@@ -45,11 +65,7 @@ export const Header = () => {
               information.data.message ||
               "00000000-0000-0000-0000-000000000000",
             image: information.data.image || "",
-            targetNode:
-              information.data.targetNode?.map((item, index) => ({
-                ...item,
-                name: item.name || `Opção ${index + 1}`,
-              })) || [],
+            targetNode: [...prepareText, ...prepareAction] || [],
             filterNode: information.data.filterNode || [],
             enabled: information.data.enabled,
           },

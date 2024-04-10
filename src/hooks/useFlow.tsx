@@ -56,6 +56,7 @@ interface TargetNode {
   flowId?: string;
   sequence: string;
   name: string;
+  type: "action" | "text";
 }
 interface Position {
   x: number;
