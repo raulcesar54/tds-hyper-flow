@@ -67,7 +67,7 @@ export const Header = () => {
             image: information.data.image || "",
             targetNode:
               information.type === "StartMenu" ||
-              information.type === "ManuItem"
+              information.type === "MenuItem"
                 ? [...prepareText, ...prepareAction]
                 : information.data.targetNode || [],
             filterNode: information.data.filterNode || [],
