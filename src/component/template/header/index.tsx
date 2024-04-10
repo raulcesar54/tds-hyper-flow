@@ -22,7 +22,7 @@ export const Header = () => {
       if (!data?.nodes) return;
       const prepareNodes = info.map((information, index) => {
         const prepareText =
-          information.data.targetNode
+          information?.data?.targetNode
             ?.filter((item) => item.type === "text")
             .map((item, index) => {
               return {
@@ -65,7 +65,11 @@ export const Header = () => {
               information.data.message ||
               "00000000-0000-0000-0000-000000000000",
             image: information.data.image || "",
-            targetNode: [...prepareText, ...prepareAction] || [],
+            targetNode:
+              information.type === "StartMenu" ||
+              information.type === "ManuItem"
+                ? [...prepareText, ...prepareAction]
+                : information.data.targetNode || [],
             filterNode: information.data.filterNode || [],
             enabled: information.data.enabled,
           },
