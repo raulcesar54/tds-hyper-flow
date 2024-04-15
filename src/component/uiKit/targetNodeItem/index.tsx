@@ -164,9 +164,10 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
               getValueById?.type !== "KPIDoc" &&
               getValueById?.type !== "KPIText" &&
               getValueById?.type !== "StartMenu" &&
+              getValueById?.type !== "IA" &&
               getValueById?.type !== "MenuItem"
             ) {
-              toast("Você só pode conectar a Documentos ou Mensagens", {
+              toast("Você só pode conectar a Documentos, Mensagens ou IA", {
                 type: "error",
                 position: "top-center",
               });

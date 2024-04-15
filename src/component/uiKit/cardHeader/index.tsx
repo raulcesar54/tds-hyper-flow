@@ -1,4 +1,5 @@
 import * as icon from "react-icons/fi";
+import { RiRobot2Line } from "react-icons/ri";
 import { HoverCard } from "../hoverCard";
 interface CardHeaderProps {
   iconName: string;
@@ -12,7 +13,7 @@ interface CardHeaderProps {
 export const CardHeader = (props: CardHeaderProps) => {
   const { iconName, title, subtitle } = props;
   const prepareIcon = icon as any;
-  const Icons = prepareIcon[iconName];
+  const Icons = iconName === "VscRobot" ? RiRobot2Line : prepareIcon[iconName];
 
   return (
     <label

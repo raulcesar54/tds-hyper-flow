@@ -18,6 +18,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { CustomEdge } from "../component/uiKit/customEdge";
 import { EdgeNoLine } from "../component/uiKit/baseEdge";
+import { Ai } from "../component/template/ia";
 
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
@@ -33,6 +34,7 @@ export default function Main() {
       MenuItem: MainMenu,
       KPIDoc: Document,
       KPIText: Text,
+      IA: Ai,
     }),
     []
   );
