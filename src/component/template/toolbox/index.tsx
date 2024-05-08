@@ -4,18 +4,17 @@ import {
   FiCpu,
   FiFileText,
   FiHome,
-  FiMail,
   FiMessageSquare,
-  FiShuffle,
-  FiType,
 } from "react-icons/fi";
+import { useFlow } from "../../../hooks/useFlow";
 
 export const Toolbox = () => {
+  const { data } = useFlow()
   const onDragStart = (event: any, nodeType: any) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
-
+  const isCognitiveDisabled = data?.chatBot.engine === 'Cognitive' && 'cursor-not-allowed pointer-events-none opacity-20'
   return (
     <div className="absolute z-50 bg-white left-4 top-[35%] overflow-hidden flex flex-col gap-2 items-center shadow-md rounded-md p-2 py-4">
       <HoverCard title="Documento">
@@ -31,7 +30,7 @@ export const Toolbox = () => {
         <button
           onDragStart={(event) => onDragStart(event, "KPIText")}
           draggable
-          className="b-none p-4 hover:bg-slate-50"
+          className='b-none p-4 hover:bg-slate-50'
         >
           <FiMessageSquare size={18} />
         </button>
@@ -41,7 +40,7 @@ export const Toolbox = () => {
         <button
           onDragStart={(event) => onDragStart(event, "MenuItem")}
           draggable
-          className="b-none p-4 hover:bg-slate-50"
+          className={`b-none p-4 hover:bg-slate-50 ${isCognitiveDisabled}`}
         >
           <FiHome size={18} />
         </button>
@@ -51,7 +50,7 @@ export const Toolbox = () => {
         <button
           onDragStart={(event) => onDragStart(event, "Action")}
           draggable
-          className="b-none p-4 hover:bg-slate-50"
+          className={`b-none p-4 hover:bg-slate-50 ${isCognitiveDisabled}`}
         >
           <FiCpu size={18} />
         </button>
@@ -60,7 +59,7 @@ export const Toolbox = () => {
         <button
           onDragStart={(event) => onDragStart(event, "IA")}
           draggable
-          className="b-none p-4 hover:bg-slate-50"
+          className={`b-none p-4 hover:bg-slate-50 ${isCognitiveDisabled}`}
         >
           <RiRobot2Line size={18} />
         </button>

@@ -64,9 +64,9 @@ export default function Main() {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      addNode({ position, type });
+      addNode({ position, type, engine: flowData?.chatBot.engine });
     },
-    [reactFlowInstance]
+    [reactFlowInstance, flowData]
   );
 
   useEffect(() => {

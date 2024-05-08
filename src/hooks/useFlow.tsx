@@ -67,6 +67,7 @@ interface ChatBot {
   name: string;
   enabled: boolean;
   type: string;
+  engine: 'Cognitive' | 'Flow'
   description: string;
   Actions: ActionsType[];
   position: Position;

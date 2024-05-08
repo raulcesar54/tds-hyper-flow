@@ -10,9 +10,11 @@ import { HandleStyled } from "../../uiKit/handleStyle";
 import { MainMenuProps, TargetNode } from "./types";
 import { TargetNodeItemMenuAction } from "../../uiKit/targetNodeItemMenuAction";
 import { HoverCard } from "../../uiKit/hoverCard";
-
+import { useFlow } from "../../../hooks/useFlow";
+import { RiRobot2Line } from "react-icons/ri";
 export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
-  const { updateNodeData, updateNodeParams, data: nodes, edges } = useBoard();
+  const { updateNodeData, updateNodeParams, } = useBoard();
+  const { data: flowData } = useFlow()
   const [targetNodes, setTargetNode] = useState<TargetNode[]>(
     data.targetNode || []
   );
@@ -81,21 +83,22 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
       });
     }
   };
+
   let indexAction = 0;
   let indexText = 0;
 
   return (
     <div
       onClick={handleClick}
-      className={`border-2 p-4 ${
-        props.selected ? "border-blue-400" : ""
-      }  flex w-[300px] flex-col rounded-md bg-white shadow-sm`}
+      className={`border-2 p-4 ${props.selected ? "border-blue-400" : ""
+        }  flex w-[300px] flex-col rounded-md bg-white shadow-sm`}
     >
-      <CardHeader
+      {flowData?.chatBot.engine === 'Cognitive' ? <CardHeader iconName="VscRobot" title={data.title || "Menu Cognitivo"}
+        subtitle="Menu" /> : <CardHeader
         iconName="FiHome"
         title={data.title || "Menu"}
         subtitle="Menu"
-      />
+      />}
       {data.image && (
         <img
           src={data.image}
@@ -103,15 +106,6 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           alt="image_step"
         />
       )}
-      {/* <h1
-        dangerouslySetInnerHTML={{
-          __html: `${data?.statusMessage?.replace(
-            "{{username}}",
-            "<strong class='text-blue-400'>Nome do usúario</strong>"
-          )}`,
-        }}
-        className=" mt-3 max-w-[250px] text-sm text-slate-800 "
-      /> */}
       <hr className="mt-4" />
       <div className="mt-2 flex flex-col">
         <h1 className="font-semibold">Opções</h1>
@@ -120,31 +114,31 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
             item.type === "text" && indexText++;
             return item.type === "text"
               ? item.flowId && (
-                  <TargetNodeItem
-                    sourceNodeId={item.flowId}
-                    name={item.name || ""}
-                    index={index}
-                    id={id}
-                    i={indexText}
-                    data={data as any}
-                    key={item.flowId}
-                    handleRemoverItemAnotherTargetId={(paramId) => {
-                      const idx = targetNodes.findIndex(
-                        (i) => i.nodeId === paramId
-                      );
-                      targetNodes[idx].nodeId =
-                        "00000000-0000-0000-0000-000000000000";
-                    }}
-                    handleRemoverItem={() =>
-                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
-                    }
-                    handleUpdateNodeData={(target, value) => {
-                      targetNodes[index].name = value;
-                      targetNodes[index].sequence = String(index + 1);
-                      targetNodes[index].nodeId = target;
-                    }}
-                  />
-                )
+                <TargetNodeItem
+                  sourceNodeId={item.flowId}
+                  name={item.name || ""}
+                  index={index}
+                  id={id}
+                  i={indexText}
+                  data={data as any}
+                  key={item.flowId}
+                  handleRemoverItemAnotherTargetId={(paramId) => {
+                    const idx = targetNodes.findIndex(
+                      (i) => i.nodeId === paramId
+                    );
+                    targetNodes[idx].nodeId =
+                      "00000000-0000-0000-0000-000000000000";
+                  }}
+                  handleRemoverItem={() =>
+                    item.flowId && handleRemoveItem(item.flowId, item.nodeId)
+                  }
+                  handleUpdateNodeData={(target, value) => {
+                    targetNodes[index].name = value;
+                    targetNodes[index].sequence = String(index + 1);
+                    targetNodes[index].nodeId = target;
+                  }}
+                />
+              )
               : null;
           })
         ) : (
@@ -170,63 +164,67 @@ export const MainMenu = ({ data, id, ...props }: MainMenuProps) => {
           </div>
         </HoverCard>
       </div>
-      <hr className="mt-4" />
-      <div className="mt-2 flex flex-col">
-        <h1 className="font-semibold">Ações</h1>
-        {targetNodes.filter((item) => item.type === "action").length ? (
-          targetNodes.map((item, index) => {
-            item.type === "action" && indexAction++;
-            return item.type === "action"
-              ? item.flowId && (
-                  <TargetNodeItemMenuAction
-                    sourceNodeId={item.flowId}
-                    name={item.name || ""}
-                    index={index}
-                    id={id}
-                    i={indexAction}
-                    data={data as any}
-                    key={item.flowId}
-                    handleRemoverItemAnotherTargetId={(paramId) => {
-                      const idx = targetNodes.findIndex(
-                        (i) => i.nodeId === paramId
-                      );
-                      targetNodes[idx].nodeId =
-                        "00000000-0000-0000-0000-000000000000";
-                    }}
-                    handleRemoveItem={() =>
-                      item.flowId && handleRemoveItem(item.flowId, item.nodeId)
-                    }
-                    handleUpdateNodeData={(target, value) => {
-                      targetNodes[index].name = value;
-                      targetNodes[index].sequence = String(index + 1);
-                      targetNodes[index].nodeId = target;
-                    }}
-                  />
-                )
-              : null;
-          })
-        ) : (
-          <small className="text-slate-400">Sem ações vinculadas</small>
-        )}
-        <HoverCard
-          position="bottom"
-          title=""
-          subtitle="*É permitido no máximo 5 ações."
-        >
-          <div className=" flex flex-row gap-2">
-            <Button
-              label="Adicionar ação"
-              disabled={
-                targetNodes.filter((item) => item.type === "action").length >= 5
-              }
-              onClick={(event) => {
-                event.stopPropagation();
-                handleAddNodeData("action");
-              }}
-            />
+      {flowData?.chatBot.engine === 'Flow' &&
+        <>
+          <hr className="mt-4" />
+          <div className="mt-2 flex flex-col">
+            <h1 className="font-semibold">Ações</h1>
+            {targetNodes.filter((item) => item.type === "action").length ? (
+              targetNodes.map((item, index) => {
+                item.type === "action" && indexAction++;
+                return item.type === "action"
+                  ? item.flowId && (
+                    <TargetNodeItemMenuAction
+                      sourceNodeId={item.flowId}
+                      name={item.name || ""}
+                      index={index}
+                      id={id}
+                      i={indexAction}
+                      data={data as any}
+                      key={item.flowId}
+                      handleRemoverItemAnotherTargetId={(paramId) => {
+                        const idx = targetNodes.findIndex(
+                          (i) => i.nodeId === paramId
+                        );
+                        targetNodes[idx].nodeId =
+                          "00000000-0000-0000-0000-000000000000";
+                      }}
+                      handleRemoveItem={() =>
+                        item.flowId && handleRemoveItem(item.flowId, item.nodeId)
+                      }
+                      handleUpdateNodeData={(target, value) => {
+                        targetNodes[index].name = value;
+                        targetNodes[index].sequence = String(index + 1);
+                        targetNodes[index].nodeId = target;
+                      }}
+                    />
+                  )
+                  : null;
+              })
+            ) : (
+              <small className="text-slate-400">Sem ações vinculadas</small>
+            )}
+            <HoverCard
+              position="bottom"
+              title=""
+              subtitle="*É permitido no máximo 5 ações."
+            >
+              <div className=" flex flex-row gap-2">
+                <Button
+                  label="Adicionar ação"
+                  disabled={
+                    targetNodes.filter((item) => item.type === "action").length >= 5
+                  }
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleAddNodeData("action");
+                  }}
+                />
+              </div>
+            </HoverCard>
           </div>
-        </HoverCard>
-      </div>
+        </>
+      }
 
       <HandleStyled
         type="target"

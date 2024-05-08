@@ -14,6 +14,7 @@ interface nodeType {
     x: number;
     y: number;
   };
+  engine?: 'Cognitive' | 'Flow'
   type: string;
 }
 interface iupdateNodeData<T> {
@@ -48,21 +49,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
     setNodes(data?.nodes);
     setEdges(data?.edges);
   }, [loading]);
-  useEffect(() => {
-    // const getWelcomeNode = nodes.find((item) => item.type === "Welcome");
-    // if (!getWelcomeNode) return;
-    // if (!edges.length) return;
-    // setEdges((edges) =>
-    //   edges
-    //     .filter((item) => item.id !== "00000000-0000-0000-0000-000000000000")
-    //     .map((item) => {
-    //       if (item.source === getWelcomeNode.id) {
-    //         return { ...item, type: "base" };
-    //       }
-    //       return item;
-    //     })
-    // );
-  }, [data]);
 
   function removeEdge(sourceHandleName: string) {
     return setEdges((edges) =>
@@ -80,7 +66,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       )
     );
   }
-  function handleNodeChange(node: any) {}
+  function handleNodeChange(node: any) { }
   function updateNodeParams<T>({ targetId, value }: iupdateNodeData<T>) {
     setNodes((nodes) =>
       nodes.map((node) => {
@@ -110,7 +96,7 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       })
     );
   }
-  function addNode({ position, type }: nodeType) {
+  function addNode({ position, type, engine }: nodeType) {
     const uuidGenerated = v4();
     const chatbot = chatBotId.replace("?id=", "");
     const newNode = {
@@ -137,6 +123,10 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       dragging: false,
       position,
     };
+    if (engine === 'Cognitive') {
+      setNodes((lastValue: any) => [...lastValue, newNode]);
+      return
+    }
     if (type === "KPIDoc" || type === "KPIText") {
       const actionMenu = v4();
       const backwardMenu = v4();
@@ -261,7 +251,6 @@ export const ProviderBoard = ({ children }: { children: JSX.Element }) => {
       setNodes((lastValue: any) => [...lastValue, ...preparedSubItems]);
       return;
     }
-
     setNodes((lastValue: any) => [...lastValue, newNode]);
   }
   function removeEdges(sourceId: string, targetId: string) {

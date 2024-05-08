@@ -114,7 +114,7 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
                 const getValueById = data.targetNode.find(
                   (item) => item.flowId === sourceNodeId
                 );
-                handleUpdateNodeData(String(getValueById?.nodeId), value);
+                handleUpdateNodeData(String(getValueById?.nodeId), event.target.value);
                 if (getValueById?.nodeId) {
                   updateNodeParams({
                     targetId: String(getValueById?.nodeId),
