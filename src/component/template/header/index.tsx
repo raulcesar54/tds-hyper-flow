@@ -57,6 +57,9 @@ export const Header = () => {
             name: information.data.name,
             statusMessage:
               information.data.statusMessage || information.data.name,
+            dataSet:
+              information.data.dataSet ||
+              "00000000-0000-0000-0000-000000000000",
             document:
               information.data.document ||
               "00000000-0000-0000-0000-000000000000",
@@ -67,7 +70,7 @@ export const Header = () => {
             image: information.data.image || "",
             targetNode:
               information.type === "StartMenu" ||
-              information.type === "MenuItem"
+                information.type === "MenuItem"
                 ? [...prepareText, ...prepareAction]
                 : information.data.targetNode || [],
             filterNode: information.data.filterNode || [],
@@ -142,19 +145,17 @@ export const Header = () => {
           <div className="flex flex-row gap-4 h-full border-l-2 pl-4">
             <FaWhatsapp
               size={18}
-              className={`text-blue-100  ${
-                (data?.chatBot.type === "WhatsApp" ||
+              className={`text-blue-100  ${(data?.chatBot.type === "WhatsApp" ||
                   data?.chatBot.type === "Both") &&
                 "!text-blue-500 "
-              }`}
+                }`}
             />
             <LiaTelegramPlane
               size={18}
-              className={`text-blue-100   ${
-                (data?.chatBot.type === "Telegram" ||
+              className={`text-blue-100   ${(data?.chatBot.type === "Telegram" ||
                   data?.chatBot.type === "Both") &&
                 "!text-blue-500 "
-              }`}
+                }`}
             />
           </div>
           <button

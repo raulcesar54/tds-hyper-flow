@@ -13,15 +13,24 @@ export const DataSet = ({ data, id, ...props }: Props) => {
   const { handleSelectInfo } = useProperty();
   const { dataset } = useFlow();
   const { connectNode, removeEdge, updateNodeData } = useBoard();
-  const [value, setValue] = useState(data.document);
+  const [value, setValue] = useState(data.dataSet);
+  const getIconName = (name: string) => {
+    const iconText = name.split('\\')
+    const icon = iconText.pop()
+    return icon
+  }
   const prepareDocuments = useMemo(() => {
     const doc = groupBy(dataset, "Group");
     const info = Object.values(doc);
-    const data = info.map((item) => ({
-      id: v4(),
-      label: item[0].Group,
-      options: item,
-    }));
+    const data = info.map((item) => {
+      const icon = getIconName(item[0].Icon)
+      return ({
+        id: v4(),
+        label: item[0].Group,
+        icon,
+        options: item,
+      })
+    });
     return data;
   }, [dataset]);
 
@@ -56,6 +65,12 @@ export const DataSet = ({ data, id, ...props }: Props) => {
       customInfo: data,
     });
   }, [handleSelectInfo, data, id]);
+
+  const icon = useMemo(() => {
+    const findIconName = dataset?.find(item => item.Id === value)
+    if (!findIconName) return
+    return getIconName(findIconName.Icon)
+  }, [value, data, dataset])
   return (
     <div
       onClick={handleClick}
@@ -72,6 +87,7 @@ export const DataSet = ({ data, id, ...props }: Props) => {
           iconName="FiDatabase"
           subtitle="Conjunto de Dados"
           title={data.title || "Conjunto de Dados"}
+          imgPath={icon}
         />
         {data.image && (
           <img
@@ -91,7 +107,7 @@ export const DataSet = ({ data, id, ...props }: Props) => {
               updateNodeData({
                 targetId: id,
                 value: {
-                  dataset: event.target.value,
+                  dataSet: event.target.value,
                 },
               });
             }}

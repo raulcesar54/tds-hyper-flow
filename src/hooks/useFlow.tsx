@@ -31,6 +31,7 @@ interface Data {
   name: string;
   statusMessage: string;
   document: string;
+  dataSet: string;
   documentOutput?: any;
   message: string;
   image?: string;
@@ -93,6 +94,7 @@ interface BoardType {
 interface DatasetResponse {
   Group: string,
   Id: string,
+  Icon: string,
   Name: string
 }
 interface MessageOrDocResponse {

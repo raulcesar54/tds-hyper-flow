@@ -2,6 +2,7 @@ interface RootObject {
   sequence: string;
   name: string;
   statusMessage: string;
+  dataSet: string;
   title: string;
   message: string;
   document: string;

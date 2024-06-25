@@ -60,9 +60,8 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
   return (
     <div
       onClick={handleClick}
-      className={`border-2 p-4 ${
-        props.selected ? "border-blue-400" : "border-[#eee] "
-      }  flex w-[320px] flex-col rounded-lg bg-white`}
+      className={`border-2 p-4 ${props.selected ? "border-blue-400" : "border-[#eee] "
+        }  flex w-[320px] flex-col rounded-lg bg-white`}
     >
       <div
         className={` flex flex-col
@@ -82,15 +81,6 @@ export const Text = ({ data, id, ...props }: MainMenuProps) => {
               alt="image_step"
             />
           )}
-          {/* <h1
-            dangerouslySetInnerHTML={{
-              __html: `${data?.statusMessage?.replace(
-                "{{username}}",
-                "<strong class='text-blue-400'>Nome do usúario</strong>"
-              )}`,
-            }}
-            className=" mt-3 max-w-[250px] text-sm text-slate-800 "
-          /> */}
           <label className="mb-1 mt-3 text-sm font-bold" htmlFor="text">
             Selecione a Mensagem
           </label>

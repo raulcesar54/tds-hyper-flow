@@ -7,15 +7,15 @@ interface CardHeaderProps {
   title: string;
   subtitle: string;
   showCloseIcon?: boolean;
+  imgPath?: string
   handleCloseIcon?: () => void;
   handleRemoveItem?: () => void;
 }
 
 export const CardHeader = (props: CardHeaderProps) => {
-  const { iconName, title, subtitle } = props;
+  const { iconName, title, subtitle, imgPath } = props;
   const prepareIcon = icon as any;
   const Icons = iconName === "VscRobot" ? RiRobot2Line : prepareIcon[iconName];
-
   return (
     <label
       htmlFor="text"
@@ -36,6 +36,7 @@ export const CardHeader = (props: CardHeaderProps) => {
           {props.showCloseIcon && <icon.FiX />}
         </div>
       )}
+      {props.imgPath && <img width="40" className="ml-auto" src={`/${imgPath}`} />}
       {props.handleRemoveItem && (
         <HoverCard title="Remover Nó" position="right" subtitle="excluir">
           <div
