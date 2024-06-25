@@ -11,13 +11,14 @@ interface CardInfo {
   nodeId: string;
   customInfo: any;
   type:
-    | "Message"
-    | "Document"
-    | "Action"
-    | "Menu"
-    | "ActionMenu"
-    | "Welcome"
-    | "IA";
+  | "Message"
+  | "Document"
+  | "Action"
+  | "Menu"
+  | "ActionMenu"
+  | "Welcome"
+  | "DataSet"
+  | "IA";
 }
 
 const UsePropertyContext = createContext({} as PropertyProps);

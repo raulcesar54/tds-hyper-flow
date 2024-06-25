@@ -88,8 +88,13 @@ interface BoardType {
   documents: MessageOrDocResponse[] | null;
   outputDocs: OutputDocResponse[] | null;
   handleGetInformation: () => void;
+  dataset: DatasetResponse[] | null
 }
-
+interface DatasetResponse {
+  Group: string,
+  Id: string,
+  Name: string
+}
 interface MessageOrDocResponse {
   Id: string;
   Name: string;
@@ -111,25 +116,25 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<FlowResponse | null>(null);
   const [messages, setMessages] = useState<MessageOrDocResponse[] | null>(null);
+  const [dataset, setDataset] = useState<DatasetResponse[] | null>(null);
   const [outputDocs, setOutputDocs] = useState<OutputDocResponse[] | null>(
     null
   );
   const [documents, setDocuments] = useState<MessageOrDocResponse[] | null>(
     null
   );
-
-  //Destacar se é pdf imagem doc ou xls
   const handleGetInformation = useCallback(async () => {
     const idTreated = id.replace("?id=", "");
     try {
       setLoading(true);
-      const [data, messagesReport, documentReport, outputDocs] =
+      const [data, messagesReport, documentReport, outputDocs, dataset] =
         await Promise.all([
           await api.get<FlowResponse>("ChatbotFlow/flow", {
             params: {
               id: idTreated,
             },
           }),
+
           await api.get<MessageOrDocResponse[]>("ChatbotFlow/message", {
             params: {
               id: idTreated,
@@ -141,6 +146,11 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
             },
           }),
           await api.get<OutputDocResponse[]>("ChatbotFlow/OutputDoc", {
+            params: {
+              id: idTreated,
+            },
+          }),
+          await api.get<DatasetResponse[]>("ChatbotFlow/dataset", {
             params: {
               id: idTreated,
             },
@@ -158,6 +168,7 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
 
       setData({ ...data.data, edges });
       setMessages(messagesReport.data);
+      setDataset(dataset.data);
       setDocuments(documentReport.data);
       setOutputDocs(outputDocs.data);
     } catch (error) {
@@ -173,6 +184,7 @@ export const FlowProvider = (props: { children: JSX.Element }) => {
         data,
         messages,
         documents,
+        dataset,
         outputDocs,
         handleGetInformation,
       }}

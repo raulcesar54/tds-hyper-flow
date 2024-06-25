@@ -19,6 +19,7 @@ import "reactflow/dist/style.css";
 import { CustomEdge } from "../component/uiKit/customEdge";
 import { EdgeNoLine } from "../component/uiKit/baseEdge";
 import { Ai } from "../component/template/ia";
+import { DataSet } from "../component/template/dataset";
 
 export default function Main() {
   const reactFlowWrapper: any = useRef(null);
@@ -30,6 +31,7 @@ export default function Main() {
     () => ({
       Welcome,
       Action,
+      DataSet,
       StartMenu: MainMenu,
       MenuItem: MainMenu,
       KPIDoc: Document,
@@ -75,8 +77,8 @@ export default function Main() {
   useEffect(() => {
     if (
       flowData &&
-      flowData.chatBot.position.x &&
-      flowData.chatBot.position.y
+      flowData?.chatBot?.position?.x &&
+      flowData?.chatBot?.position?.y
     ) {
       reactFlowInstance?.setViewport({
         zoom: flowData?.chatBot?.zoom || 0,

@@ -1,7 +1,9 @@
 import { RiRobot2Line } from "react-icons/ri";
 import { HoverCard } from "../../../component/uiKit/hoverCard";
 import {
+  FiArchive,
   FiCpu,
+  FiDatabase,
   FiFileText,
   FiHome,
   FiMessageSquare,
@@ -15,6 +17,7 @@ export const Toolbox = () => {
     event.dataTransfer.effectAllowed = "move";
   };
   const isCognitiveDisabled = data?.chatBot.engine === 'Cognitive' && 'cursor-not-allowed pointer-events-none opacity-20'
+  const isFlowDisabled = data?.chatBot.engine === 'Flow' && 'cursor-not-allowed pointer-events-none opacity-20'
   return (
     <div className="absolute z-50 bg-white left-4 top-[35%] overflow-hidden flex flex-col gap-2 items-center shadow-md rounded-md p-2 py-4">
       <HoverCard title="Documento">
@@ -30,9 +33,18 @@ export const Toolbox = () => {
         <button
           onDragStart={(event) => onDragStart(event, "KPIText")}
           draggable
-          className='b-none p-4 hover:bg-slate-50'
+          className={`b-none p-4 hover:bg-slate-50`}
         >
           <FiMessageSquare size={18} />
+        </button>
+      </HoverCard>
+      <HoverCard title="DataSet">
+        <button
+          onDragStart={(event) => onDragStart(event, "DataSet")}
+          draggable
+          className={`b-none p-4 hover:bg-slate-50 ${isFlowDisabled}`}
+        >
+          <FiDatabase size={18} />
         </button>
       </HoverCard>
       <hr className="h-px px-5 max-w-md  w-full opacity-50" />

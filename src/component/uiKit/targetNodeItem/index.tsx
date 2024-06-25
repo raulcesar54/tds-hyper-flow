@@ -159,10 +159,10 @@ export const TargetNodeItem = (props: TargetNodeItemProps) => {
             const getValueById = nodes.find(
               (item) => item.id === params.target
             );
-
             if (
               getValueById?.type !== "KPIDoc" &&
               getValueById?.type !== "KPIText" &&
+              getValueById?.type !== "DataSet" &&
               getValueById?.type !== "StartMenu" &&
               getValueById?.type !== "IA" &&
               getValueById?.type !== "MenuItem"
