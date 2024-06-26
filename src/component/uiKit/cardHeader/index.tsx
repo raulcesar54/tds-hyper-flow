@@ -36,7 +36,7 @@ export const CardHeader = (props: CardHeaderProps) => {
           {props.showCloseIcon && <icon.FiX />}
         </div>
       )}
-      {props.imgPath && <img width="32" className="ml-auto" src={`/${imgPath}`} />}
+      {props.imgPath && <img width="60" className="ml-auto" src={`/${imgPath}`} />}
       {props.handleRemoveItem && (
         <HoverCard title="Remover Nó" position="right" subtitle="excluir">
           <div
