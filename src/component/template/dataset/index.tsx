@@ -15,9 +15,9 @@ export const DataSet = ({ data, id, ...props }: Props) => {
   const { connectNode, removeEdge, updateNodeData } = useBoard();
   const [value, setValue] = useState(data.dataSet);
   const getIconName = (name: string) => {
-    const iconText = name.split('\\')
-    const icon = iconText.pop()
-    return icon
+    // const iconText = name.split('\\')
+    // const icon = iconText.pop()
+    return name
   }
   const prepareDocuments = useMemo(() => {
     const doc = groupBy(dataset, "Group");
